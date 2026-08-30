@@ -63,7 +63,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
     <section id="strategies" className="pt-10 pb-20 sm:py-24 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>OUR PROVEN PROCESS</span>
@@ -79,7 +79,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
         {/* 2-COLUMN BALANCED PROCESS LAYOUT WITH PIXEL MASCOT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           {/* Left Column: Agency Overview Card & CTA (Waist-Up Pixel Mascot) */}
-          <div className="lg:col-span-5 relative pt-10 sm:pt-12 lg:sticky lg:top-28">
+          <div className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28">
             {/* Waist-Up Japanese Schoolgirl Mascot Popping Up (z-10) */}
             <div className="absolute -top-16 sm:-top-18 right-3 sm:right-6 z-10">
               <PixelMascot />
