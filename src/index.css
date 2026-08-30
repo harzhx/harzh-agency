@@ -158,22 +158,38 @@ html:not(.dark) .beam-line {
   background: rgba(120, 130, 160, 0.45);
 }
 
-/* Infinite Smooth Scrolling Marquee */
-@keyframes marquee {
+/* Glitchless Seamless Infinite Marquee Animations */
+@keyframes marquee-left {
   0% {
     transform: translateX(0%);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
-.animate-marquee:hover {
+.animate-marquee-left {
+  display: flex;
+  flex-shrink: 0;
+  animation: marquee-left 20s linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  flex-shrink: 0;
+  animation: marquee-right 20s linear infinite;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
   animation-play-state: paused;
 }

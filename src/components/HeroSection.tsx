@@ -100,42 +100,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                     style={{
-                      backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80')`,
+                      backgroundImage: `url('/images/vsl_thumbnail.jpg')`,
                     }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40" />
                   </div>
 
-                  {/* Center Play Button with Neon Pulse */}
+                  {/* Sleek Minimalist Center Play Button */}
                   <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="w-16 h-16 sm:w-22 sm:h-22 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black shadow-[0_0_50px_rgba(255,255,255,0.6)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
-                      <Play className="w-7 h-7 sm:w-9 sm:h-9 fill-black translate-x-0.5" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/95 text-black flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.7)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
+                      <Play className="w-6 h-6 sm:w-8 sm:h-8 fill-black translate-x-0.5" />
                     </div>
                   </div>
 
-                  {/* Overlaid Badges */}
-                  <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-10 pointer-events-none">
-                    <div className="flex items-center gap-1.5 sm:gap-2 bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-emerald-500/40 text-emerald-400 text-[10px] sm:text-xs font-semibold">
-                      <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                      <span>78.4% Avg Retention</span>
+                  {/* Clean Top Badges (Non-overlapping & Lightweight) */}
+                  <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between z-10 pointer-events-none">
+                    <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-white text-[10px] sm:text-xs font-mono">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>RETENTION BREAKDOWN</span>
                     </div>
 
-                    <div className="bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/20 text-white text-[10px] sm:text-xs font-mono">
-                      4K 60FPS • SYSTEM BREAKDOWN
-                    </div>
-                  </div>
-
-                  {/* Bottom Telemetry Bar */}
-                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-center justify-between bg-black/80 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-white/10 text-[11px] sm:text-xs text-white/70 pointer-events-none">
-                    <div className="flex items-center gap-2 truncate">
-                      <span className="font-semibold text-white">Harzh Retention Masterclass</span>
-                      <span className="text-white/40 hidden sm:inline">•</span>
-                      <span className="text-white/60 hidden sm:inline">Psychological Pacing & Systems</span>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 font-mono text-emerald-400 font-semibold shrink-0">
-                      <Volume2 className="w-3.5 h-3.5" />
-                      <span>Click to Watch Breakdown</span>
+                    <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-semibold">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>78.4% Retention</span>
                     </div>
                   </div>
                 </div>
@@ -144,44 +131,78 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        {/* Agency Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto mb-16">
+        {/* 1. Agency Stats (DESKTOP: Clean 4-Card Grid) */}
+        <div className="hidden sm:grid sm:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16">
           {AGENCY_STATS.map((stat, index) => (
             <div
               key={index}
-              className="p-4 sm:p-5 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-center backdrop-blur-md hover:border-white/20 transition-all shadow-lg"
+              className="p-5 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-center backdrop-blur-md hover:border-white/20 transition-all shadow-lg"
             >
-              <div className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white mb-1">
+              <div className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white mb-1 font-mono">
                 {stat.value}
               </div>
-              <div className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-white/70">
+              <div className="text-xs font-semibold uppercase tracking-wider text-white/70">
                 {stat.label}
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-emerald-400 mt-1 font-mono">
-                {stat.highlight}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Infinite Smooth Scrolling Niches Marquee */}
-        <div className="text-center overflow-hidden relative">
-          <p className="text-[11px] sm:text-xs uppercase tracking-widest font-mono font-semibold mb-6 text-white/40">
-            ENGINEERING RETENTION ACROSS TOP-TIER NICHES
-          </p>
+        {/* Mobile & Desktop Marquees Section */}
+        <div className="space-y-3 mb-14 overflow-hidden relative select-none">
+          {/* 1. Stats Marquee (MOBILE ONLY: Moving Right → Left) */}
+          <div className="block sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex gap-3 overflow-hidden">
+              <div className="animate-marquee-left flex gap-3 shrink-0 py-0.5">
+                {AGENCY_STATS.map((stat, index) => (
+                  <div
+                    key={`s1-${index}`}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] text-white whitespace-nowrap shadow-lg shrink-0"
+                  >
+                    <span className="text-sm font-extrabold text-white font-mono">{stat.value}</span>
+                    <span className="text-xs text-white/70 font-semibold uppercase tracking-wide">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div aria-hidden="true" className="animate-marquee-left flex gap-3 shrink-0 py-0.5">
+                {AGENCY_STATS.map((stat, index) => (
+                  <div
+                    key={`s2-${index}`}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] text-white whitespace-nowrap shadow-lg shrink-0"
+                  >
+                    <span className="text-sm font-extrabold text-white font-mono">{stat.value}</span>
+                    <span className="text-xs text-white/70 font-semibold uppercase tracking-wide">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-          {/* Marquee Container with Gradient Edge Masking */}
+          {/* 2. Niches Marquee (Unified Style: Moving Left → Right) */}
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="animate-marquee py-2 gap-4">
-              {[...CREATOR_LOGOS, ...CREATOR_LOGOS, ...CREATOR_LOGOS].map((logo, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/20 text-white/80 whitespace-nowrap transition-colors"
-                >
-                  <span className="text-indigo-400">{logo.symbol}</span>
-                  <span>{logo.name}</span>
-                </div>
-              ))}
+            <div className="flex gap-3 overflow-hidden">
+              <div className="animate-marquee-right flex gap-3 shrink-0 py-0.5">
+                {CREATOR_LOGOS.map((logo, idx) => (
+                  <div
+                    key={`n1-${idx}`}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] hover:border-white/20 text-white whitespace-nowrap shadow-lg transition-colors shrink-0"
+                  >
+                    <span className="text-indigo-400 font-bold">{logo.symbol}</span>
+                    <span className="text-xs text-white/80 font-semibold uppercase tracking-wide">{logo.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div aria-hidden="true" className="animate-marquee-right flex gap-3 shrink-0 py-0.5">
+                {CREATOR_LOGOS.map((logo, idx) => (
+                  <div
+                    key={`n2-${idx}`}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] hover:border-white/20 text-white whitespace-nowrap shadow-lg transition-colors shrink-0"
+                  >
+                    <span className="text-indigo-400 font-bold">{logo.symbol}</span>
+                    <span className="text-xs text-white/80 font-semibold uppercase tracking-wide">{logo.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
