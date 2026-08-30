@@ -159,6 +159,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   { symbol: "📈", text: "4.2X RETENTION" },
                   { symbol: "⏱️", text: "30H+ SAVED / WK" },
                   { symbol: "⚡", text: "48–72H DELIVERY" },
+                  { symbol: "✦", text: "240M+ VIEWS" },
+                  { symbol: "📈", text: "4.2X RETENTION" },
+                  { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                  { symbol: "⚡", text: "48–72H DELIVERY" },
                 ].map((stat, index) => (
                   <div
                     key={`s1-${index}`}
@@ -171,6 +175,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
               <div aria-hidden="true" className="animate-marquee-left flex gap-2.5 shrink-0 py-0.5">
                 {[
+                  { symbol: "✦", text: "240M+ VIEWS" },
+                  { symbol: "📈", text: "4.2X RETENTION" },
+                  { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                  { symbol: "⚡", text: "48–72H DELIVERY" },
                   { symbol: "✦", text: "240M+ VIEWS" },
                   { symbol: "📈", text: "4.2X RETENTION" },
                   { symbol: "⏱️", text: "30H+ SAVED / WK" },
