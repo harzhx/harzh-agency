@@ -149,57 +149,67 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Mobile & Desktop Marquees Section */}
-        <div className="space-y-3 mb-14 overflow-hidden relative select-none">
+        <div className="space-y-2.5 mb-14 overflow-hidden relative select-none">
           {/* 1. Stats Marquee (MOBILE ONLY: Moving Right → Left) */}
           <div className="block sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex gap-3 overflow-hidden">
-              <div className="animate-marquee-left flex gap-3 shrink-0 py-0.5">
-                {AGENCY_STATS.map((stat, index) => (
+            <div className="flex gap-2.5 overflow-hidden">
+              <div className="animate-marquee-left flex gap-2.5 shrink-0 py-0.5">
+                {[
+                  { symbol: "✦", text: "240M+ VIEWS" },
+                  { symbol: "📈", text: "4.2X RETENTION" },
+                  { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                  { symbol: "⚡", text: "48–72H DELIVERY" },
+                ].map((stat, index) => (
                   <div
                     key={`s1-${index}`}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] text-white whitespace-nowrap shadow-lg shrink-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white/90 whitespace-nowrap shadow-md shrink-0"
                   >
-                    <span className="text-sm font-extrabold text-white font-mono">{stat.value}</span>
-                    <span className="text-xs text-white/70 font-semibold uppercase tracking-wide">{stat.label}</span>
+                    <span className="text-indigo-400 text-xs">{stat.symbol}</span>
+                    <span className="font-mono">{stat.text}</span>
                   </div>
                 ))}
               </div>
-              <div aria-hidden="true" className="animate-marquee-left flex gap-3 shrink-0 py-0.5">
-                {AGENCY_STATS.map((stat, index) => (
+              <div aria-hidden="true" className="animate-marquee-left flex gap-2.5 shrink-0 py-0.5">
+                {[
+                  { symbol: "✦", text: "240M+ VIEWS" },
+                  { symbol: "📈", text: "4.2X RETENTION" },
+                  { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                  { symbol: "⚡", text: "48–72H DELIVERY" },
+                ].map((stat, index) => (
                   <div
                     key={`s2-${index}`}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] text-white whitespace-nowrap shadow-lg shrink-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white/90 whitespace-nowrap shadow-md shrink-0"
                   >
-                    <span className="text-sm font-extrabold text-white font-mono">{stat.value}</span>
-                    <span className="text-xs text-white/70 font-semibold uppercase tracking-wide">{stat.label}</span>
+                    <span className="text-indigo-400 text-xs">{stat.symbol}</span>
+                    <span className="font-mono">{stat.text}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* 2. Niches Marquee (Unified Style: Moving Left → Right) */}
+          {/* 2. Niches Marquee (Unified Linear Style: Moving Left → Right) */}
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex gap-3 overflow-hidden">
-              <div className="animate-marquee-right flex gap-3 shrink-0 py-0.5">
+            <div className="flex gap-2.5 overflow-hidden">
+              <div className="animate-marquee-right flex gap-2.5 shrink-0 py-0.5">
                 {CREATOR_LOGOS.map((logo, idx) => (
                   <div
                     key={`n1-${idx}`}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] hover:border-white/20 text-white whitespace-nowrap shadow-lg transition-colors shrink-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/20 text-white/90 whitespace-nowrap shadow-md transition-colors shrink-0"
                   >
-                    <span className="text-indigo-400 font-bold">{logo.symbol}</span>
-                    <span className="text-xs text-white/80 font-semibold uppercase tracking-wide">{logo.name}</span>
+                    <span className="text-indigo-400">{logo.symbol}</span>
+                    <span>{logo.name}</span>
                   </div>
                 ))}
               </div>
-              <div aria-hidden="true" className="animate-marquee-right flex gap-3 shrink-0 py-0.5">
+              <div aria-hidden="true" className="animate-marquee-right flex gap-2.5 shrink-0 py-0.5">
                 {CREATOR_LOGOS.map((logo, idx) => (
                   <div
                     key={`n2-${idx}`}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#0c0f20]/90 border border-white/[0.1] hover:border-white/20 text-white whitespace-nowrap shadow-lg transition-colors shrink-0"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-bold tracking-wider px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/20 text-white/90 whitespace-nowrap shadow-md transition-colors shrink-0"
                   >
-                    <span className="text-indigo-400 font-bold">{logo.symbol}</span>
-                    <span className="text-xs text-white/80 font-semibold uppercase tracking-wide">{logo.name}</span>
+                    <span className="text-indigo-400">{logo.symbol}</span>
+                    <span>{logo.name}</span>
                   </div>
                 ))}
               </div>
