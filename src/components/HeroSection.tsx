@@ -131,17 +131,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        {/* 1. Agency Stats (DESKTOP: Clean 4-Card Grid) */}
+        {/* 1. Agency Stats (DESKTOP: Clean 4-Card Grid Without Green Subtext) */}
         <div className="hidden sm:grid sm:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16">
           {AGENCY_STATS.map((stat, index) => (
             <div
               key={index}
-              className="p-5 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-center backdrop-blur-md hover:border-white/20 transition-all shadow-lg"
+              className="p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-center backdrop-blur-md hover:border-white/20 transition-all shadow-lg flex flex-col justify-center min-h-[120px]"
             >
-              <div className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white mb-1 font-mono">
+              <div className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white mb-2 font-mono">
                 {stat.value}
               </div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-white/70">
+              <div className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-white/70 leading-relaxed">
                 {stat.label}
               </div>
             </div>

@@ -19,10 +19,10 @@ export interface FaqItem {
 }
 
 export const AGENCY_STATS = [
-  { label: "Views", value: "240M+" },
-  { label: "Retention", value: "4.2x" },
-  { label: "Saved / Wk", value: "30h+" },
-  { label: "Delivery", value: "48–72h" },
+  { label: "Combined Views Generated", value: "240M+" },
+  { label: "Average Retention Lift", value: "4.2x" },
+  { label: "Editing Hours Saved / Wk", value: "32h" },
+  { label: "Turnaround Guarantee", value: "48–72h" },
 ];
 
 export const CLIENT_PROOF_ITEMS = [
