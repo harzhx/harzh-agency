@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Volume2,
 } from "lucide-react";
+import vslThumbnail from "../assets/vsl_thumbnail.jpg";
 
 interface HeroSectionProps {
   theme: ThemeMode;
@@ -85,6 +86,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 /* Native Inline HTML5 Video Player (Zero Watermarks / 100% Clean) */
                 <video
                   src="/videos/vsl.mp4"
+                  poster={vslThumbnail}
                   controls
                   autoPlay
                   playsInline
@@ -100,7 +102,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                     style={{
-                      backgroundImage: `url('/images/vsl_thumbnail.jpg')`,
+                      backgroundImage: `url(${vslThumbnail})`,
                     }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40" />
