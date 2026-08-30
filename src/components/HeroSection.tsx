@@ -138,10 +138,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               key={index}
               className="p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] text-center backdrop-blur-md hover:border-white/20 transition-all shadow-lg flex flex-col justify-center min-h-[120px]"
             >
-              <div className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white mb-2 font-mono">
+              <div className="text-3xl sm:text-4xl lg:text-4xl font-extrabold font-sans tracking-tight text-white mb-1.5">
                 {stat.value}
               </div>
-              <div className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-white/70 leading-relaxed">
+              <div className="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-white/70 leading-relaxed font-sans">
                 {stat.label}
               </div>
             </div>
