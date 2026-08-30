@@ -158,35 +158,37 @@ html:not(.dark) .beam-line {
   background: rgba(120, 130, 160, 0.45);
 }
 
-/* Glitchless Seamless Infinite Marquee Animations */
-@keyframes marquee-left {
-  0% {
+/* Rock-Solid Single-Track Infinite Marquees (Zero Overlap / Zero Glitch) */
+@keyframes marquee-forward {
+  from {
     transform: translateX(0%);
   }
-  100% {
-    transform: translateX(-100%);
+  to {
+    transform: translateX(-50%);
   }
 }
 
-@keyframes marquee-right {
-  0% {
-    transform: translateX(-100%);
+@keyframes marquee-backward {
+  from {
+    transform: translateX(-50%);
   }
-  100% {
+  to {
     transform: translateX(0%);
   }
 }
 
 .animate-marquee-left {
   display: flex;
+  width: max-content;
   flex-shrink: 0;
-  animation: marquee-left 14s linear infinite;
+  animation: marquee-forward 20s linear infinite;
 }
 
 .animate-marquee-right {
   display: flex;
+  width: max-content;
   flex-shrink: 0;
-  animation: marquee-right 14s linear infinite;
+  animation: marquee-backward 20s linear infinite;
 }
 
 .animate-marquee-left:hover,
