@@ -27,7 +27,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       id="hero-section"
-      className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden"
+      className="relative pt-28 pb-6 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top Scarcity Chip */}
@@ -149,7 +149,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
 
         {/* Mobile & Desktop Marquees Section */}
-        <div className="space-y-3 mb-14 overflow-hidden relative select-none">
+        <div className="space-y-2.5 mb-4 sm:mb-12 overflow-hidden relative select-none">
           {/* 1. Stats Marquee (MOBILE ONLY: Moving Right → Left) */}
           <div className="block sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div className="animate-marquee-left py-0.5 gap-2.5">

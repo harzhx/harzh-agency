@@ -60,10 +60,10 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
   ];
 
   return (
-    <section id="strategies" className="py-24 relative z-10 border-t border-white/[0.06]">
+    <section id="strategies" className="pt-10 pb-20 sm:py-24 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>OUR PROVEN PROCESS</span>
