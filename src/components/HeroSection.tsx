@@ -154,15 +154,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="block sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div className="animate-marquee-left py-0.5 gap-2.5">
               {[
-                { symbol: "✦", text: "240M+ VIEWS" },
+                { symbol: "✦", text: "240M+ VIEWS GENERATED" },
                 { symbol: "📈", text: "4.2X RETENTION" },
                 { symbol: "⏱️", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
-                { symbol: "✦", text: "240M+ VIEWS" },
+                { symbol: "✦", text: "240M+ VIEWS GENERATED" },
                 { symbol: "📈", text: "4.2X RETENTION" },
                 { symbol: "⏱️", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
-                { symbol: "✦", text: "240M+ VIEWS" },
+                { symbol: "✦", text: "240M+ VIEWS GENERATED" },
+                { symbol: "📈", text: "4.2X RETENTION" },
+                { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                { symbol: "⚡", text: "48–72H DELIVERY" },
+                { symbol: "✦", text: "240M+ VIEWS GENERATED" },
                 { symbol: "📈", text: "4.2X RETENTION" },
                 { symbol: "⏱️", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
@@ -187,8 +191,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div className="animate-marquee-right py-0.5 gap-2.5">
               {[
-                ...CREATOR_LOGOS,
-                ...CREATOR_LOGOS,
                 ...CREATOR_LOGOS,
                 ...CREATOR_LOGOS,
               ].map((logo, idx) => (

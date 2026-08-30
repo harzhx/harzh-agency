@@ -181,14 +181,14 @@ html:not(.dark) .beam-line {
   display: flex;
   width: max-content;
   flex-shrink: 0;
-  animation: marquee-forward 20s linear infinite;
+  animation: marquee-forward 28s linear infinite;
 }
 
 .animate-marquee-right {
   display: flex;
   width: max-content;
   flex-shrink: 0;
-  animation: marquee-backward 20s linear infinite;
+  animation: marquee-backward 28s linear infinite;
 }
 
 .animate-marquee-left:hover,
