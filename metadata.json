@@ -1,0 +1,6 @@
+{
+  "name": "Harzh Creator Agency",
+  "description": "High-retention video editing and content strategy agency for ambitious content creators with interactive portfolio, strategy frameworks, retention analytics, and AI strategist.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
