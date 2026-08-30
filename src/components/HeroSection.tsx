@@ -7,11 +7,7 @@ import {
   TrendingUp,
   Flame,
   ArrowRight,
-  ShieldCheck,
   Volume2,
-  CheckCircle2,
-  X,
-  Users,
 } from "lucide-react";
 
 interface HeroSectionProps {
@@ -80,53 +76,70 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </button>
         </div>
 
-        {/* HERO CINEMATIC SHOWREEL PREVIEW */}
+        {/* HERO CINEMATIC SHOWREEL (SEAMLESS INLINE PLAYER — ZERO POPUPS) */}
         <div className="relative max-w-5xl mx-auto mb-16">
-          <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.12] overflow-hidden p-2.5 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black">
-            {/* 16:9 Cinematic Video Display Container */}
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-black group cursor-pointer" onClick={() => setIsPlayingShowreel(true)}>
-              {/* Thumbnail / Video Poster */}
-              <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                style={{
-                  backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80')`,
-                }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
-              </div>
+          <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.12] overflow-hidden p-2 sm:p-2.5 bg-[#0a0a0e]/90 shadow-2xl shadow-black">
+            {/* 16:9 Aspect Video Container */}
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-black group">
+              {isPlayingShowreel ? (
+                /* Native Inline HTML5 Video Player (Zero Watermarks / 100% Clean) */
+                <video
+                  src="/videos/vsl.mp4"
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-cover rounded-xl"
+                />
+              ) : (
+                /* Poster State with Glowing Play Trigger */
+                <div
+                  className="w-full h-full relative cursor-pointer"
+                  onClick={() => setIsPlayingShowreel(true)}
+                >
+                  {/* Cinematic Video Poster */}
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    style={{
+                      backgroundImage: `url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80')`,
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/30" />
+                  </div>
 
-              {/* Center Play Button with Glow */}
-              <div className="absolute inset-0 flex items-center justify-center z-10">
-                <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black shadow-[0_0_50px_rgba(255,255,255,0.5)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
-                  <Play className="w-7 h-7 sm:w-10 sm:h-10 fill-black translate-x-0.5" />
-                </div>
-              </div>
+                  {/* Center Play Button with Neon Pulse */}
+                  <div className="absolute inset-0 flex items-center justify-center z-10">
+                    <div className="w-16 h-16 sm:w-22 sm:h-22 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black shadow-[0_0_50px_rgba(255,255,255,0.6)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
+                      <Play className="w-7 h-7 sm:w-9 sm:h-9 fill-black translate-x-0.5" />
+                    </div>
+                  </div>
 
-              {/* Overlaid Badges */}
-              <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-10">
-                <div className="flex items-center gap-1.5 sm:gap-2 bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-emerald-500/40 text-emerald-400 text-[10px] sm:text-xs font-semibold">
-                  <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                  <span>78.4% Avg Retention</span>
-                </div>
+                  {/* Overlaid Badges */}
+                  <div className="absolute top-3 left-3 right-3 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-10 pointer-events-none">
+                    <div className="flex items-center gap-1.5 sm:gap-2 bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-emerald-500/40 text-emerald-400 text-[10px] sm:text-xs font-semibold">
+                      <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <span>78.4% Avg Retention</span>
+                    </div>
 
-                <div className="bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/20 text-white text-[10px] sm:text-xs font-mono">
-                  4K 60FPS • SYSTEM BREAKDOWN
-                </div>
-              </div>
+                    <div className="bg-black/80 backdrop-blur-md px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-white/20 text-white text-[10px] sm:text-xs font-mono">
+                      4K 60FPS • SYSTEM BREAKDOWN
+                    </div>
+                  </div>
 
-              {/* Bottom Telemetry Bar */}
-              <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-center justify-between bg-black/80 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-white/10 text-[11px] sm:text-xs text-white/70">
-                <div className="flex items-center gap-2 truncate">
-                  <span className="font-semibold text-white">Harzh Retention Masterclass</span>
-                  <span className="text-white/40 hidden sm:inline">•</span>
-                  <span className="text-white/60 hidden sm:inline">Psychological Pacing & Systems</span>
-                </div>
+                  {/* Bottom Telemetry Bar */}
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 flex items-center justify-between bg-black/80 backdrop-blur-md px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-white/10 text-[11px] sm:text-xs text-white/70 pointer-events-none">
+                    <div className="flex items-center gap-2 truncate">
+                      <span className="font-semibold text-white">Harzh Retention Masterclass</span>
+                      <span className="text-white/40 hidden sm:inline">•</span>
+                      <span className="text-white/60 hidden sm:inline">Psychological Pacing & Systems</span>
+                    </div>
 
-                <div className="flex items-center gap-1.5 font-mono text-emerald-400 font-semibold shrink-0">
-                  <Volume2 className="w-3.5 h-3.5" />
-                  <span>Click to Watch Breakdown</span>
+                    <div className="flex items-center gap-1.5 font-mono text-emerald-400 font-semibold shrink-0">
+                      <Volume2 className="w-3.5 h-3.5" />
+                      <span>Click to Watch Breakdown</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -173,27 +186,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
       </div>
-
-      {/* VSL Strategy Breakdown Video Modal */}
-      {isPlayingShowreel && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-200">
-          <div className="relative w-full max-w-4xl aspect-video rounded-3xl overflow-hidden bg-black border border-white/20 shadow-2xl">
-            <button
-              onClick={() => setIsPlayingShowreel(false)}
-              className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/70 hover:bg-white text-white hover:text-black transition-all"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <iframe
-              className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-              title="Harzh VSL Strategy Breakdown"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      )}
     </section>
   );
 };
