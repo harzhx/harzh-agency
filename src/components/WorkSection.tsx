@@ -249,14 +249,24 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
             </div>
 
             {/* Video Player Frame */}
-            <div className="relative aspect-video bg-black">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title={selectedVideo.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div className={`relative bg-black flex items-center justify-center ${selectedVideo.category === 'shorts' ? 'aspect-[9/16] max-h-[70vh] mx-auto' : 'aspect-video w-full'}`}>
+              {selectedVideo.videoPlaceholderUrl.endsWith('.mp4') || selectedVideo.videoPlaceholderUrl.startsWith('/videos/') ? (
+                <video
+                  src={selectedVideo.videoPlaceholderUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-contain bg-black"
+                />
+              ) : (
+                <iframe
+                  className="w-full h-full"
+                  src={selectedVideo.videoPlaceholderUrl.includes('youtube.com') || selectedVideo.videoPlaceholderUrl.includes('youtu.be') ? selectedVideo.videoPlaceholderUrl.replace('watch?v=', 'embed/') + '?autoplay=1' : selectedVideo.videoPlaceholderUrl}
+                  title={selectedVideo.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
             </div>
 
             {/* Breakdown Notes */}
