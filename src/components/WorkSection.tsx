@@ -185,11 +185,17 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
 
                       {/* Overlay Title on Thumbnail (HOVER ONLY) */}
-                      <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-semibold text-indigo-300 font-mono">{item.creator}</span>
+                      <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                        <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                          <span className="text-xs font-semibold text-white font-mono">{item.creator}</span>
+                          {item.proofBadge && (
+                            <>
+                              <span className="text-white/40 text-xs">•</span>
+                              <span className="text-[11px] text-emerald-400 font-mono font-medium">{item.proofBadge}</span>
+                            </>
+                          )}
                         </div>
-                        <h3 className="text-sm font-bold text-white line-clamp-2">
+                        <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-2 drop-shadow-md">
                           {item.title}
                         </h3>
                       </div>
