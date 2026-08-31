@@ -114,7 +114,9 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                           alt={item.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30" />
+                        
+                        {/* Hover Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                         {/* Glowing Center Play Button */}
                         <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -123,7 +125,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                           </div>
                         </div>
 
-                        {/* Top Badges */}
+                        {/* Top Badges (Subtle & Floating) */}
                         <div className="absolute top-4 left-4 right-4 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-10 pointer-events-none">
                           <div className="flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold shadow-lg">
                             <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -136,8 +138,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                           </div>
                         </div>
 
-                        {/* Bottom In-Frame Telemetry Overlay */}
-                        <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 z-10 pointer-events-none">
+                        {/* Bottom In-Frame Telemetry Overlay (HOVER ONLY) */}
+                        <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 z-10 pointer-events-none opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                           <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm font-mono text-white/80 mb-1">
                             <span className="text-white font-semibold">{item.creator} ({item.channelSubscribers})</span>
                             <span>•</span>
@@ -186,7 +188,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/30" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                       {/* Top Retention Pill */}
                       <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
@@ -205,8 +207,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         </div>
                       </div>
 
-                      {/* Overlay Title on Thumbnail */}
-                      <div className="absolute bottom-3 left-3 right-3 z-10">
+                      {/* Overlay Title on Thumbnail (HOVER ONLY) */}
+                      <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-xs font-semibold text-indigo-300 font-mono">{item.creator}</span>
                           <span>•</span>
