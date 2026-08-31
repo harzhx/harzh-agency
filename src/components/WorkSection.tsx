@@ -154,7 +154,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               return (
                 <div
                   key={item.id}
-                  className="relative aspect-[9/14] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-all duration-300 group ring-1 ring-white/5"
+                  className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-all duration-300 group ring-1 ring-white/5"
                 >
                   {isPlaying ? (
                     <video
