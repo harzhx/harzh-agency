@@ -273,7 +273,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "16.8%",
     duration: "0:24",
     proofBadge: "Celeb Face Tracking",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_1.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_1.mp4",
     thumbnailUrl: thumbShort1,
     tags: ["Face Tracking", "Rotoscoping", "Sound Foley", "Humor"],
     keyEdits: [
@@ -300,7 +300,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "15.3%",
     duration: "1:00",
     proofBadge: "10K Street Challenge",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_2.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_2.mp4",
     thumbnailUrl: thumbShort2,
     tags: ["Cash Giveaway", "Flying Money Graphic", "Kinetic Subtitles", "Street Pacing"],
     keyEdits: [
@@ -328,7 +328,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "14.8%",
     duration: "0:21",
     proofBadge: "Culinary ASMR & Color",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_3.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_3.mp4",
     thumbnailUrl: thumbShort3,
     tags: ["ASMR Sound", "Color Grading", "Macro Food", "Fast Pacing"],
     keyEdits: [
@@ -355,7 +355,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "13.9%",
     duration: "0:20",
     proofBadge: "3D Cubes Listicle",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_4.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_4.mp4",
     thumbnailUrl: thumbShort4,
     tags: ["3D Motion Graphics", "Listicle Hook", "Coaching Tips", "Gym B-Roll"],
     keyEdits: [
@@ -382,7 +382,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "14.2%",
     duration: "0:15",
     proofBadge: "Stream Repurposing",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_5.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_5.mp4",
     thumbnailUrl: thumbShort5,
     tags: ["Esports", "Aim Coaching", "Stream Repurposing", "Kinetic Subtitles"],
     keyEdits: [
@@ -409,7 +409,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "12.7%",
     duration: "0:23",
     proofBadge: "Business Advice & Hooks",
-    videoPlaceholderUrl: "/videos/portfolio/shorts/short_6.mp4",
+    videoPlaceholderUrl: "/videos/portfolio/short_6.mp4",
     thumbnailUrl: thumbShort6,
     tags: ["Business Hook", "Light Leaks", "Thought Leadership", "Jump-Cuts"],
     keyEdits: [
