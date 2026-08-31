@@ -32,6 +32,7 @@ export interface PortfolioItem {
   videoPlaceholderUrl?: string;
   thumbnailUrl: string;
   tags: string[];
+  proofBadge?: string;
   keyEdits: string[];
   beforeAfterComparison?: {
     rawDesc: string;
