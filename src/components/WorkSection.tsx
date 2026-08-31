@@ -126,13 +126,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         </div>
 
                         {/* Top Badges (Subtle & Floating Creator Proof - Hidden on Mobile for Pure Clean Frame) */}
-                        <div className="absolute top-4 left-4 right-4 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between z-10 pointer-events-none">
-                          <div className="hidden sm:flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 text-emerald-400 text-xs sm:text-sm font-semibold shadow-lg">
+                        <div className="hidden sm:flex absolute top-4 left-4 right-4 sm:top-5 sm:left-5 sm:right-5 items-center justify-between z-10 pointer-events-none">
+                          <div className="flex items-center gap-2 bg-black/80 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 text-emerald-400 text-xs sm:text-sm font-semibold shadow-lg">
                             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
                             <span>{item.proofBadge || item.channelSubscribers}</span>
                           </div>
 
-                          <div className="ml-auto sm:ml-0 flex items-center gap-1.5 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-white text-xs font-mono">
+                          <div className="flex items-center gap-1.5 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-white text-xs font-mono">
                             <Clock className="w-3.5 h-3.5 text-white/60" />
                             <span>{item.duration}</span>
                           </div>
@@ -191,12 +191,12 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                       {/* Top Creator Proof Pill (Hidden on Mobile) */}
-                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
-                        <span className="hidden sm:flex px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-xs font-semibold text-emerald-400 border border-white/15 items-center gap-1.5">
+                      <div className="hidden sm:flex absolute top-3 left-3 right-3 items-center justify-between z-10">
+                        <span className="flex px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-xs font-semibold text-emerald-400 border border-white/15 items-center gap-1.5">
                           <Sparkles className="w-3 h-3 text-emerald-400" />
                           <span>{item.channelSubscribers || "Viral Short"}</span>
                         </span>
-                        <span className="ml-auto sm:ml-0 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[11px] font-mono text-white/80 border border-white/10">
+                        <span className="px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md text-[11px] font-mono text-white/80 border border-white/10">
                           {item.duration}
                         </span>
                       </div>
