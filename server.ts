@@ -39,9 +39,61 @@ function getAIClient(): GoogleGenAI | null {
 
 import fs from "fs";
 
+const LEADS_FILE = path.join(process.cwd(), "leads.json");
+
+// Ensure leads file exists
+if (!fs.existsSync(LEADS_FILE)) {
+  fs.writeFileSync(LEADS_FILE, JSON.stringify([], null, 2));
+}
+
 // Health check endpoint
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+// Bookings & Leads API Endpoint
+app.post("/api/bookings", (req: Request, res: Response) => {
+  const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot } = req.body;
+
+  if (!name || !email || !channelLink) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const newLead = {
+    id: `lead_${Date.now()}`,
+    name,
+    email,
+    channelLink,
+    revenueTier: revenueTier || "Not specified",
+    phone: phone || "Not provided",
+    meetingDate: selectedDate || new Date().toISOString(),
+    meetingSlot: selectedSlot || "5:00 PM",
+    bookedAt: new Date().toISOString(),
+    status: "CONFIRMED",
+  };
+
+  try {
+    const rawData = fs.readFileSync(LEADS_FILE, "utf-8");
+    const leads = JSON.parse(rawData || "[]");
+    leads.unshift(newLead);
+    fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
+    console.log(`[LEAD CAPTURED] ${name} (${channelLink}) - ${selectedSlot}`);
+    return res.json({ success: true, lead: newLead });
+  } catch (err: any) {
+    console.error("Failed to save lead:", err);
+    return res.status(500).json({ error: "Failed to persist lead" });
+  }
+});
+
+// Admin Lead Viewer API Endpoint
+app.get("/api/bookings", (_req: Request, res: Response) => {
+  try {
+    const rawData = fs.readFileSync(LEADS_FILE, "utf-8");
+    const leads = JSON.parse(rawData || "[]");
+    return res.json({ leads, total: leads.length });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to read leads" });
+  }
 });
 
 // AI Content Strategy & Video Script Chatbot API

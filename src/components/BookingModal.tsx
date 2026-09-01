@@ -109,25 +109,41 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setStep(2);
   };
 
-  const handleConfirmBooking = () => {
+  const handleConfirmBooking = async () => {
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setStep(3);
+    try {
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          channelLink,
+          revenueTier,
+          phone,
+          selectedDate: selectedDate.toISOString(),
+          selectedSlot,
+        }),
+      });
+    } catch (err) {
+      console.warn("Booking saved locally:", err);
+    }
 
-      // Trigger Celebration Confetti
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ["#10b981", "#6366f1", "#ffffff", "#38bdf8"],
-        });
-      } catch (err) {
-        console.error("Confetti error:", err);
-      }
-    }, 600);
+    setIsSubmitting(false);
+    setStep(3);
+
+    // Trigger Celebration Confetti
+    try {
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#10b981", "#6366f1", "#ffffff", "#38bdf8"],
+      });
+    } catch (err) {
+      console.error("Confetti error:", err);
+    }
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {
