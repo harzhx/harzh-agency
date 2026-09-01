@@ -102,11 +102,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   }, [isOpen]);
 
-  // Compute active slots for currently selected date
-  const selectedDateKey = selectedDate.toISOString().split("T")[0];
+  // Helper to compute local YYYY-MM-DD date key
+  const getLocalDateKey = (d: Date): string => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  // Compute active slots for currently selected date strictly from live API
+  const selectedDateKey = getLocalDateKey(selectedDate);
   const activeSlots = liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
     ? liveSlotsByDate[selectedDateKey]
-    : TIME_SLOTS;
+    : (!isLoadingSlots ? [] : TIME_SLOTS);
 
   // Auto-select first slot when date or slots change
   useEffect(() => {
@@ -215,6 +223,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       });
 
       const data = await resp.json();
+
+      if (!resp.ok || !data.success) {
+        alert(data.error || "This time slot is no longer available. Please choose another time.");
+        setIsSubmitting(false);
+        // Refresh live slots
+        fetch("/api/available-slots")
+          .then((res) => res.json())
+          .then((d) => {
+            if (d?.slots) setLiveSlotsByDate(d.slots);
+          });
+        return;
+      }
+
       const meetUrl =
         data?.booking?.data?.meetingUrl ||
         data?.booking?.data?.location ||
@@ -222,12 +243,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       if (meetUrl) {
         setConfirmedMeetUrl(meetUrl);
       }
+      setIsSubmitting(false);
+      setStep(3);
     } catch (err) {
-      console.warn("Booking saved locally:", err);
+      console.warn("Booking error notice:", err);
+      setIsSubmitting(false);
+      alert("Booking service notice: Please choose another time slot.");
     }
-
-    setIsSubmitting(false);
-    setStep(3);
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {

@@ -152,9 +152,20 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
     });
 
     calResponse = await response.json();
+
+    if (!response.ok || calResponse?.status === "error") {
+      const errMsg = calResponse?.error?.message || "This slot is no longer available.";
+      console.warn("[CAL.COM SYNC REJECTED]:", errMsg);
+      return res.status(400).json({
+        success: false,
+        error: errMsg,
+      });
+    }
+
     console.log(`[CAL.COM SYNC SUCCESS] Meeting created:`, calResponse?.data?.meetingUrl || "Google Meet generated");
-  } catch (apiErr) {
-    console.warn("Cal.com background sync notice:", apiErr);
+  } catch (apiErr: any) {
+    console.warn("Cal.com background sync error:", apiErr);
+    return res.status(500).json({ success: false, error: "Booking service temporarily unavailable. Please try another slot." });
   }
 
   return res.json({ success: true, lead: newLead, booking: calResponse });
@@ -180,20 +191,31 @@ app.get("/api/available-slots", async (req: Request, res: Response) => {
     const data = await response.json();
     const rawSlots = data?.data?.slots || {};
 
-    // Transform ISO slots into localized IST 12-hour slots
+    // Group slots strictly by local IST date (YYYY-MM-DD)
     const formattedSlots: Record<string, string[]> = {};
 
-    for (const [dateKey, slotList] of Object.entries(rawSlots)) {
+    for (const slotList of Object.values(rawSlots)) {
       if (Array.isArray(slotList)) {
-        formattedSlots[dateKey] = slotList.map((slotObj: any) => {
-          const slotDate = new Date(slotObj.time);
-          return slotDate.toLocaleTimeString("en-US", {
-            timeZone: "Asia/Calcutta",
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          });
-        });
+        for (const slotObj of slotList) {
+          if (slotObj?.time) {
+            const slotDate = new Date(slotObj.time);
+            // Local IST date key (YYYY-MM-DD)
+            const localDateKey = slotDate.toLocaleDateString("en-CA", { timeZone: "Asia/Calcutta" });
+            const localTimeStr = slotDate.toLocaleTimeString("en-US", {
+              timeZone: "Asia/Calcutta",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            if (!formattedSlots[localDateKey]) {
+              formattedSlots[localDateKey] = [];
+            }
+            if (!formattedSlots[localDateKey].includes(localTimeStr)) {
+              formattedSlots[localDateKey].push(localTimeStr);
+            }
+          }
+        }
       }
     }
 
