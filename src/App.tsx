@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ThemeMode } from "./types";
 import { BackgroundEffects } from "./components/BackgroundEffects";
 import { Navbar } from "./components/Navbar";
@@ -9,8 +9,8 @@ import { ResultsSection } from "./components/ResultsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { PackagesSection } from "./components/PackagesSection";
 import { FaqSection } from "./components/FaqSection";
-import { Footer } from "./components/Footer";
 import { BookingModal } from "./components/BookingModal";
+import { Footer } from "./components/Footer";
 import { getCalApi } from "@calcom/embed-react";
 
 export default function App() {
@@ -20,20 +20,10 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
+  }, []);
 
-    (async function () {
-      try {
-        const cal = await getCalApi();
-        cal("ui", {
-          theme: "dark",
-          styles: { branding: { brandColor: "#6366f1" } },
-          hideEventTypeDetails: false,
-          layout: "month_view",
-        });
-      } catch (e) {
-        console.error("Cal.com init:", e);
-      }
-    })();
+  const openBooking = useCallback(() => {
+    setIsBookingOpen(true);
   }, []);
 
   // Track mouse position smoothly for cursor-proximity spotlight & ambient parallax
@@ -65,7 +55,7 @@ export default function App() {
       <Navbar
         theme={theme}
         onToggleTheme={() => {}}
-        onOpenBooking={() => setIsBookingOpen(true)}
+        onOpenBooking={openBooking}
       />
 
       {/* MAIN SECTIONS */}
@@ -73,53 +63,53 @@ export default function App() {
         {/* 1. HERO SECTION (Promise, Description, 2 CTAs, 16:9 Showreel Player & Niches Marquee) */}
         <HeroSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
           onExploreWork={scrollToWork}
         />
 
         {/* 2. THE 4 RETENTION STRATEGY PILLARS & PIXEL MASCOT */}
         <StrategiesSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
 
         {/* 3. THE WORK VAULT (2 Tabs: 🎬 Long-Form 16:9 & 📱 Viral Shorts 9:16) */}
         <WorkSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
 
         {/* 4. RETENTION DIAGNOSTICS & CASE STUDIES PROOF */}
         <ResultsSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
 
         {/* 5. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}
         <TestimonialsSection
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
 
         {/* 6. THE 3 TRANSPARENT PACKAGES */}
         <PackagesSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
 
         {/* 7. CREATOR FAQS */}
         <FaqSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={openBooking}
         />
       </main>
 
       {/* 7. MINIMALIST FOOTER */}
       <Footer
         theme={theme}
-        onOpenBooking={() => setIsBookingOpen(true)}
+        onOpenBooking={openBooking}
       />
 
-      {/* 8. INSTANT PRELOADED CALENDAR MODAL */}
+      {/* 8. PRELOADED INSTANT STRATEGY CALL BOOKING MODAL */}
       <BookingModal
         theme={theme}
         isOpen={isBookingOpen}
