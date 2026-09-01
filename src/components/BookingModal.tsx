@@ -34,16 +34,16 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   return (
     <div
       id="booking-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-[880px] h-[88vh] max-h-[640px] rounded-2xl md:rounded-3xl border border-white/15 overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.95)] bg-[#111111] text-white flex flex-col">
+      <div className="relative w-full max-w-[780px] h-[580px] sm:h-[560px] rounded-2xl md:rounded-3xl border border-white/10 overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.95)] bg-[#101010] text-white flex flex-col">
         {/* Floating Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3.5 right-3.5 z-30 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all backdrop-blur-md"
+          className="absolute top-3 right-3 z-30 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all backdrop-blur-md"
           aria-label="Close modal"
         >
           <X className="w-4 h-4" />
