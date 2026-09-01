@@ -572,6 +572,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           </div>
           <div>hi@harzh.in</div>
         </div>
+      </div>
     </div>
   );
 };
