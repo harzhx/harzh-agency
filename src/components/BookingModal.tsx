@@ -52,8 +52,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* 0ms Preloaded Instant Calendar Card */}
-      <div className="w-full max-w-[840px] h-[85vh] max-h-[600px] sm:h-[465px] rounded-2xl md:rounded-3xl border border-white/15 overflow-y-auto overflow-x-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
+      {/* Responsive Calendar & Form Card (Preloaded in DOM for 0ms instant opening) */}
+      <div className="w-full max-w-[840px] h-[88vh] sm:h-[480px] max-h-[640px] rounded-2xl md:rounded-3xl border border-white/15 overflow-y-auto overflow-x-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
         <Cal
           calLink="harzh/15min"
           style={{ width: "100%", height: "100%", overflow: "auto" }}
