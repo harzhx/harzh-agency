@@ -29,6 +29,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     })();
   }, []);
 
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <div
       id="booking-modal"
@@ -41,34 +52,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-[810px] flex flex-col">
-        {/* Floating Top Header / Close Strip (Outside the card - Zero overlap) */}
-        <div className="flex items-center justify-between mb-2.5 px-1">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
-              15-Min Strategy Session
-            </span>
-          </div>
-
-          <button
-            onClick={onClose}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white text-xs font-medium backdrop-blur-md border border-white/10 transition-all shadow-lg"
-            aria-label="Close modal"
-          >
-            <span>Close</span>
-            <X className="w-3.5 h-3.5" />
-          </button>
-        </div>
-
-        {/* Pristine 3-Column Calendar Card (Snug 475px Height - Zero Dead Space) */}
-        <div className="w-full h-[475px] rounded-3xl border border-white/15 overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
-          <Cal
-            calLink="harzh/15min"
-            style={{ width: "100%", height: "100%", overflow: "hidden" }}
-            config={{ layout: "month_view", theme: "dark" }}
-          />
-        </div>
+      {/* Pure 3-Column Calendar Card (Zero Top Bar, Zero Bottom Gap, Snug 455px) */}
+      <div className="w-full max-w-[800px] h-[455px] rounded-2xl md:rounded-3xl border border-white/15 overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
+        <Cal
+          calLink="harzh/15min"
+          style={{ width: "100%", height: "100%", overflow: "hidden" }}
+          config={{ layout: "month_view", theme: "dark" }}
+        />
       </div>
     </div>
   );
