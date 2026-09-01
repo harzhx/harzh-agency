@@ -41,21 +41,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-[850px] h-[590px] sm:h-[600px] rounded-2xl md:rounded-3xl border border-white/10 overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.95)] bg-[#111111] text-white flex flex-col">
+      <div className="relative w-full max-w-[800px] h-[460px] rounded-2xl md:rounded-3xl border border-white/15 overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.95)] bg-[#111111] text-white flex flex-col">
         {/* Minimalist Floating Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3.5 right-3.5 z-30 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all backdrop-blur-md"
+          className="absolute top-2.5 right-2.5 z-30 p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all backdrop-blur-md"
           aria-label="Close modal"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5" />
         </button>
 
-        {/* The Clean 3-Column Calendar Card */}
+        {/* Pure Snug 3-Column Calendar Card (Zero Top/Bottom Dead Space) */}
         <div className="w-full h-full overflow-hidden">
           <Cal
             calLink="harzh/15min"
-            style={{ width: "100%", height: "100%", overflow: "auto" }}
+            style={{ width: "100%", height: "100%", overflow: "hidden" }}
             config={{ layout: "month_view", theme: "dark" }}
           />
         </div>
