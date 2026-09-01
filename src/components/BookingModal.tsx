@@ -68,12 +68,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   });
   const [selectedSlot, setSelectedSlot] = useState<string>("5:00 PM");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("");
 
-  // Available Dates Generator (Next 6 available business days)
+  // Available Dates (Next 6 rolling days)
   const availableDates = React.useMemo(() => {
     const dates: Date[] = [];
     let current = new Date();
-    current.setDate(current.getDate() + 1); // Start tomorrow
+    current.setDate(current.getDate() + 1);
 
     while (dates.length < 6) {
       dates.push(new Date(current));
@@ -97,13 +98,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   useEffect(() => {
     if (isOpen && step === 3) {
       setStep(1);
+      setConfirmedMeetUrl("");
     }
   }, [isOpen]);
 
   const handleNextToCalendar = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !channelLink.trim()) {
-      alert("Please fill in your name, email, and channel link to proceed.");
+      alert("Please fill in all required fields to proceed.");
       return;
     }
     setStep(2);
@@ -113,7 +115,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setIsSubmitting(true);
 
     try {
-      await fetch("/api/bookings", {
+      const resp = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -126,6 +128,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           selectedSlot,
         }),
       });
+
+      const data = await resp.json();
+      const meetUrl =
+        data?.booking?.data?.meetingUrl ||
+        data?.booking?.data?.location ||
+        "";
+      if (meetUrl) {
+        setConfirmedMeetUrl(meetUrl);
+      }
     } catch (err) {
       console.warn("Booking saved locally:", err);
     }
@@ -133,39 +144,38 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setIsSubmitting(false);
     setStep(3);
 
-    // Trigger Celebration Confetti
+    // Celebration Confetti
     try {
       confetti({
-        particleCount: 80,
-        spread: 70,
+        particleCount: 70,
+        spread: 60,
         origin: { y: 0.6 },
-        colors: ["#10b981", "#6366f1", "#ffffff", "#38bdf8"],
+        colors: ["#10b981", "#6366f1", "#ffffff"],
       });
-    } catch (err) {
-      console.error("Confetti error:", err);
+    } catch {
+      // Ignore
     }
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {
-    weekday: "long",
+    weekday: "short",
     month: "short",
     day: "numeric",
   });
 
-  // Google Calendar Link Generator
   const googleCalendarUrl = React.useMemo(() => {
     const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
     const details = encodeURIComponent(
-      `Creator: ${name}\nChannel: ${channelLink}\nRevenue: ${revenueTier}\n\nGoogle Meet link will be active 5 minutes before start.\nHost: Harzh (hi@harzh.in)`
+      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet link sent via email"}\nHost: Harzh`
     );
-    const location = encodeURIComponent("Google Meet (Video Call)");
+    const location = encodeURIComponent(confirmedMeetUrl || "Google Meet");
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
-  }, [name, channelLink, revenueTier]);
+  }, [name, channelLink, confirmedMeetUrl]);
 
   return (
     <div
       id="booking-modal"
-      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/90 backdrop-blur-xl transition-all duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-xl transition-all duration-200 ${
         isOpen
           ? "opacity-100 pointer-events-auto scale-100"
           : "opacity-0 pointer-events-none scale-95"
@@ -174,37 +184,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-[840px] rounded-3xl border border-white/15 bg-[#0d0f18] text-white shadow-[0_0_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col max-h-[92vh]">
-        {/* Subtle Ambient Radial Glow */}
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-600/15 blur-[120px] pointer-events-none rounded-full" />
-        <div className="absolute -bottom-32 right-0 w-80 h-80 bg-emerald-500/10 blur-[100px] pointer-events-none rounded-full" />
-
-        {/* TOP HEADER BAR */}
-        <div className="relative z-10 flex items-center justify-between px-5 sm:px-7 py-4 border-b border-white/[0.08] bg-black/40">
+      <div className="relative w-full max-w-[760px] rounded-3xl border border-white/15 bg-[#0b0d14] text-white shadow-[0_0_80px_rgba(0,0,0,0.95)] overflow-hidden flex flex-col max-h-[92vh]">
+        {/* TOP HEADER */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-white/[0.02]">
           <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)]" />
-            <span className="text-xs font-mono font-bold tracking-wider uppercase text-emerald-400">
-              Direct Strategy Call
-            </span>
-            <span className="hidden sm:inline-block text-white/20">•</span>
-            <span className="hidden sm:inline-block text-xs font-mono text-white/50">
-              {step === 1 && "Step 1 of 2: Channel & Details"}
-              {step === 2 && "Step 2 of 2: Select Date & Time"}
-              {step === 3 && "Booking Confirmed"}
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+            <span className="text-xs font-mono font-bold tracking-wider uppercase text-white/90">
+              15-Min Strategy Audit
             </span>
           </div>
 
           <div className="flex items-center gap-3">
             {step < 3 && (
-              <div className="flex items-center gap-1.5 bg-white/[0.05] border border-white/10 px-2.5 py-1 rounded-full text-[11px] font-mono text-white/70">
-                <span className={step === 1 ? "text-emerald-400 font-bold" : "text-white/40"}>
-                  01
-                </span>
-                <span className="text-white/20">/</span>
-                <span className={step === 2 ? "text-emerald-400 font-bold" : "text-white/40"}>
-                  02
-                </span>
-              </div>
+              <span className="text-xs font-mono text-white/40">
+                Step <strong className="text-emerald-400">{step}</strong> of 2
+              </span>
             )}
             <button
               onClick={onClose}
@@ -216,77 +210,61 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           </div>
         </div>
 
-        {/* MODAL BODY */}
-        <div className="relative z-10 overflow-y-auto p-5 sm:p-7 flex-1">
-          {/* ================= STEP 1: QUALIFIER INTAKE FORM ================= */}
+        {/* BODY */}
+        <div className="overflow-y-auto p-6 sm:p-7 flex-1">
+          {/* ================= STEP 1: INTAKE ================= */}
           {step === 1 && (
-            <form onSubmit={handleNextToCalendar} className="space-y-5 animate-in fade-in duration-300">
+            <form onSubmit={handleNextToCalendar} className="space-y-4 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                  Schedule Your Free 15-Min Retention Audit
+                <h2 className="text-xl font-bold tracking-tight text-white">
+                  Let's audit your video retention & pacing.
                 </h2>
-                <p className="text-xs sm:text-sm text-white/60 mt-1">
-                  We'll audit your current video pacing, diagnose drop-off retention points, and present a custom visual editing plan.
+                <p className="text-xs text-white/50 mt-0.5">
+                  Enter your channel details to reserve a 1-on-1 strategy call with our editing director.
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Full Name */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-white/70 flex items-center gap-1.5">
-                    <User className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Your Name *</span>
-                  </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-white/70">Your Name *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Alex Hormozi"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-emerald-400/80 focus:ring-1 focus:ring-emerald-400/80 transition-all"
+                    placeholder="Alex Hormozi"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
                   />
                 </div>
 
-                {/* Email Address */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-mono text-white/70 flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>Email Address *</span>
-                  </label>
+                <div className="space-y-1">
+                  <label className="text-xs font-mono text-white/70">Email Address *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex@creatorstudio.com"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-emerald-400/80 focus:ring-1 focus:ring-emerald-400/80 transition-all"
+                    placeholder="alex@channel.com"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
                   />
                 </div>
               </div>
 
-              {/* Channel / Social Link */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-mono text-white/70 flex items-center gap-1.5">
-                  <LinkIcon className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Channel or Social Media Link / Handle *</span>
-                </label>
+              <div className="space-y-1">
+                <label className="text-xs font-mono text-white/70">Channel / Social Link *</label>
                 <input
                   type="text"
                   required
                   value={channelLink}
                   onChange={(e) => setChannelLink(e.target.value)}
-                  placeholder="youtube.com/@yourchannel or @handle"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-emerald-400/80 focus:ring-1 focus:ring-emerald-400/80 transition-all"
+                  placeholder="youtube.com/@channel or @handle"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
                 />
               </div>
 
-              {/* Monthly Revenue Tier Selector */}
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-white/70 flex items-center justify-between">
-                  <span>Current Monthly Channel / Business Revenue</span>
-                  <span className="text-[11px] text-white/40 font-sans">(Confidential)</span>
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono text-white/70">Monthly Revenue Tier</label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {REVENUE_TIERS.map((tier) => {
                     const isSelected = revenueTier === tier.label;
                     return (
@@ -294,95 +272,65 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         key={tier.id}
                         type="button"
                         onClick={() => setRevenueTier(tier.label)}
-                        className={`p-3 rounded-xl text-left border transition-all ${
+                        className={`py-2.5 px-3 rounded-xl text-left border transition-all ${
                           isSelected
-                            ? "bg-emerald-500/10 border-emerald-400/80 text-white shadow-[0_0_20px_rgba(16,185,129,0.15)] ring-1 ring-emerald-400/50"
-                            : "bg-white/[0.03] border-white/10 text-white/70 hover:bg-white/[0.06] hover:border-white/20"
+                            ? "bg-emerald-500/15 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                            : "bg-white/[0.03] border-white/10 text-white/70 hover:bg-white/[0.06]"
                         }`}
                       >
                         <div className="text-xs font-bold font-mono">{tier.label}</div>
-                        <div className="text-[10px] text-white/40 mt-0.5">{tier.sub}</div>
+                        <div className="text-[10px] text-white/40">{tier.sub}</div>
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Optional Phone / WhatsApp */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-mono text-white/70 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>WhatsApp / Phone (Optional)</span>
-                  </span>
-                  <span className="text-[11px] text-white/40 font-sans">For instant SMS/calendar reminder</span>
-                </label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+1 (555) 000-0000 / +91 98765 43210"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-emerald-400/80 focus:ring-1 focus:ring-emerald-400/80 transition-all"
-                />
-              </div>
-
-              {/* Continue CTA */}
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                  className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_25px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
                 >
-                  <span>Select Date & Time Slot</span>
+                  <span>Select Meeting Time</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </form>
           )}
 
-          {/* ================= STEP 2: BESPOKE LUXURY CALENDAR & TIME PICKER ================= */}
+          {/* ================= STEP 2: TIME PICKER ================= */}
           {step === 2 && (
-            <div className="space-y-5 animate-in fade-in duration-300">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="space-y-5 animate-in fade-in duration-200">
+              <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-extrabold text-white">
-                    Select Your 15-Min Audit Slot
-                  </h2>
-                  <p className="text-xs text-white/60 mt-0.5">
-                    Hosted by Harzh • Google Meet link generated automatically
-                  </p>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-white/50 font-mono">
-                  <Globe className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Asia/Kolkata (IST)</span>
+                  <h2 className="text-xl font-bold text-white">Select a Date & Time</h2>
+                  <p className="text-xs text-white/50">15-Min Google Meet • Timezone: Asia/Kolkata (IST)</p>
                 </div>
               </div>
 
-              {/* Calendar Days Strip (Next 6 available business days) */}
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-white/60">Available Days (Rolling Window):</label>
+              {/* Day Strip */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono text-white/60">Choose Day:</label>
                 <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                   {availableDates.map((date) => {
-                    const isSelected =
-                      selectedDate.toDateString() === date.toDateString();
+                    const isSelected = selectedDate.toDateString() === date.toDateString();
                     const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
-                    const monthName = date.toLocaleDateString("en-US", { month: "short" });
                     const dayNum = date.getDate();
+                    const monthName = date.toLocaleDateString("en-US", { month: "short" });
 
                     return (
                       <button
                         key={date.toISOString()}
                         type="button"
                         onClick={() => setSelectedDate(date)}
-                        className={`p-3 rounded-2xl border text-center transition-all ${
+                        className={`p-2.5 rounded-2xl border text-center transition-all ${
                           isSelected
-                            ? "bg-white text-black border-white shadow-[0_0_25px_rgba(255,255,255,0.3)] font-bold scale-[1.02]"
-                            : "bg-white/[0.03] border-white/10 text-white/70 hover:bg-white/[0.08] hover:border-white/25"
+                            ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)] font-bold scale-[1.02]"
+                            : "bg-white/[0.03] border-white/10 text-white/70 hover:bg-white/[0.07]"
                         }`}
                       >
-                        <div className="text-[10px] uppercase font-mono tracking-wider opacity-70">
-                          {dayName}
-                        </div>
-                        <div className="text-lg font-extrabold my-0.5">{dayNum}</div>
+                        <div className="text-[10px] uppercase font-mono tracking-wider opacity-70">{dayName}</div>
+                        <div className="text-base font-extrabold my-0.5">{dayNum}</div>
                         <div className="text-[10px] opacity-60">{monthName}</div>
                       </button>
                     );
@@ -390,18 +338,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
 
-              {/* Time Slots Grid */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-mono text-white/60">
-                    Available Slots for {formattedDateString}:
-                  </label>
-                  <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    14 Open Slots
-                  </span>
-                </div>
-
+              {/* Time Slots */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-mono text-white/60">Available Slots for {formattedDateString}:</label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
                   {TIME_SLOTS.map((slot) => {
                     const isSelected = selectedSlot === slot;
@@ -410,10 +349,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         key={slot}
                         type="button"
                         onClick={() => setSelectedSlot(slot)}
-                        className={`py-2.5 px-2 rounded-xl text-xs font-mono font-medium border transition-all flex items-center justify-center gap-1.5 ${
+                        className={`py-2 px-1.5 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 ${
                           isSelected
-                            ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 ring-1 ring-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.25)] font-bold"
-                            : "bg-white/[0.03] border-white/10 text-white/75 hover:bg-white/[0.07] hover:border-white/20"
+                            ? "bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.25)] font-bold"
+                            : "bg-white/[0.03] border-white/10 text-white/75 hover:bg-white/[0.07]"
                         }`}
                       >
                         <span className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-emerald-400" : "bg-emerald-500/60"}`} />
@@ -421,21 +360,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       </button>
                     );
                   })}
-                </div>
-              </div>
-
-              {/* Booking Summary Box */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                <div className="space-y-1">
-                  <div className="text-white/40 font-mono">SELECTED MEETING:</div>
-                  <div className="text-white font-bold flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                    <span>{formattedDateString} @ {selectedSlot} (15 Mins)</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 text-white/60">
-                  <Video className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Google Meet Video Link</span>
                 </div>
               </div>
 
@@ -453,13 +377,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   type="button"
                   onClick={handleConfirmBooking}
                   disabled={isSubmitting}
-                  className="flex-1 py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_25px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {isSubmitting ? (
-                    <span className="animate-pulse">Locking in slot...</span>
+                    <span className="animate-pulse">Locking in call...</span>
                   ) : (
                     <>
-                      <span>Confirm 15-Min Strategy Call</span>
+                      <span>Confirm Strategy Call ({formattedDateString} @ {selectedSlot})</span>
                       <CheckCircle2 className="w-4 h-4" />
                     </>
                   )}
@@ -468,59 +392,50 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
           )}
 
-          {/* ================= STEP 3: INSTANT VIP CONFIRMATION ================= */}
+          {/* ================= STEP 3: VIP CONFIRMATION ================= */}
           {step === 3 && (
-            <div className="py-6 text-center space-y-5 animate-in zoom-in-95 duration-300">
-              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center mx-auto shadow-[0_0_40px_rgba(16,185,129,0.4)]">
-                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+            <div className="py-6 text-center space-y-4 animate-in zoom-in-95 duration-200">
+              <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(16,185,129,0.35)]">
+                <CheckCircle2 className="w-7 h-7 text-emerald-400" />
               </div>
 
               <div className="space-y-1">
-                <span className="text-xs font-mono uppercase tracking-widest text-emerald-400">
-                  Call Confirmed
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                  You're on the calendar, {name || "Creator"}!
-                </h2>
-                <p className="text-xs sm:text-sm text-white/60 max-w-md mx-auto">
-                  We've reserved your 15-minute slot. A calendar invitation and Google Meet link have been prepared for <strong className="text-white">{email}</strong>.
+                <h2 className="text-2xl font-extrabold text-white">Call Confirmed!</h2>
+                <p className="text-xs sm:text-sm text-white/60 max-w-sm mx-auto">
+                  We've booked your session for <strong className="text-white">{formattedDateString} @ {selectedSlot}</strong>. A calendar invite has been sent to <strong className="text-white">{email}</strong>.
                 </p>
               </div>
 
-              {/* Confirmation Details Card */}
-              <div className="max-w-md mx-auto p-4 rounded-2xl bg-white/[0.03] border border-white/10 text-left space-y-2 text-xs font-mono">
-                <div className="flex justify-between border-b border-white/[0.06] pb-2">
-                  <span className="text-white/40">Date & Time:</span>
-                  <span className="text-white font-bold">{formattedDateString} @ {selectedSlot}</span>
+              {confirmedMeetUrl && (
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 max-w-md mx-auto flex items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-emerald-300 font-mono">
+                    <Video className="w-4 h-4" />
+                    <span>Google Meet Link Ready</span>
+                  </div>
+                  <a
+                    href={confirmedMeetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 rounded-lg bg-emerald-400 text-black font-bold text-[11px] hover:bg-emerald-300"
+                  >
+                    Join / Open Link
+                  </a>
                 </div>
-                <div className="flex justify-between border-b border-white/[0.06] pb-2">
-                  <span className="text-white/40">Duration:</span>
-                  <span className="text-white">15 Minutes (Strategy Audit)</span>
-                </div>
-                <div className="flex justify-between border-b border-white/[0.06] pb-2">
-                  <span className="text-white/40">Platform:</span>
-                  <span className="text-emerald-400 font-bold">Google Meet (HD Video)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/40">Channel / Social:</span>
-                  <span className="text-white truncate max-w-[200px]">{channelLink}</span>
-                </div>
-              </div>
+              )}
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-3 max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-sm mx-auto">
                 <a
                   href={googleCalendarUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto flex-1 py-3 px-5 rounded-xl font-bold text-xs bg-white text-black hover:bg-white/90 transition-colors flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full sm:w-auto flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-white text-black hover:bg-white/90 transition-colors flex items-center justify-center gap-2"
                 >
-                  <Calendar className="w-4 h-4" />
+                  <Calendar className="w-3.5 h-3.5" />
                   <span>Add to Google Calendar</span>
                 </a>
                 <button
                   onClick={onClose}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 text-white text-xs font-mono transition-colors"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-white/15 bg-white/[0.05] hover:bg-white/10 text-white text-xs font-mono transition-colors"
                 >
                   Done
                 </button>
@@ -529,11 +444,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           )}
         </div>
 
-        {/* FOOTER GUARANTEE */}
-        <div className="px-6 py-3 border-t border-white/[0.06] bg-black/50 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left text-[11px] font-mono text-white/40">
-          <div className="flex items-center gap-1.5 text-white/60">
+        {/* FOOTER */}
+        <div className="px-6 py-2.5 border-t border-white/[0.06] bg-black/40 flex items-center justify-between text-[11px] font-mono text-white/40">
+          <div className="flex items-center gap-1.5 text-white/50">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>100% Free • No Pitch Slap • Harzh Growth Systems</span>
+            <span>100% Free Video Retention Audit</span>
           </div>
           <div>hi@harzh.in</div>
         </div>
