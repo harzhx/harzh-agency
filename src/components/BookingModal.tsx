@@ -29,12 +29,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     })();
   }, []);
 
-  if (!isOpen) return null;
-
   return (
     <div
       id="booking-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md transition-all duration-200 ${
+        isOpen
+          ? "opacity-100 pointer-events-auto scale-100"
+          : "opacity-0 pointer-events-none scale-95"
+      }`}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
