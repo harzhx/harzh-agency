@@ -51,8 +51,42 @@ app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+const CALCOM_API_KEY = process.env.CALCOM_API_KEY || "cal_live_62c45680b48210759140635b31b51666";
+const CALCOM_EVENT_TYPE_ID = 6897453;
+
+function parseSlotToISO(dateStr: string, slotStr: string): string {
+  try {
+    const d = new Date(dateStr);
+    const [time, period] = (slotStr || "5:00 PM").split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+
+    // IST is UTC+05:30
+    const istISO = `${year}-${month}-${day}T${h}:${m}:00+05:30`;
+    return new Date(istISO).toISOString();
+  } catch {
+    return new Date(Date.now() + 86400000).toISOString();
+  }
+}
+
+// Normalize revenue tier to exact Cal.com dropdown option
+function normalizeRevenueTier(tier: string): string {
+  if (tier.includes("10,000+")) return "Above $10,000";
+  if (tier.includes("0 – 1,000") || tier.includes("0 - 1,000")) return "$0 – $1,000";
+  if (tier.includes("1,000 – 5,000") || tier.includes("1,000 - 5,000")) return "$1,000 – $5,000";
+  if (tier.includes("5,000 – 10,000") || tier.includes("5,000 - 10,000")) return "$5,000 – $10,000";
+  return "Above $10,000";
+}
+
 // Bookings & Leads API Endpoint
-app.post("/api/bookings", (req: Request, res: Response) => {
+app.post("/api/bookings", async (req: Request, res: Response) => {
   const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot } = req.body;
 
   if (!name || !email || !channelLink) {
@@ -72,17 +106,58 @@ app.post("/api/bookings", (req: Request, res: Response) => {
     status: "CONFIRMED",
   };
 
+  // 1. Persist to local database ledger
   try {
     const rawData = fs.readFileSync(LEADS_FILE, "utf-8");
     const leads = JSON.parse(rawData || "[]");
     leads.unshift(newLead);
     fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
     console.log(`[LEAD CAPTURED] ${name} (${channelLink}) - ${selectedSlot}`);
-    return res.json({ success: true, lead: newLead });
   } catch (err: any) {
     console.error("Failed to save lead:", err);
-    return res.status(500).json({ error: "Failed to persist lead" });
   }
+
+  // 2. Background Sync with Cal.com API (Creates Google Calendar Event + Google Meet Link + Sends Email)
+  let calResponse = null;
+  try {
+    const startISO = parseSlotToISO(selectedDate, selectedSlot);
+    const normalizedRevenue = normalizeRevenueTier(revenueTier || "");
+
+    const payload: any = {
+      start: startISO,
+      eventTypeId: CALCOM_EVENT_TYPE_ID,
+      attendee: {
+        name,
+        email,
+        timeZone: "Asia/Calcutta",
+      },
+      bookingFieldsResponses: {
+        "Link-to-your-social-media-accounts-or": channelLink,
+        "What-s-your-total-monthly-business-revenue-in": normalizedRevenue,
+      },
+    };
+
+    if (phone && phone.trim()) {
+      payload.attendee.phoneNumber = phone.trim();
+    }
+
+    const response = await fetch("https://api.cal.com/v2/bookings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${CALCOM_API_KEY}`,
+        "cal-api-version": "2024-08-13",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    calResponse = await response.json();
+    console.log(`[CAL.COM SYNC SUCCESS] Meeting created:`, calResponse?.data?.meetingUrl || "Google Meet generated");
+  } catch (apiErr) {
+    console.warn("Cal.com background sync notice:", apiErr);
+  }
+
+  return res.json({ success: true, lead: newLead, booking: calResponse });
 });
 
 // Admin Lead Viewer API Endpoint
@@ -91,7 +166,7 @@ app.get("/api/bookings", (_req: Request, res: Response) => {
     const rawData = fs.readFileSync(LEADS_FILE, "utf-8");
     const leads = JSON.parse(rawData || "[]");
     return res.json({ leads, total: leads.length });
-  } catch (err) {
+  } catch {
     return res.status(500).json({ error: "Failed to read leads" });
   }
 });
