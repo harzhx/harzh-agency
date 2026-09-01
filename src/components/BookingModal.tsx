@@ -36,7 +36,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           <div className="flex items-center gap-2">
             <a
-              href="https://cal.com/15-min-retention-audit"
+              href="https://cal.com/harzh/15min"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/70 hover:text-white bg-white/[0.05] hover:bg-white/10 border border-white/10 transition-colors"
@@ -57,7 +57,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         {/* Embedded Cal.com Dark-Mode Scheduler */}
         <div className="flex-1 w-full h-full rounded-2xl overflow-hidden bg-black/50 border border-white/10 relative">
           <iframe
-            src="https://cal.com/15-min-retention-audit?theme=dark"
+            src="https://cal.com/harzh/15min?theme=dark"
             title="Schedule 15-Min Retention Audit"
             className="w-full h-full border-0 rounded-2xl"
             allow="camera; microphone; autoplay; fullscreen"
