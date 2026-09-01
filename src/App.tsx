@@ -11,11 +11,40 @@ import { PackagesSection } from "./components/PackagesSection";
 import { FaqSection } from "./components/FaqSection";
 import { BookingModal } from "./components/BookingModal";
 import { Footer } from "./components/Footer";
+import { getCalApi } from "@calcom/embed-react";
 
 export default function App() {
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const cal = await getCalApi();
+        cal("ui", {
+          theme: "dark",
+          styles: { branding: { brandColor: "#6366f1" } },
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+      } catch (e) {
+        console.error("Cal.com init:", e);
+      }
+    })();
+  }, []);
+
+  const handleOpenBooking = async () => {
+    try {
+      const cal = await getCalApi();
+      cal("modal", {
+        calLink: "harzh/15min",
+        config: { layout: "month_view", theme: "dark" },
+      });
+    } catch {
+      setIsBookingOpen(true);
+    }
+  };
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
@@ -50,7 +79,7 @@ export default function App() {
       <Navbar
         theme={theme}
         onToggleTheme={() => {}}
-        onOpenBooking={() => setIsBookingOpen(true)}
+        onOpenBooking={handleOpenBooking}
       />
 
       {/* MAIN SECTIONS */}
@@ -58,50 +87,50 @@ export default function App() {
         {/* 1. HERO SECTION (Promise, Description, 2 CTAs, 16:9 Showreel Player & Niches Marquee) */}
         <HeroSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
           onExploreWork={scrollToWork}
         />
 
         {/* 2. THE 4 RETENTION STRATEGY PILLARS & PIXEL MASCOT */}
         <StrategiesSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
 
         {/* 3. THE WORK VAULT (2 Tabs: 🎬 Long-Form 16:9 & 📱 Viral Shorts 9:16) */}
         <WorkSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
 
         {/* 4. RETENTION DIAGNOSTICS & CASE STUDIES PROOF */}
         <ResultsSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
 
         {/* 5. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}
         <TestimonialsSection
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
 
         {/* 6. THE 3 TRANSPARENT PACKAGES */}
         <PackagesSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
 
         {/* 7. CREATOR FAQS */}
         <FaqSection
           theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
+          onOpenBooking={handleOpenBooking}
         />
       </main>
 
       {/* 7. MINIMALIST FOOTER */}
       <Footer
         theme={theme}
-        onOpenBooking={() => setIsBookingOpen(true)}
+        onOpenBooking={handleOpenBooking}
       />
 
       {/* 8. STRATEGY CALL BOOKING MODAL */}
