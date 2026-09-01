@@ -52,11 +52,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Pure Snug 3-Column Calendar Card (Zero Cross Button, Zero Bottom Margin, Exact 455px) */}
-      <div className="w-full max-w-[840px] h-[455px] rounded-2xl md:rounded-3xl border border-white/15 overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
+      {/* Responsive Calendar & Form Card (Smooth scrolling for Step 2 Form & Confirm Button) */}
+      <div className="w-full max-w-[850px] h-[90vh] max-h-[640px] rounded-2xl md:rounded-3xl border border-white/15 overflow-y-auto overflow-x-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
         <Cal
           calLink="harzh/15min"
-          style={{ width: "100%", height: "100%", overflow: "hidden" }}
+          style={{ width: "100%", height: "100%", minHeight: "560px", overflow: "auto" }}
           config={{ layout: "month_view", theme: "dark" }}
         />
       </div>
