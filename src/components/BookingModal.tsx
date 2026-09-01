@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ThemeMode } from "../types";
-import { X } from "lucide-react";
+import { X, ShieldCheck } from "lucide-react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 
 interface BookingModalProps {
