@@ -43,7 +43,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   return (
     <div
       id="booking-modal"
-      className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-xl transition-all duration-200 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-xl transition-all duration-200 ${
         isOpen
           ? "opacity-100 pointer-events-auto scale-100"
           : "opacity-0 pointer-events-none scale-95"
@@ -52,11 +52,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      {/* Responsive Calendar & Form Card (Preloaded in DOM for 0ms instant opening) */}
-      <div className="w-full max-w-[840px] h-[88vh] sm:h-[480px] max-h-[640px] rounded-2xl md:rounded-3xl border border-white/15 overflow-y-auto overflow-x-hidden shadow-[0_25px_80px_rgba(0,0,0,0.95)] bg-[#111111]">
+      {/* Pure Seamless Standalone Card (Zero Box-in-Box, Zero Bottom Bars, No Form Cutoff) */}
+      <div className="w-full max-w-[850px] min-h-[460px] flex items-center justify-center">
         <Cal
           calLink="harzh/15min"
-          style={{ width: "100%", height: "100%", overflow: "auto" }}
+          style={{ width: "100%", height: "100%", overflow: "visible" }}
           config={{ layout: "month_view", theme: "dark" }}
         />
       </div>
