@@ -70,6 +70,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [selectedSlot, setSelectedSlot] = useState<string>("5:00 PM");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("");
+  const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
   // Available Dates (Next 6 rolling days)
   const availableDates = React.useMemo(() => {
@@ -83,6 +85,35 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
     return dates;
   }, []);
+
+  // Fetch Live Real-Time Available Slots from Google Calendar via Cal API
+  useEffect(() => {
+    if (isOpen) {
+      setIsLoadingSlots(true);
+      fetch("/api/available-slots")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.slots && Object.keys(data.slots).length > 0) {
+            setLiveSlotsByDate(data.slots);
+          }
+        })
+        .catch((err) => console.warn("Live slots fetch notice:", err))
+        .finally(() => setIsLoadingSlots(false));
+    }
+  }, [isOpen]);
+
+  // Compute active slots for currently selected date
+  const selectedDateKey = selectedDate.toISOString().split("T")[0];
+  const activeSlots = liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
+    ? liveSlotsByDate[selectedDateKey]
+    : TIME_SLOTS;
+
+  // Auto-select first slot when date or slots change
+  useEffect(() => {
+    if (activeSlots.length > 0 && !activeSlots.includes(selectedSlot)) {
+      setSelectedSlot(activeSlots[0]);
+    }
+  }, [activeSlots, selectedSlot]);
 
   // Multi-Cannon Guaranteed Confetti Blast
   const triggerCelebrationConfetti = () => {
@@ -438,29 +469,48 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
               {/* Time Slots */}
               <div className="space-y-2">
-                <label className="text-[13px] font-semibold text-slate-200">
-                  Available Slots for {formattedDateString}:
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-                  {TIME_SLOTS.map((slot) => {
-                    const isSelected = selectedSlot === slot;
-                    return (
-                      <button
-                        key={slot}
-                        type="button"
-                        onClick={() => setSelectedSlot(slot)}
-                        className={`py-2.5 px-1.5 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                          isSelected
-                            ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400 font-bold"
-                            : "bg-[#141722] border-white/15 text-slate-200 hover:bg-[#1c2130] hover:border-white/30"
-                        }`}
-                      >
-                        <span className={`w-2 h-2 rounded-full ${isSelected ? "bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)]" : "bg-emerald-500/70"}`} />
-                        <span>{slot}</span>
-                      </button>
-                    );
-                  })}
+                <div className="flex items-center justify-between">
+                  <label className="text-[13px] font-semibold text-slate-200">
+                    Available Slots for {formattedDateString}:
+                  </label>
+                  {isLoadingSlots ? (
+                    <span className="text-[11px] text-emerald-400 font-mono animate-pulse">
+                      Syncing availability...
+                    </span>
+                  ) : (
+                    <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      {activeSlots.length} Open Slots (Live Sync)
+                    </span>
+                  )}
                 </div>
+
+                {activeSlots.length === 0 ? (
+                  <div className="p-4 rounded-xl bg-[#141722] border border-white/10 text-center text-xs text-slate-400 font-mono">
+                    No available slots on this day. Please select another date.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+                    {activeSlots.map((slot) => {
+                      const isSelected = selectedSlot === slot;
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => setSelectedSlot(slot)}
+                          className={`py-2.5 px-1.5 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                            isSelected
+                              ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400 font-bold"
+                              : "bg-[#141722] border-white/15 text-slate-200 hover:bg-[#1c2130] hover:border-white/30"
+                          }`}
+                        >
+                          <span className={`w-2 h-2 rounded-full ${isSelected ? "bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)]" : "bg-emerald-500/70"}`} />
+                          <span>{slot}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               {/* Selected Meeting Summary Bar */}

@@ -160,6 +160,50 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
   return res.json({ success: true, lead: newLead, booking: calResponse });
 });
 
+// Real-time Live Available Slots Endpoint (Reads Google Calendar via Cal.com API)
+app.get("/api/available-slots", async (req: Request, res: Response) => {
+  try {
+    const now = new Date();
+    const startTime = now.toISOString();
+    const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const endTime = nextWeek.toISOString();
+
+    const calUrl = `https://api.cal.com/v2/slots/available?eventTypeId=${CALCOM_EVENT_TYPE_ID}&startTime=${startTime}&endTime=${endTime}`;
+
+    const response = await fetch(calUrl, {
+      headers: {
+        Authorization: `Bearer ${CALCOM_API_KEY}`,
+        "cal-api-version": "2024-08-13",
+      },
+    });
+
+    const data = await response.json();
+    const rawSlots = data?.data?.slots || {};
+
+    // Transform ISO slots into localized IST 12-hour slots
+    const formattedSlots: Record<string, string[]> = {};
+
+    for (const [dateKey, slotList] of Object.entries(rawSlots)) {
+      if (Array.isArray(slotList)) {
+        formattedSlots[dateKey] = slotList.map((slotObj: any) => {
+          const slotDate = new Date(slotObj.time);
+          return slotDate.toLocaleTimeString("en-US", {
+            timeZone: "Asia/Calcutta",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          });
+        });
+      }
+    }
+
+    return res.json({ success: true, slots: formattedSlots });
+  } catch (err: any) {
+    console.error("Failed to fetch live slots:", err);
+    return res.status(500).json({ error: "Failed to fetch live slots" });
+  }
+});
+
 // Admin Lead Viewer API Endpoint
 app.get("/api/bookings", (_req: Request, res: Response) => {
   try {
