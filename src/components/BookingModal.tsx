@@ -14,6 +14,7 @@ import {
   DollarSign,
   TrendingUp,
 } from "lucide-react";
+import Cal from "@calcom/embed-react";
 
 interface BookingModalProps {
   theme: ThemeMode;
@@ -76,16 +77,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }, 250);
   };
 
-  const constructCalUrl = () => {
-    const baseUrl = "https://cal.com/harzh/15min";
-    const params = new URLSearchParams({
-      name: name.trim(),
-      email: email.trim(),
-      theme: "dark",
-    });
-    return `${baseUrl}?${params.toString()}`;
-  };
-
   return (
     <div
       id="booking-modal"
@@ -98,7 +89,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-xl rounded-3xl border border-white/15 bg-[#0a0c14] text-white p-6 sm:p-8 shadow-[0_0_80px_rgba(0,0,0,0.95)] ring-1 ring-white/10 overflow-hidden">
+      <div
+        className={`relative w-full rounded-3xl border border-white/15 bg-[#0a0c14] text-white p-5 sm:p-7 shadow-[0_0_80px_rgba(0,0,0,0.95)] ring-1 ring-white/10 overflow-hidden transition-all duration-300 ${
+          step === 2 ? "max-w-[820px]" : "max-w-xl"
+        }`}
+      >
         {/* Background Ambient Glow */}
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -262,75 +257,36 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           </div>
         )}
 
-        {/* STEP 2: DEDICATED CALENDAR TIME SLOT PICKER */}
+        {/* STEP 2: IN-MODAL LIVE CALENDAR SLOT PICKER */}
         {step === 2 && (
           <div className="animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.08]">
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
-                    Channel Details Saved
-                  </span>
-                </div>
-                <h4 className="text-xl font-extrabold text-white">
-                  Pick Your Strategy Session Slot
-                </h4>
+            <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/10 text-xs font-mono text-white/70 hover:text-white transition-colors flex items-center gap-1"
+                >
+                  ← Back
+                </button>
+                <span className="text-xs text-white/30">•</span>
+                <span className="text-xs font-mono font-bold text-emerald-400">
+                  Select Time Slot
+                </span>
               </div>
-              <button
-                onClick={() => setStep(1)}
-                className="text-xs font-mono text-white/50 hover:text-white underline transition-colors"
-              >
-                Edit Info
-              </button>
-            </div>
-
-            {/* Creator Summary Card */}
-            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/10 mb-4 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center border border-emerald-500/30">
-                  {name.charAt(0).toUpperCase() || "C"}
-                </div>
-                <div>
-                  <div className="font-bold text-white">{name}</div>
-                  <div className="text-white/50 font-mono">{channelUrl}</div>
-                </div>
-              </div>
-              <div className="text-right font-mono text-[11px] text-white/60">
-                <div className="text-emerald-400 font-semibold">{revenue}</div>
-                <div>15-Min Audit</div>
+              <div className="text-[11px] font-mono text-white/50 hidden sm:block">
+                Booking for <span className="text-white font-medium">{name}</span>
               </div>
             </div>
 
-            {/* Direct 1-Click Launch Button & Fallback */}
-            <div className="space-y-3">
-              <a
-                href={constructCalUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 px-6 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-sm tracking-wide flex items-center justify-center gap-2 transition-all shadow-[0_0_35px_rgba(16,185,129,0.35)] active:scale-[0.99] block text-center"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>Confirm on Live Calendar (Instant Google Meet)</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-
-              <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-center text-xs text-white/60 space-y-2">
-                <div className="flex items-center justify-center gap-4 text-white/70 font-mono text-[11px]">
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-indigo-400" />
-                    15 Minutes
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Video className="w-3.5 h-3.5 text-emerald-400" />
-                    Google Meet
-                  </span>
-                </div>
-                <p className="text-[11px] text-white/40">
-                  A Google Calendar invite with the meeting link will be emailed to <strong className="text-white/70">{email}</strong> immediately.
-                </p>
-              </div>
+            {/* Seamless Embedded Cal Slot Picker (Zero Redirect) */}
+            <div className="w-full h-[470px] rounded-2xl overflow-hidden bg-black/40 border border-white/5 relative">
+              <Cal
+                calLink={`harzh/15min?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`}
+                style={{ width: "100%", height: "100%", overflow: "auto" }}
+                config={{ layout: "month_view", theme: "dark" }}
+              />
             </div>
           </div>
         )}
