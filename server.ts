@@ -7,7 +7,7 @@ import { createServer as createViteServer } from "vite";
 dotenv.config();
 
 const app = express();
-const PORT = Number(process.env.PORT) || 4321;
+const PORT = process.env.PORT || 4321;
 
 app.use(express.json());
 
@@ -78,25 +78,20 @@ function parseSlotToISO(dateStr: string, slotStr: string): string {
 
 // Normalize revenue tier to exact Cal.com dropdown option
 function normalizeRevenueTier(tier: string): string {
-  if (!tier) return "Above $10,000";
-  const t = tier.toLowerCase();
-  if (t.includes("0") && (t.includes("1,000") || t.includes("1000"))) return "$0 – $1,000";
-  if (t.includes("1,000") && (t.includes("5,000") || t.includes("5000"))) return "$1,000 – $5,000";
-  if (t.includes("5,000") && (t.includes("10,000") || t.includes("10000"))) return "$5,000 – $10,000";
-  if (t.includes("10,000") || t.includes("10000") || t.includes("above")) return "Above $10,000";
+  if (tier.includes("10,000+")) return "Above $10,000";
+  if (tier.includes("0 – 1,000") || tier.includes("0 - 1,000")) return "$0 – $1,000";
+  if (tier.includes("1,000 – 5,000") || tier.includes("1,000 - 5,000")) return "$1,000 – $5,000";
+  if (tier.includes("5,000 – 10,000") || tier.includes("5,000 - 10,000")) return "$5,000 – $10,000";
   return "Above $10,000";
 }
 
 // Bookings & Leads API Endpoint
 app.post("/api/bookings", async (req: Request, res: Response) => {
-  const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot, slotTimeISO, timeZone } = req.body;
+  const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot } = req.body;
 
   if (!name || !email || !channelLink) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-
-  const clientTimeZone = timeZone || "Asia/Calcutta";
-  const startISO = slotTimeISO || selectedDate || new Date().toISOString();
 
   const newLead = {
     id: `lead_${Date.now()}`,
@@ -105,20 +100,19 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
     channelLink,
     revenueTier: revenueTier || "Not specified",
     phone: phone || "Not provided",
-    timeZone: clientTimeZone,
-    slotTimeISO: startISO,
-    meetingSlot: selectedSlot || "Strategy Call",
+    meetingDate: selectedDate || new Date().toISOString(),
+    meetingSlot: selectedSlot || "5:00 PM",
     bookedAt: new Date().toISOString(),
     status: "CONFIRMED",
   };
 
-  // 1. Persist to local database ledger immediately (fail-safe zero lead loss)
+  // 1. Persist to local database ledger
   try {
     const rawData = fs.readFileSync(LEADS_FILE, "utf-8");
     const leads = JSON.parse(rawData || "[]");
     leads.unshift(newLead);
     fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2));
-    console.log(`[LEAD CAPTURED] ${name} (${channelLink}) - ${startISO} (${clientTimeZone})`);
+    console.log(`[LEAD CAPTURED] ${name} (${channelLink}) - ${selectedSlot}`);
   } catch (err: any) {
     console.error("Failed to save lead:", err);
   }
@@ -126,6 +120,7 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
   // 2. Background Sync with Cal.com API (Creates Google Calendar Event + Google Meet Link + Sends Email)
   let calResponse = null;
   try {
+    const startISO = parseSlotToISO(selectedDate, selectedSlot);
     const normalizedRevenue = normalizeRevenueTier(revenueTier || "");
 
     const payload: any = {
@@ -134,7 +129,7 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
       attendee: {
         name,
         email,
-        timeZone: clientTimeZone,
+        timeZone: "Asia/Calcutta",
       },
       bookingFieldsResponses: {
         "Link-to-your-social-media-accounts-or": channelLink,
@@ -146,7 +141,7 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
       payload.attendee.phoneNumber = phone.trim();
     }
 
-    let response = await fetch("https://api.cal.com/v2/bookings", {
+    const response = await fetch("https://api.cal.com/v2/bookings", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${CALCOM_API_KEY}`,
@@ -157,31 +152,6 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
     });
 
     calResponse = await response.json();
-
-    // Resilient fallback: If custom fields fail validation, retry without custom questions so booking is NEVER rejected
-    if (!response.ok && calResponse?.error?.message?.includes("booking field")) {
-      console.warn("[CAL.COM FIELD NOTICE] Retrying booking with simplified fields...");
-      const simplifiedPayload = {
-        start: startISO,
-        eventTypeId: CALCOM_EVENT_TYPE_ID,
-        attendee: {
-          name,
-          email,
-          timeZone: clientTimeZone,
-        },
-      };
-
-      response = await fetch("https://api.cal.com/v2/bookings", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${CALCOM_API_KEY}`,
-          "cal-api-version": "2024-08-13",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(simplifiedPayload),
-      });
-      calResponse = await response.json();
-    }
 
     if (!response.ok || calResponse?.status === "error") {
       const errMsg = calResponse?.error?.message || "This slot is no longer available.";
@@ -221,20 +191,35 @@ app.get("/api/available-slots", async (req: Request, res: Response) => {
     const data = await response.json();
     const rawSlots = data?.data?.slots || {};
 
-    // Collect all raw ISO timestamps
-    const rawIsoSlots: string[] = [];
+    // Group slots strictly by local IST date (YYYY-MM-DD)
+    const formattedSlots: Record<string, string[]> = {};
 
     for (const slotList of Object.values(rawSlots)) {
       if (Array.isArray(slotList)) {
         for (const slotObj of slotList) {
           if (slotObj?.time) {
-            rawIsoSlots.push(slotObj.time);
+            const slotDate = new Date(slotObj.time);
+            // Local IST date key (YYYY-MM-DD)
+            const localDateKey = slotDate.toLocaleDateString("en-CA", { timeZone: "Asia/Calcutta" });
+            const localTimeStr = slotDate.toLocaleTimeString("en-US", {
+              timeZone: "Asia/Calcutta",
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+
+            if (!formattedSlots[localDateKey]) {
+              formattedSlots[localDateKey] = [];
+            }
+            if (!formattedSlots[localDateKey].includes(localTimeStr)) {
+              formattedSlots[localDateKey].push(localTimeStr);
+            }
           }
         }
       }
     }
 
-    return res.json({ success: true, rawIsoSlots });
+    return res.json({ success: true, slots: formattedSlots });
   } catch (err: any) {
     console.error("Failed to fetch live slots:", err);
     return res.status(500).json({ error: "Failed to fetch live slots" });

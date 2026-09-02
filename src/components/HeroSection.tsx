@@ -81,18 +81,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="relative max-w-5xl mx-auto mb-16">
           <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.12] overflow-hidden p-2 sm:p-2.5 bg-[#0a0a0e]/90 shadow-2xl shadow-black">
             {/* 16:9 Aspect Video Container */}
-            <div className="relative aspect-video rounded-xl overflow-hidden group" style={{ backgroundColor: '#06070a', backgroundImage: `url(${vslThumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-black group">
               {isPlayingShowreel ? (
-                /* Native Inline HTML5 Video Player — thumbnail stays as bg while video loads */
+                /* Native Inline HTML5 Video Player (Zero Watermarks / 100% Clean) */
                 <video
                   src="/videos/vsl.mp4"
                   poster={vslThumbnail}
                   controls
                   autoPlay
                   playsInline
-                  preload="metadata"
                   className="w-full h-full object-cover rounded-xl"
-                  style={{ backgroundColor: 'transparent' }}
                 />
               ) : (
                 /* Poster State with Glowing Play Trigger */
@@ -195,8 +193,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
             <div className="animate-marquee-right py-0.5 gap-2.5">
               {[
-                ...CREATOR_LOGOS,
-                ...CREATOR_LOGOS,
                 ...CREATOR_LOGOS,
                 ...CREATOR_LOGOS,
               ].map((logo, idx) => (
