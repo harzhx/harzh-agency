@@ -13,10 +13,24 @@ export default defineConfig(() => {
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: process.env.DISABLE_HMR === 'true' ? null : {
         ignored: ['**/public/videos/**', '**/*.mp4', '**/*.mov'],
+      },
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Core React - tiny, loads first
+            'react-core': ['react', 'react-dom'],
+            // UI icons - separate so main bundle is lean
+            'icons': ['lucide-react'],
+            // Confetti - only needed on booking confirmation
+            'confetti': ['canvas-confetti'],
+          },
+        },
       },
     },
   };
