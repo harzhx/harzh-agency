@@ -8,7 +8,7 @@ import { createServer as createViteServer } from "vite";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4321;
+const PORT = Number(process.env.PORT) || 4321;
 
 app.use(express.json());
 
