@@ -60,10 +60,10 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
   const [isPlayingTestimonial, setIsPlayingTestimonial] = useState(false);
 
   return (
-    <section id="testimonials" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06] bg-[#070912] overflow-hidden">
+    <section id="testimonials" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06] overflow-hidden">
       {/* Background Ambient Lights */}
-      <div className="hidden sm:block absolute top-1/3 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
-      <div className="hidden sm:block absolute bottom-1/3 right-1/4 translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
+      <div className="absolute top-1/3 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
+      <div className="absolute bottom-1/3 right-1/4 translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}

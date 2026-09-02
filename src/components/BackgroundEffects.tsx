@@ -149,10 +149,10 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
         }}
       />
 
-      {/* 3. PARALLAX SLOW ABSTRACT ORBS (Desktop only for peak mobile 60fps) */}
+      {/* 3. PARALLAX / AMBIENT SLOW ABSTRACT ORBS (Unified across mobile & desktop) */}
       <div
         id="parallax-orb-1"
-        className="hidden sm:block absolute top-1/4 -left-24 w-[500px] h-[500px] rounded-full blur-[100px] opacity-35 transition-transform duration-700 ease-out transform-gpu"
+        className="absolute top-1/4 -left-20 sm:-left-24 w-[380px] sm:w-[500px] h-[380px] sm:h-[500px] rounded-full blur-[80px] sm:blur-[100px] opacity-35 transition-transform duration-700 ease-out transform-gpu"
         style={{
           background: isDark ? "rgba(99, 102, 241, 0.18)" : "rgba(99, 102, 241, 0.12)",
           transform: `translate3d(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px, 0)`,
@@ -160,7 +160,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       />
       <div
         id="parallax-orb-2"
-        className="hidden sm:block absolute top-2/3 -right-24 w-[500px] h-[500px] rounded-full blur-[110px] opacity-30 transition-transform duration-700 ease-out transform-gpu"
+        className="absolute top-2/3 -right-20 sm:-right-24 w-[400px] sm:w-[500px] h-[400px] sm:h-[500px] rounded-full blur-[90px] sm:blur-[110px] opacity-30 transition-transform duration-700 ease-out transform-gpu"
         style={{
           background: isDark ? "rgba(168, 85, 247, 0.16)" : "rgba(168, 85, 247, 0.10)",
           transform: `translate3d(${-mousePosition.x * 0.02}px, ${-mousePosition.y * 0.02}px, 0)`,
