@@ -28,8 +28,8 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
 
     window.addEventListener("resize", handleResize);
 
-    // Particle parameters
-    const particleCount = theme === "dark" ? 48 : 26;
+    // Particle parameters (lightweight on mobile)
+    const particleCount = typeof window !== "undefined" && window.innerWidth < 768 ? 16 : (theme === "dark" ? 40 : 20);
     const particles: Array<{
       x: number;
       y: number;
