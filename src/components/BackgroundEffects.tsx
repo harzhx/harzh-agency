@@ -111,12 +111,12 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
   return (
     <div
       id="ambient-background-container"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none transition-colors duration-700"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
       {/* 1. SOFT ANIMATED GRADIENT MESH */}
       <div
         id="gradient-mesh-layer"
-        className={`absolute inset-0 transition-opacity duration-1000 ${
+        className={`absolute inset-0 ${
           isDark
             ? "bg-[#06070a]"
             : "bg-gradient-to-b from-[#f8faff] via-[#f1f4fb] to-[#eaf0fa]"
