@@ -178,7 +178,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* 4. GRID SHIMMER OVERLAY (Subtle high-tech blueprint line pattern) */}
       <div
         id="grid-shimmer-layer"
-        className="absolute inset-0 opacity-[0.035] dark:opacity-[0.055] transition-opacity duration-700"
+        className="absolute inset-0 opacity-[0.035] dark:opacity-[0.055]"
         style={{
           backgroundImage: `linear-gradient(${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.15)"} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.15)"} 1px, transparent 1px)`,
           backgroundSize: "64px 64px",
@@ -190,7 +190,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* 5. CURSOR PROXIMITY SPOTLIGHT (Subtle radial glow following mouse) */}
       <div
         id="cursor-proximity-spotlight"
-        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none transition-opacity duration-300 blur-[80px]"
+        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none blur-[80px]"
         style={{
           left: `${mousePosition.x - 250}px`,
           top: `${mousePosition.y - 250}px`,
