@@ -1,5 +1,41 @@
 [
   {
+    "id": "lead_1788368584276",
+    "name": "Verified Studio Lead",
+    "email": "lead_verify_1788368582940@harzhstudio.com",
+    "channelLink": "youtube.com/@harzhagency",
+    "revenueTier": "$1K – $5K",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T17:03:02.292Z",
+    "meetingSlot": "5:00 PM",
+    "bookedAt": "2026-09-02T17:03:04.276Z",
+    "status": "CONFIRMED"
+  },
+  {
+    "id": "lead_1788368243619",
+    "name": "Kumar Harsh",
+    "email": "harzhx@gmail.com",
+    "channelLink": "harzhx@gmail.com",
+    "revenueTier": "$1K – $5K",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T16:56:35.406Z",
+    "meetingSlot": "7:00 PM",
+    "bookedAt": "2026-09-02T16:57:23.619Z",
+    "status": "CONFIRMED"
+  },
+  {
+    "id": "lead_1788368200837",
+    "name": "Kumar Harsh",
+    "email": "harzhx@gmail.com",
+    "channelLink": "harzhx@gmail.com",
+    "revenueTier": "$1K – $5K",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T16:56:36.761Z",
+    "meetingSlot": "7:00 PM",
+    "bookedAt": "2026-09-02T16:56:40.837Z",
+    "status": "CONFIRMED"
+  },
+  {
     "id": "lead_1788368136822",
     "name": "Creator Test",
     "email": "creator@test.com",

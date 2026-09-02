@@ -278,13 +278,35 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   });
 
   const googleCalendarUrl = useMemo(() => {
-    const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
-    const details = encodeURIComponent(
-      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet link sent via email"}\nHost: Harzh`
-    );
-    const location = encodeURIComponent(confirmedMeetUrl || "Google Meet (Video Call)");
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
-  }, [name, channelLink, confirmedMeetUrl]);
+    try {
+      const [time, period] = (selectedSlot || "5:00 PM").split(" ");
+      let [hours, minutes] = time.split(":").map(Number);
+      if (period === "PM" && hours < 12) hours += 12;
+      if (period === "AM" && hours === 12) hours = 0;
+
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+      const day = String(selectedDate.getDate()).padStart(2, "0");
+      const h = String(hours).padStart(2, "0");
+      const m = String(minutes).padStart(2, "0");
+
+      const istStart = new Date(`${year}-${month}-${day}T${h}:${m}:00+05:30`);
+      const istEnd = new Date(istStart.getTime() + 15 * 60 * 1000); // 15-minute call
+
+      const formatGCalDate = (d: Date) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+      const datesParam = `${formatGCalDate(istStart)}/${formatGCalDate(istEnd)}`;
+
+      const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
+      const details = encodeURIComponent(
+        `Creator: ${name || "Creator"}\nEmail: ${email || ""}\nChannel: ${channelLink || ""}\nMeeting Link: ${confirmedMeetUrl || "https://meet.google.com/hzh-cal-strategy"}\nHost: Harzh Studio`
+      );
+      const location = encodeURIComponent(confirmedMeetUrl || "Google Meet (Video Call)");
+
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${datesParam}`;
+    } catch {
+      return "https://calendar.google.com";
+    }
+  }, [name, email, channelLink, confirmedMeetUrl, selectedDate, selectedSlot]);
 
   const displayTimeInTz = useMemo(() => {
     return formatSlotInTimezone(selectedDate, selectedSlot, timezone);
