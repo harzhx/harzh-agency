@@ -10,11 +10,10 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = () => {
   return (
-    <footer className="border-t border-white/[0.08] bg-[#040508] relative z-10 py-12">
+    <footer className="border-t border-white/[0.08] bg-[#040508] relative z-10 py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         {/* Footer Links & Info */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-8 border-t border-white/[0.06] text-xs text-white/50">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 text-xs text-white/50">
           <div className="flex items-center gap-3">
             <HarzhLogo isDark={true} size="sm" showText={true} />
             <span className="text-white/30">•</span>

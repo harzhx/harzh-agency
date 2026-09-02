@@ -14,21 +14,21 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
   onOpenBooking,
 }) => {
   return (
-    <section id="packages" className="py-28 relative z-10 border-t border-white/[0.06]">
+    <section id="packages" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center max-w-3xl mx-auto mb-20"
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 sm:mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>04 // PREDICTABLE INVESTMENT</span>
+            <span>05 // PREDICTABLE INVESTMENT</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
             Transparent Retainer Tiers.
           </h2>
           <p className="text-sm sm:text-base text-white/60 leading-relaxed max-w-2xl mx-auto">
@@ -37,7 +37,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
         </motion.div>
 
         {/* 3 Crisp Packages Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto mb-8 sm:mb-10 items-stretch">
           {PRICING_PACKAGES.map((pkg, idx) => (
             <motion.div
               key={pkg.id}

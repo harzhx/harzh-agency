@@ -60,26 +60,26 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
   const [isPlayingTestimonial, setIsPlayingTestimonial] = useState(false);
 
   return (
-    <section id="testimonials" className="py-24 relative z-10 border-t border-white/[0.06] bg-[#070912] overflow-hidden">
+    <section id="testimonials" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06] bg-[#070912] overflow-hidden">
       {/* Background Ambient Lights */}
-      <div className="absolute top-1/3 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute top-1/3 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
+      <div className="hidden sm:block absolute bottom-1/3 right-1/4 translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-purple-400 mb-4 backdrop-blur-md shadow-lg">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-purple-400 mb-3 sm:mb-4 backdrop-blur-md shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             <span>04 // CREATOR ENDORSEMENTS & CASE STUDIES</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
             Trusted by Channels Scaling to{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white to-purple-300">
               Millions of Views.
@@ -92,7 +92,7 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
         </motion.div>
 
         {/* 3 Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8 sm:mb-12">
           {TESTIMONIAL_CREATORS.map((creator) => (
             <motion.div
               key={creator.id}

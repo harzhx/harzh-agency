@@ -29,26 +29,26 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section
       id="hero-section"
-      className="relative pt-28 pb-6 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 overflow-hidden"
+      className="relative pt-24 pb-4 sm:pt-30 sm:pb-10 md:pt-36 md:pb-14 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top Scarcity Chip & Hero Title */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/[0.04] border border-white/[0.1] text-white/90 shadow-xl backdrop-blur-md">
+          <div className="flex justify-center mb-5 sm:mb-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/[0.04] border border-white/[0.1] text-white/90 shadow-xl backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-mono text-[11px]">Accepting 2 High-Growth Creators For Q3</span>
+              <span className="font-mono text-[10.5px] sm:text-[11px]">Accepting 2 High-Growth Creators For Q3</span>
               <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             </div>
           </div>
 
           {/* Main Hero Hook Title (High-Contrast & Radiant) */}
-          <div className="text-center max-w-4xl mx-auto mb-6">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] mb-5 text-white glow-text">
+          <div className="text-center max-w-4xl mx-auto mb-5 sm:mb-6">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4 text-white glow-text">
               We Engineer High-Retention <br className="hidden sm:inline" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white to-purple-300">
                 YouTube Edits & Systems.
@@ -56,13 +56,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             {/* Promise of Value Subtitle */}
-            <p className="text-base sm:text-xl md:text-2xl font-normal max-w-3xl mx-auto leading-relaxed text-white/80">
+            <p className="text-sm sm:text-lg md:text-xl font-normal max-w-3xl mx-auto leading-relaxed text-white/80">
               We turn raw founder insights and creator footage into <span className="font-bold text-white">75%+ retention masterclasses</span>, viral short-form funnels, and high-CTR packaging.
             </p>
           </div>
 
           {/* Hero CTAs (Compact & Responsive on Mobile) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 w-full max-w-md sm:max-w-none mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full max-w-md sm:max-w-none mx-auto">
             {/* Primary CTA */}
             <button
               onClick={onOpenBooking}
@@ -86,10 +86,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* HERO CINEMATIC SHOWREEL (SEAMLESS INLINE PLAYER — ZERO POPUPS) */}
         <motion.div
-          initial={{ opacity: 0, y: 32, scale: 0.98 }}
+          initial={{ opacity: 0, y: 24, scale: 0.99 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative max-w-5xl mx-auto mb-16"
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative max-w-5xl mx-auto mb-8 sm:mb-12"
         >
           <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.12] overflow-hidden p-2 sm:p-2.5 bg-[#0a0a0e]/90 shadow-2xl shadow-black">
             {/* 16:9 Aspect Video Container */}
@@ -147,11 +147,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* 1. Agency Stats (DESKTOP: Clean 4-Card Grid Without Green Subtext) */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="hidden sm:grid sm:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16"
+          transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          className="hidden sm:grid sm:grid-cols-4 gap-4 max-w-5xl mx-auto mb-8 sm:mb-12"
         >
           {AGENCY_STATS.map((stat, index) => (
             <div

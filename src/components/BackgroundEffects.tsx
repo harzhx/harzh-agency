@@ -9,7 +9,7 @@ interface BackgroundEffectsProps {
 export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mousePosition }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Canvas particle drift animation with subtle glow and drift
+  // Canvas particle drift animation with lightweight mobile optimization
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -19,6 +19,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
     let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
+    const isMobile = window.innerWidth < 768;
 
     const handleResize = () => {
       if (!canvas) return;
@@ -28,8 +29,8 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
 
     window.addEventListener("resize", handleResize);
 
-    // Particle parameters
-    const particleCount = theme === "dark" ? 48 : 26;
+    // Particle parameters (fewer on mobile for 60fps buttery scrolling)
+    const particleCount = isMobile ? 18 : theme === "dark" ? 42 : 24;
     const particles: Array<{
       x: number;
       y: number;
@@ -47,9 +48,9 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 1.8 + 0.6,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: -Math.random() * 0.35 - 0.08, // Slow upward drift
+        radius: Math.random() * 1.6 + 0.6,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: -Math.random() * 0.3 - 0.06, // Slow upward drift
         alpha: baseAlpha,
         baseAlpha,
         pulseSpeed: Math.random() * 0.02 + 0.01,
@@ -85,14 +86,6 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${particleColor}, ${Math.max(0.02, p.alpha)})`;
         ctx.fill();
-
-        // Optional tiny glow halo
-        if (p.radius > 1.2 && isDark) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius * 2.2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${particleColor}, ${Math.max(0.01, p.alpha * 0.25)})`;
-          ctx.fill();
-        }
       });
 
       animationFrameId = requestAnimationFrame(render);
@@ -111,7 +104,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
   return (
     <div
       id="ambient-background-container"
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none transform-gpu"
     >
       {/* 1. SOFT ANIMATED GRADIENT MESH */}
       <div
@@ -130,26 +123,25 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       />
 
       {/* Left and Right Vertical Ambient Beam Lines */}
-      <div className="absolute top-0 bottom-0 left-12 md:left-24 lg:left-32 w-px beam-line pointer-events-none opacity-40" />
-      <div className="absolute top-0 bottom-0 right-12 md:right-24 lg:right-32 w-px beam-line pointer-events-none opacity-40" />
+      <div className="absolute top-0 bottom-0 left-6 sm:left-12 md:left-24 lg:left-32 w-px beam-line pointer-events-none opacity-30" />
+      <div className="absolute top-0 bottom-0 right-6 sm:right-12 md:right-24 lg:right-32 w-px beam-line pointer-events-none opacity-30" />
 
       {/* 2. LIGHT FIELD / BEAM TEXTURE (Spotlight beam from top) */}
       <div
         id="light-beam-layer"
-        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[1200px] h-[750px] opacity-80 transition-all duration-1000"
+        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] sm:w-[1200px] h-[550px] sm:h-[750px] opacity-70 sm:opacity-80 transition-all duration-1000 transform-gpu"
         style={{
           background: isDark
             ? "conic-gradient(from 180deg at 50% 0%, rgba(99, 102, 241, 0) 140deg, rgba(129, 140, 248, 0.22) 175deg, rgba(168, 85, 247, 0.28) 180deg, rgba(96, 165, 250, 0.22) 185deg, rgba(99, 102, 241, 0) 220deg)"
             : "conic-gradient(from 180deg at 50% 0%, rgba(99, 102, 241, 0) 140deg, rgba(99, 102, 241, 0.12) 175deg, rgba(147, 51, 234, 0.14) 180deg, rgba(59, 130, 246, 0.12) 185deg, rgba(99, 102, 241, 0) 220deg)",
-          filter: "blur(45px)",
-          transform: `translateX(-50%) translateY(${mousePosition.y * 0.015}px)`,
+          filter: "blur(40px)",
         }}
       />
 
       {/* Top luminous glow crown */}
       <div
         id="top-glow-crown"
-        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full blur-[80px] pointer-events-none transition-all duration-1000"
+        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[250px] sm:h-[300px] rounded-full blur-[60px] sm:blur-[80px] pointer-events-none transition-all duration-1000 transform-gpu"
         style={{
           background: isDark
             ? "radial-gradient(ellipse at center, rgba(129, 140, 248, 0.35) 0%, rgba(168, 85, 247, 0.18) 45%, transparent 70%)"
@@ -157,10 +149,10 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
         }}
       />
 
-      {/* 3. PARALLAX SLOW ABSTRACT ORBS */}
+      {/* 3. PARALLAX SLOW ABSTRACT ORBS (Desktop only for peak mobile 60fps) */}
       <div
         id="parallax-orb-1"
-        className="absolute top-1/4 -left-24 w-[500px] h-[500px] rounded-full blur-[110px] opacity-40 transition-transform duration-700 ease-out"
+        className="hidden sm:block absolute top-1/4 -left-24 w-[500px] h-[500px] rounded-full blur-[100px] opacity-35 transition-transform duration-700 ease-out transform-gpu"
         style={{
           background: isDark ? "rgba(99, 102, 241, 0.18)" : "rgba(99, 102, 241, 0.12)",
           transform: `translate3d(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px, 0)`,
@@ -168,17 +160,17 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       />
       <div
         id="parallax-orb-2"
-        className="absolute top-2/3 -right-24 w-[600px] h-[600px] rounded-full blur-[130px] opacity-35 transition-transform duration-700 ease-out"
+        className="hidden sm:block absolute top-2/3 -right-24 w-[500px] h-[500px] rounded-full blur-[110px] opacity-30 transition-transform duration-700 ease-out transform-gpu"
         style={{
           background: isDark ? "rgba(168, 85, 247, 0.16)" : "rgba(168, 85, 247, 0.10)",
           transform: `translate3d(${-mousePosition.x * 0.02}px, ${-mousePosition.y * 0.02}px, 0)`,
         }}
       />
 
-      {/* 4. GRID SHIMMER OVERLAY (Subtle high-tech blueprint line pattern) */}
+      {/* 4. GRID SHIMMER OVERLAY */}
       <div
         id="grid-shimmer-layer"
-        className="absolute inset-0 opacity-[0.035] dark:opacity-[0.055] transition-opacity duration-700"
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] transition-opacity duration-700"
         style={{
           backgroundImage: `linear-gradient(${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.15)"} 1px, transparent 1px), linear-gradient(90deg, ${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(0, 0, 0, 0.15)"} 1px, transparent 1px)`,
           backgroundSize: "64px 64px",
@@ -187,13 +179,13 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
         }}
       />
 
-      {/* 5. CURSOR PROXIMITY SPOTLIGHT (Subtle radial glow following mouse) */}
+      {/* 5. CURSOR PROXIMITY SPOTLIGHT (Desktop only) */}
       <div
         id="cursor-proximity-spotlight"
-        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none transition-opacity duration-300 blur-[80px]"
+        className="hidden md:block absolute w-[400px] h-[400px] rounded-full pointer-events-none transition-opacity duration-300 blur-[70px] transform-gpu"
         style={{
-          left: `${mousePosition.x - 250}px`,
-          top: `${mousePosition.y - 250}px`,
+          left: `${mousePosition.x - 200}px`,
+          top: `${mousePosition.y - 200}px`,
           background: isDark
             ? "radial-gradient(circle, rgba(129, 140, 248, 0.08) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 70%)"
             : "radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, rgba(168, 85, 247, 0.02) 40%, transparent 70%)",
@@ -201,7 +193,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       />
 
       {/* 6. CANVAS PARTICLES */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full transform-gpu" />
     </div>
   );
 };
