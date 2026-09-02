@@ -1,7 +1,8 @@
-﻿import React from "react";
+import React from "react";
 import { ThemeMode } from "../types";
 import { BookingWidget } from "./BookingWidget";
 import { Sparkles, Flame, ShieldCheck, Video, Clock } from "lucide-react";
+import { motion } from "motion/react";
 
 interface EmbeddedBookingSectionProps {
   theme: ThemeMode;
@@ -15,7 +16,13 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-12"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-emerald-400 mb-4 shadow-lg backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>06 // DIRECT STRATEGY SESSION</span>
@@ -45,12 +52,18 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
               <span>100% Free • No Pitch Slap</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Embedded Booking Widget Container */}
-        <div className="max-w-3xl mx-auto shadow-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: 28, scale: 0.99 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl mx-auto shadow-2xl"
+        >
           <BookingWidget isModal={false} />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

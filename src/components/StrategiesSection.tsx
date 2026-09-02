@@ -11,6 +11,7 @@ import {
   Image as ImageIcon,
   TrendingUp,
 } from "lucide-react";
+import { motion } from "motion/react";
 
 interface StrategiesSectionProps {
   theme: ThemeMode;
@@ -63,7 +64,13 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
     <section id="strategies" className="pt-10 pb-20 sm:py-24 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-16 sm:mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>OUR PROVEN PROCESS</span>
@@ -74,12 +81,18 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
           <p className="text-base sm:text-lg text-white/60 leading-relaxed">
             We don't just "cut clips." We apply a 5-stage retention pipeline engineered to eliminate viewer dropoffs and scale Average View Duration (AVD).
           </p>
-        </div>
+        </motion.div>
 
         {/* 2-COLUMN BALANCED PROCESS LAYOUT WITH PIXEL MASCOT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           {/* Left Column: Agency Overview Card & CTA (Waist-Up Pixel Mascot) */}
-          <div className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28">
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28"
+          >
             {/* Waist-Up Japanese Schoolgirl Mascot Popping Up (z-10) */}
             <div className="absolute -top-16 sm:-top-18 right-3 sm:right-6 z-10">
               <PixelMascot />
@@ -128,20 +141,24 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
               {/* Call to Action */}
               <button
                 onClick={onOpenBooking}
-                className="w-full py-4 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 active:scale-95 group"
+                className="w-full py-4 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
               >
                 <Flame className="w-4 h-4 text-amber-500" />
                 <span>Book 15-Min Strategy Call</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: 5 Sequential Clean Numbered Process Cards */}
           <div className="lg:col-span-7 space-y-4">
-            {processSteps.map((step) => (
-              <div
+            {processSteps.map((step, index) => (
+              <motion.div
                 key={step.step}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
                 className="p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl hover:border-indigo-500/30 hover:bg-white/[0.04] transition-all duration-300 group shadow-lg flex items-start gap-5"
               >
                 {/* Big Clean Step Number Badge */}
@@ -170,7 +187,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
                     {step.desc}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -12,6 +12,7 @@ import {
   Volume2,
   CheckCircle2,
 } from "lucide-react";
+import { motion } from "motion/react";
 
 interface WorkSectionProps {
   theme: ThemeMode;
@@ -38,7 +39,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
     <section id="work" className="py-24 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12"
+        >
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-emerald-400 mb-3">
               <span>02 // THE WORK VAULT</span>
@@ -58,7 +65,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 setActiveCategory("longform");
                 setPlayingLongId(null);
               }}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                 activeCategory === "longform"
                   ? "bg-white text-black shadow-lg"
                   : "text-white/60 hover:text-white"
@@ -72,7 +79,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 setActiveCategory("shorts");
                 setPlayingShortId(null);
               }}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
                 activeCategory === "shorts"
                   ? "bg-white text-black shadow-lg"
                   : "text-white/60 hover:text-white"
@@ -81,17 +88,21 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               <span>📱 Viral Shorts & Reels (9:16)</span>
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* 🎬 1. LONG-FORM: ONE-BY-ONE VERTICAL CINEMA FEED */}
         {activeCategory === "longform" && (
-          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16 animate-in fade-in duration-300">
-            {longFormItems.map((item) => {
+          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16">
+            {longFormItems.map((item, index) => {
               const isPlaying = playingLongId === item.id;
 
               return (
-                <div
+                <motion.div
                   key={item.id}
+                  initial={{ opacity: 0, y: 36, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
                   className="relative rounded-3xl md:rounded-[32px] border border-white/[0.12] overflow-hidden p-2 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black ring-1 ring-white/10 transition-all duration-300 hover:border-indigo-500/40"
                 >
                   <div className="relative aspect-video rounded-2xl md:rounded-[26px] overflow-hidden bg-black group">
@@ -139,7 +150,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -147,13 +158,17 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
 
         {/* 📱 2. VIRAL SHORTS: 9:16 PURE CINEMA SHOWROOM */}
         {activeCategory === "shorts" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate-in fade-in duration-300">
-            {shortsItems.map((item) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {shortsItems.map((item, index) => {
               const isPlaying = playingShortId === item.id;
 
               return (
-                <div
+                <motion.div
                   key={item.id}
+                  initial={{ opacity: 0, y: 32, scale: 0.96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.5, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
                   className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-all duration-300 group ring-1 ring-white/5"
                 >
                   {isPlaying ? (
@@ -201,7 +216,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>

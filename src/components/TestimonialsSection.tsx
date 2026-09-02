@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { CheckCircle2, TrendingUp, Sparkles, Flame, Star, Quote, Play, X, Volume2 } from "lucide-react";
 
 export interface TestimonialCreator {
@@ -67,7 +67,13 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-purple-400 mb-4 backdrop-blur-md shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             <span>04 // CREATOR ENDORSEMENTS & CASE STUDIES</span>
@@ -83,7 +89,7 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
           <p className="text-sm sm:text-base text-white/70 leading-relaxed max-w-2xl mx-auto">
             Real feedback from established creators and founders who scaled their channel retention with the Harzh editing system.
           </p>
-        </div>
+        </motion.div>
 
         {/* 3 Testimonial Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">

@@ -10,6 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { TrendingUp, Clock, Users, ArrowUpRight, Flame } from "lucide-react";
+import { motion } from "motion/react";
 
 interface ResultsSectionProps {
   theme: ThemeMode;
@@ -26,7 +27,13 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
     <section id="proof" className="py-24 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-purple-400 mb-4">
             <span>03 // THE RETENTION DIAGNOSTICS</span>
           </div>
@@ -36,10 +43,16 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
           <p className="text-sm sm:text-base text-white/60 leading-relaxed">
             Real second-by-second YouTube Studio retention curves comparing standard industry editing vs. the Harzh retention framework.
           </p>
-        </div>
+        </motion.div>
 
         {/* Big Interactive Chart Card */}
-        <div className="max-w-5xl mx-auto p-6 sm:p-10 rounded-3xl border border-white/[0.1] bg-white/[0.02] backdrop-blur-xl shadow-2xl mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 32, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-5xl mx-auto p-6 sm:p-10 rounded-3xl border border-white/[0.1] bg-white/[0.02] backdrop-blur-xl shadow-2xl mb-16"
+        >
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-white/[0.08]">
             <div>
               <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-widest block mb-1">
@@ -131,7 +144,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
               <p className="text-indigo-400 text-[11px] mt-0.5">Within 4 months of partnership</p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

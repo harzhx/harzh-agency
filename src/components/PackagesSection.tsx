@@ -2,6 +2,7 @@ import React from "react";
 import { ThemeMode } from "../types";
 import { PRICING_PACKAGES } from "../data/agencyData";
 import { CheckCircle2, Flame, ArrowRight, ShieldCheck, Clock, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 
 interface PackagesSectionProps {
   theme: ThemeMode;
@@ -16,7 +17,13 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
     <section id="packages" className="py-28 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span>04 // PREDICTABLE INVESTMENT</span>
@@ -27,13 +34,17 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
           <p className="text-sm sm:text-base text-white/60 leading-relaxed max-w-2xl mx-auto">
             Zero hidden fees. Dedicated senior editor, unlimited Frame.io revisions, and guaranteed 48-hour turnarounds on every master cut.
           </p>
-        </div>
+        </motion.div>
 
         {/* 3 Crisp Packages Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16 items-stretch">
-          {PRICING_PACKAGES.map((pkg) => (
-            <div
+          {PRICING_PACKAGES.map((pkg, idx) => (
+            <motion.div
               key={pkg.id}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
               className={`rounded-3xl p-8 sm:p-9 flex flex-col justify-between relative transition-all duration-300 ${
                 pkg.popular
                   ? "bg-gradient-to-b from-[#13172e] via-[#0d1022] to-[#080a14] border-2 border-indigo-500/40 shadow-2xl shadow-indigo-950/60 ring-1 ring-white/20 lg:-translate-y-3"
@@ -119,7 +130,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
