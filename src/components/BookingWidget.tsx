@@ -136,7 +136,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   });
   const [selectedSlot, setSelectedSlot] = useState<string>("5:00 PM");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("");
+  const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("https://meet.google.com/hzh-cal-strategy");
   const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
@@ -190,34 +190,32 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
 
   // Confetti Blast for Step 3
   const triggerCelebrationConfetti = () => {
-    const canvas = canvasRef.current;
     try {
-      if (canvas) {
-        const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
-        myConfetti({
-          particleCount: 80,
-          angle: 60,
-          spread: 60,
-          origin: { x: 0, y: 0.65 },
-          colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7"],
-        });
-        myConfetti({
-          particleCount: 80,
-          angle: 120,
-          spread: 60,
-          origin: { x: 1, y: 0.65 },
-          colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7"],
-        });
-      }
-      // Also burst full-screen global confetti for maximum delight
+      // Global multi-cannon celebration
       confetti({
-        particleCount: 90,
+        particleCount: 100,
         spread: 80,
-        origin: { y: 0.5 },
-        colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7"],
+        origin: { y: 0.55 },
+        colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7", "#38bdf8"],
       });
+      setTimeout(() => {
+        confetti({
+          particleCount: 60,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.65 },
+          colors: ["#ffffff", "#6366f1", "#10b981", "#38bdf8"],
+        });
+        confetti({
+          particleCount: 60,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.65 },
+          colors: ["#ffffff", "#6366f1", "#10b981", "#38bdf8"],
+        });
+      }, 150);
     } catch (err) {
-      console.error("Confetti error:", err);
+      console.warn("Confetti notice:", err);
     }
   };
 
@@ -237,40 +235,40 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
     setStep(2);
   };
 
-  const handleConfirmBooking = async () => {
+  const handleConfirmBooking = () => {
     setIsSubmitting(true);
 
+    // Asynchronously dispatch lead capture to backend
     try {
-      const resp = await fetch("/api/bookings", {
+      fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          channelLink,
-          revenueTier,
-          phone,
+          name: name || "Creator",
+          email: email || "creator@channel.com",
+          channelLink: channelLink || "youtube.com",
+          revenueTier: revenueTier || "$1K – $5K",
+          phone: phone || "",
           selectedDate: selectedDate.toISOString(),
-          selectedSlot,
+          selectedSlot: selectedSlot || "5:00 PM",
         }),
-      });
-
-      const data = await resp.json();
-
-      const meetUrl =
-        data?.booking?.data?.meetingUrl ||
-        data?.booking?.data?.location ||
-        "https://meet.google.com/hzh-cal-strategy";
-
-      setConfirmedMeetUrl(meetUrl);
-      setIsSubmitting(false);
-      setStep(3);
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data?.booking?.data?.meetingUrl) {
+            setConfirmedMeetUrl(data.booking.data.meetingUrl);
+          }
+        })
+        .catch((e) => console.warn("Background lead notice:", e));
     } catch (err) {
-      console.warn("Booking notice:", err);
-      setConfirmedMeetUrl("https://meet.google.com/hzh-cal-strategy");
+      console.warn("Booking submit notice:", err);
+    }
+
+    // Instantly transition to Step 3 celebration screen
+    setTimeout(() => {
       setIsSubmitting(false);
       setStep(3);
-    }
+    }, 200);
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {

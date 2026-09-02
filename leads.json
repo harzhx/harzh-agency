@@ -1,5 +1,17 @@
 [
   {
+    "id": "lead_1788367725365",
+    "name": "Kumar Harsh",
+    "email": "harzhx@gmail.com",
+    "channelLink": "harzhx@gmail.com",
+    "revenueTier": "$1K – $5K",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T16:48:31.322Z",
+    "meetingSlot": "10:00 PM",
+    "bookedAt": "2026-09-02T16:48:45.365Z",
+    "status": "CONFIRMED"
+  },
+  {
     "id": "lead_1788367389542",
     "name": "Alex Test",
     "email": "alex@channel.com",
