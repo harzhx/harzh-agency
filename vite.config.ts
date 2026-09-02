@@ -27,6 +27,8 @@ export default defineConfig(() => {
             'react-core': ['react', 'react-dom'],
             // Motion animation library
             'motion': ['motion'],
+            // Recharts data visualization - separate chunk
+            'charts': ['recharts'],
             // UI icons - separate so main bundle is lean
             'icons': ['lucide-react'],
             // Confetti - only needed on booking confirmation

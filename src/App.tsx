@@ -1,16 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { ThemeMode } from "./types";
 import { BackgroundEffects } from "./components/BackgroundEffects";
 import { Navbar } from "./components/Navbar";
 import { HeroSection } from "./components/HeroSection";
 import { StrategiesSection } from "./components/StrategiesSection";
 import { WorkSection } from "./components/WorkSection";
-import { ResultsSection } from "./components/ResultsSection";
-import { TestimonialsSection } from "./components/TestimonialsSection";
-import { PackagesSection } from "./components/PackagesSection";
-import { FaqSection } from "./components/FaqSection";
-import { BookingModal } from "./components/BookingModal";
 import { Footer } from "./components/Footer";
+
+// Lazy-loaded below-the-fold & modal components for instant initial paint
+const ResultsSection = lazy(() =>
+  import("./components/ResultsSection").then((m) => ({ default: m.ResultsSection }))
+);
+const TestimonialsSection = lazy(() =>
+  import("./components/TestimonialsSection").then((m) => ({ default: m.TestimonialsSection }))
+);
+const PackagesSection = lazy(() =>
+  import("./components/PackagesSection").then((m) => ({ default: m.PackagesSection }))
+);
+const FaqSection = lazy(() =>
+  import("./components/FaqSection").then((m) => ({ default: m.FaqSection }))
+);
+const BookingModal = lazy(() =>
+  import("./components/BookingModal").then((m) => ({ default: m.BookingModal }))
+);
 
 export default function App() {
   const [theme, setTheme] = useState<ThemeMode>("dark");
@@ -75,27 +87,35 @@ export default function App() {
         />
 
         {/* 4. RETENTION DIAGNOSTICS & CASE STUDIES PROOF */}
-        <ResultsSection
-          theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
+        <Suspense fallback={<div className="py-16 text-center text-white/20 font-mono text-xs">Loading analytics...</div>}>
+          <ResultsSection
+            theme={theme}
+            onOpenBooking={() => setIsBookingOpen(true)}
+          />
+        </Suspense>
 
         {/* 5. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}
-        <TestimonialsSection
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
+        <Suspense fallback={<div className="py-16" />}>
+          <TestimonialsSection
+            onOpenBooking={() => setIsBookingOpen(true)}
+          />
+        </Suspense>
 
         {/* 6. THE 3 TRANSPARENT PACKAGES */}
-        <PackagesSection
-          theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
+        <Suspense fallback={<div className="py-16" />}>
+          <PackagesSection
+            theme={theme}
+            onOpenBooking={() => setIsBookingOpen(true)}
+          />
+        </Suspense>
 
         {/* 7. CREATOR FAQS */}
-        <FaqSection
-          theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
+        <Suspense fallback={<div className="py-16" />}>
+          <FaqSection
+            theme={theme}
+            onOpenBooking={() => setIsBookingOpen(true)}
+          />
+        </Suspense>
       </main>
 
       {/* 7. MINIMALIST FOOTER */}
@@ -105,11 +125,15 @@ export default function App() {
       />
 
       {/* 8. INSTANT PRELOADED CAL.COM BOOKING MODAL */}
-      <BookingModal
-        theme={theme}
-        isOpen={isBookingOpen}
-        onClose={() => setIsBookingOpen(false)}
-      />
+      {isBookingOpen && (
+        <Suspense fallback={null}>
+          <BookingModal
+            theme={theme}
+            isOpen={isBookingOpen}
+            onClose={() => setIsBookingOpen(false)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
