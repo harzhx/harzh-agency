@@ -374,7 +374,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
             </div>
 
             {/* Inputs Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-white/70">Your Name *</label>
                 <input
@@ -382,7 +382,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Alex Hormozi"
+                  placeholder="Your full name"
                   className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
@@ -394,7 +394,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alex@channel.com"
+                  placeholder="your@email.com"
                   className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
@@ -408,7 +408,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   required
                   value={channelLink}
                   onChange={(e) => setChannelLink(e.target.value)}
-                  placeholder="youtube.com/@channel"
+                  placeholder="youtube.com/@yourchannel"
                   className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
