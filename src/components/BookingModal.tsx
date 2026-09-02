@@ -147,46 +147,43 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   }, [activeSlotList, userTimeZone]);
 
-  // Multi-Cannon Guaranteed Confetti Blast
+  // Multi-Cannon Guaranteed Confetti Blast (Safe & Crash-Proof)
   const triggerCelebrationConfetti = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
     try {
-      const myConfetti = confetti.create(canvas, {
-        resize: true,
-        useWorker: true,
-      });
-
-      // Left Cannon
-      myConfetti({
-        particleCount: 75,
+      // Left Blast
+      confetti({
+        particleCount: 70,
         angle: 60,
-        spread: 60,
-        origin: { x: 0, y: 0.65 },
+        spread: 55,
+        origin: { x: 0.1, y: 0.65 },
+        zIndex: 999999,
         colors: ["#10b981", "#6366f1", "#38bdf8", "#fbbf24", "#ffffff"],
       });
 
-      // Right Cannon
-      myConfetti({
-        particleCount: 75,
+      // Right Blast
+      confetti({
+        particleCount: 70,
         angle: 120,
-        spread: 60,
-        origin: { x: 1, y: 0.65 },
+        spread: 55,
+        origin: { x: 0.9, y: 0.65 },
+        zIndex: 999999,
         colors: ["#10b981", "#6366f1", "#38bdf8", "#fbbf24", "#ffffff"],
       });
 
-      // Center Grand Starburst
+      // Center Starburst
       setTimeout(() => {
-        myConfetti({
-          particleCount: 110,
-          spread: 90,
-          origin: { x: 0.5, y: 0.45 },
-          colors: ["#10b981", "#6366f1", "#ffffff", "#a855f7", "#38bdf8"],
-        });
-      }, 200);
+        try {
+          confetti({
+            particleCount: 100,
+            spread: 80,
+            origin: { x: 0.5, y: 0.5 },
+            zIndex: 999999,
+            colors: ["#10b981", "#6366f1", "#ffffff", "#a855f7", "#38bdf8"],
+          });
+        } catch {}
+      }, 180);
     } catch (err) {
-      console.error("Confetti trigger:", err);
+      console.warn("Confetti notice:", err);
     }
   };
 
@@ -195,7 +192,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     if (step === 3) {
       const timer = setTimeout(() => {
         triggerCelebrationConfetti();
-      }, 50);
+      }, 80);
       return () => clearTimeout(timer);
     }
   }, [step]);
@@ -306,12 +303,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       }}
     >
       <div className="relative w-full max-w-[780px] rounded-3xl border border-white/20 bg-[#0c0e17] text-white shadow-[0_25px_90px_rgba(0,0,0,0.98)] overflow-hidden flex flex-col max-h-[92vh]">
-        {/* Dedicated Confetti Canvas */}
-        <canvas
-          ref={canvasRef}
-          className="pointer-events-none absolute inset-0 z-50 w-full h-full"
-        />
-
         {/* Subtle Luxury Top Accent Line */}
         <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
 
