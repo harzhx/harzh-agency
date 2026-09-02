@@ -14,8 +14,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-[#06070a] text-slate-100 antialiased overflow-x-hidden" style="background-color: #06070a; color: #f8fafc;">
-    <div id="root"></div>
+  <body class="bg-[#06070a] text-slate-100 antialiased overflow-x-hidden" style="background-color: #06070a; color: #f8fafc; margin: 0;">
+    <div id="root">
+      <div style="min-height: 100vh; background-color: #06070a; color: #f8fafc; font-family: 'Inter', sans-serif;">
+        <!-- Header Shell -->
+        <header style="height: 80px; display: flex; align-items: center; justify-content: space-between; max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: #080a14; border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff;">H</div>
+            <span style="font-weight: 800; font-size: 18px; letter-spacing: -0.03em; color: #fff;">HARZH</span>
+          </div>
+          <div style="padding: 8px 18px; border-radius: 9999px; background: #ffffff; color: #000; font-weight: 700; font-size: 12px;">
+            Book Strategy Call
+          </div>
+        </header>
+        <!-- Hero Shell -->
+        <main style="max-width: 1000px; margin: 40px auto 0; text-align: center; padding: 0 20px;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 9999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #34d399; margin-bottom: 24px;">
+            <span style="width: 6px; height: 6px; border-radius: 50%; background: #34d399;"></span>
+            Accepting 2 Creators for Q3
+          </div>
+          <h1 style="font-size: clamp(32px, 6vw, 64px); font-weight: 900; line-height: 1.08; letter-spacing: -0.04em; color: #fff; margin: 0 0 20px;">
+            Turn Raw Footage Into <br/>
+            <span style="background: linear-gradient(to right, #60a5fa, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">High-Retention Machines.</span>
+          </h1>
+          <p style="font-size: 16px; color: #94a3b8; max-width: 620px; margin: 0 auto 32px; line-height: 1.6;">
+            We craft retention-engineered long-form and short-form videos for ambitious creators and founders.
+          </p>
+        </main>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
