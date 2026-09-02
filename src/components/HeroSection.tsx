@@ -197,6 +197,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {[
                 ...CREATOR_LOGOS,
                 ...CREATOR_LOGOS,
+                ...CREATOR_LOGOS,
+                ...CREATOR_LOGOS,
               ].map((logo, idx) => (
                 <div
                   key={`niche-${idx}`}
