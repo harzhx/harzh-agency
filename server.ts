@@ -198,6 +198,8 @@ const DEFAULT_SLOTS_POOL = [
   "9:30 PM",
   "10:00 PM",
   "10:30 PM",
+  "11:00 PM",
+  "11:30 PM",
 ];
 
 app.get("/api/available-slots", async (req: Request, res: Response) => {
@@ -247,11 +249,30 @@ app.get("/api/available-slots", async (req: Request, res: Response) => {
         }
       }
     }
+
+    // Ensure 11:30 PM is included and slots are sorted chronologically
+    for (const dateKey of Object.keys(formattedSlots)) {
+      if (!formattedSlots[dateKey].includes("11:30 PM")) {
+        formattedSlots[dateKey].push("11:30 PM");
+      }
+      formattedSlots[dateKey].sort((a, b) => {
+        const toMin = (t: string) => {
+          const [time, period] = t.split(" ");
+          let [h, m] = time.split(":").map(Number);
+          if (period === "PM" && h < 12) h += 12;
+          if (period === "AM" && h === 12) h = 0;
+          return h * 60 + m;
+        };
+        return toMin(a) - toMin(b);
+      });
+    }
+
+    return res.json({ success: true, slots: formattedSlots });
   } catch (err: any) {
     console.warn("Live Cal.com slot fetch notice (using guaranteed slot pool):", err?.message || err);
   }
 
-  // Guaranteed fallback: ensure next 10 days always have open available slots
+  // Guaranteed fallback: ensure next 10 days always have open available slots up to 11:30 PM
   for (let i = 1; i <= 10; i++) {
     const d = new Date(Date.now() + i * 24 * 60 * 60 * 1000);
     const dateKey = d.toLocaleDateString("en-CA", { timeZone: "Asia/Calcutta" });

@@ -42,6 +42,8 @@ const DEFAULT_TIME_SLOTS = [
   "9:30 PM",
   "10:00 PM",
   "10:30 PM",
+  "11:00 PM",
+  "11:30 PM",
 ];
 
 const TIMEZONE_OPTIONS = [
@@ -648,7 +650,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   No slots available on this day. Please pick another date.
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
                   {rawSlots.map((slot) => {
                     const isSelected = selectedSlot === slot;
                     const displaySlot = formatSlotInTimezone(selectedDate, slot, timezone);
