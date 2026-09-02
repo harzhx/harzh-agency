@@ -85,14 +85,8 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
 
         {/* 2-COLUMN BALANCED PROCESS LAYOUT WITH PIXEL MASCOT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
-          {/* Left Column: Agency Overview Card & CTA (Waist-Up Pixel Mascot) */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28"
-          >
+          {/* Left Column: Agency Overview Card & CTA (Waist-Up Pixel Mascot — Pure Sticky) */}
+          <div className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28">
             {/* Waist-Up Japanese Schoolgirl Mascot Popping Up (z-10) */}
             <div className="absolute -top-16 sm:-top-18 right-3 sm:right-6 z-10">
               <PixelMascot />
@@ -148,7 +142,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: 5 Sequential Clean Numbered Process Cards */}
           <div className="lg:col-span-7 space-y-4">
