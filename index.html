@@ -3,79 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Harzh Agency â€” Video Editing & Content Strategy For Creators</title>
+    <title>Harzh Agency — Video Editing &amp; Content Strategy For Creators</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23080a14'/%3E%3Cpath d='M7 6.5C7 5.67 7.67 5 8.5 5H10.5C11.33 5 12 5.67 12 6.5V25.5C12 26.33 11.33 27 10.5 27H8.5C7.67 27 7 26.33 7 25.5V6.5Z' fill='white'/%3E%3Cpath d='M20 6.5C20 5.67 20.67 5 21.5 5H23.5C24.33 5 25 5.67 25 6.5V25.5C25 26.33 24.33 27 23.5 27H21.5C20.67 27 20 26.33 20 25.5V6.5Z' fill='white'/%3E%3Cpath d='M12 13.5L19 16L12 18.5V13.5Z' fill='%23818cf8'/%3E%3Cpath d='M11 15H21V17H11V15Z' fill='%23818cf8' fill-opacity='0.7'/%3E%3C/svg%3E" />
     <meta name="description" content="High-retention video editing, viral hook engineering, and data-driven content strategy for YouTube creators and ambitious founders." />
-    <meta property="og:title" content="Harzh Agency â€” Video Editing & Content Strategy For Creators" />
+    <meta property="og:title" content="Harzh Agency — Video Editing &amp; Content Strategy For Creators" />
     <meta property="og:description" content="Turn raw footage into retention machines. 80%+ average view duration and viral hook engineering." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-      /* Pure CSS splash â€” visible immediately from HTML parse, no JS needed */
-      #splash {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        background: #06070a;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 16px;
-        transition: opacity 0.25s ease;
-      }
-      #splash.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-      #splash-logo {
-        font-family: 'Inter', sans-serif;
-        font-size: 28px;
-        font-weight: 900;
-        letter-spacing: -0.04em;
-        color: #ffffff;
-      }
-      #splash-bar {
-        width: 48px;
-        height: 2px;
-        border-radius: 2px;
-        background: linear-gradient(to right, #10b981, #6366f1);
-        animation: splash-grow 0.6s ease-in-out infinite alternate;
-      }
-      @keyframes splash-grow {
-        from { width: 24px; opacity: 0.5; }
-        to   { width: 56px; opacity: 1; }
-      }
-      html, body { margin: 0; background-color: #06070a; }
-    </style>
+    <style>html, body { margin: 0; background-color: #06070a; }</style>
   </head>
-  <body class="antialiased overflow-x-hidden" style="background-color: #06070a; color: #f8fafc; margin: 0;">
-    <!-- Instant CSS splash screen (shown from frame 0, hidden when React mounts) -->
-    <div id="splash">
-      <div id="splash-logo">HARZH</div>
-      <div id="splash-bar"></div>
-    </div>
-
+  <body style="background-color: #06070a; color: #f8fafc; margin: 0;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // Hide splash as soon as React mounts (fires before first paint of app)
-      document.addEventListener('DOMContentLoaded', function() {
-        var splash = document.getElementById('splash');
-        var observer = new MutationObserver(function() {
-          var root = document.getElementById('root');
-          if (root && root.children.length > 0) {
-            splash.classList.add('hidden');
-            setTimeout(function() { splash.remove(); }, 300);
-            observer.disconnect();
-          }
-        });
-        observer.observe(document.getElementById('root'), { childList: true });
-      });
-    </script>
   </body>
 </html>
-
