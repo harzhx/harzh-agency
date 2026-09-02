@@ -178,8 +178,6 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const rawSlots =
     liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
       ? liveSlotsByDate[selectedDateKey]
-      : !isLoadingSlots
-      ? []
       : DEFAULT_TIME_SLOTS;
 
   useEffect(() => {
