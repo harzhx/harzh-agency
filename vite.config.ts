@@ -25,6 +25,8 @@ export default defineConfig(() => {
           manualChunks: {
             // Core React - tiny, loads first
             'react-core': ['react', 'react-dom'],
+            // Motion animation library
+            'motion': ['motion'],
             // UI icons - separate so main bundle is lean
             'icons': ['lucide-react'],
             // Confetti - only needed on booking confirmation

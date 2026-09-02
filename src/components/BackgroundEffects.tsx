@@ -116,7 +116,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* 1. SOFT ANIMATED GRADIENT MESH */}
       <div
         id="gradient-mesh-layer"
-        className={`absolute inset-0 transition-opacity duration-1000 ${
+        className={`absolute inset-0 ${
           isDark
             ? "bg-[#050505]"
             : "bg-gradient-to-b from-[#f8faff] via-[#f1f4fb] to-[#eaf0fa]"
@@ -126,7 +126,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* Atmospheric Beam Texture Backdrop */}
       <div
         id="beam-texture-radial"
-        className="absolute inset-0 beam-texture pointer-events-none transition-opacity duration-700"
+        className="absolute inset-0 beam-texture pointer-events-none"
       />
 
       {/* Left and Right Vertical Ambient Beam Lines */}
@@ -136,7 +136,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* 2. LIGHT FIELD / BEAM TEXTURE (Spotlight beam from top) */}
       <div
         id="light-beam-layer"
-        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[1200px] h-[750px] opacity-80 transition-all duration-1000"
+        className="absolute -top-32 left-1/2 -translate-x-1/2 w-[1200px] h-[750px] opacity-80 pointer-events-none"
         style={{
           background: isDark
             ? "conic-gradient(from 180deg at 50% 0%, rgba(99, 102, 241, 0) 140deg, rgba(129, 140, 248, 0.22) 175deg, rgba(168, 85, 247, 0.28) 180deg, rgba(96, 165, 250, 0.22) 185deg, rgba(99, 102, 241, 0) 220deg)"
@@ -149,7 +149,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
       {/* Top luminous glow crown */}
       <div
         id="top-glow-crown"
-        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full blur-[80px] pointer-events-none transition-all duration-1000"
+        className="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[300px] rounded-full blur-[80px] pointer-events-none"
         style={{
           background: isDark
             ? "radial-gradient(ellipse at center, rgba(129, 140, 248, 0.35) 0%, rgba(168, 85, 247, 0.18) 45%, transparent 70%)"
