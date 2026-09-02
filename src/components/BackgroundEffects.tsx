@@ -118,7 +118,7 @@ export const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ theme, mou
         id="gradient-mesh-layer"
         className={`absolute inset-0 transition-opacity duration-1000 ${
           isDark
-            ? "bg-[#050505]"
+            ? "bg-[#06070a]"
             : "bg-gradient-to-b from-[#f8faff] via-[#f1f4fb] to-[#eaf0fa]"
         }`}
       />
