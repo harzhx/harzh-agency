@@ -9,9 +9,9 @@ import { ResultsSection } from "./components/ResultsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { PackagesSection } from "./components/PackagesSection";
 import { FaqSection } from "./components/FaqSection";
+import { EmbeddedBookingSection } from "./components/EmbeddedBookingSection";
 import { BookingModal } from "./components/BookingModal";
 import { Footer } from "./components/Footer";
-import { getCalApi } from "@calcom/embed-react";
 
 export default function App() {
   const [theme, setTheme] = useState<ThemeMode>("dark");
@@ -20,21 +20,6 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
-
-    // Initialize Cal.com styling immediately
-    (async function () {
-      try {
-        const cal = await getCalApi();
-        cal("ui", {
-          theme: "dark",
-          styles: { branding: { brandColor: "#6366f1" } },
-          hideEventTypeDetails: false,
-          layout: "month_view",
-        });
-      } catch (e) {
-        console.error("Cal.com init:", e);
-      }
-    })();
   }, []);
 
   // Track mouse position smoothly for cursor-proximity spotlight & ambient parallax
@@ -112,6 +97,9 @@ export default function App() {
           theme={theme}
           onOpenBooking={() => setIsBookingOpen(true)}
         />
+
+        {/* 8. EMBEDDED INTERACTIVE BOOKING SECTION */}
+        <EmbeddedBookingSection theme={theme} />
       </main>
 
       {/* 7. MINIMALIST FOOTER */}
