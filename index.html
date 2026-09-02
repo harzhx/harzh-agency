@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="dark" style="background-color: #06070a; color: #f8fafc;">
+<html lang="en" class="dark" style="background-color: #06070a;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,10 +13,69 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      /* Pure CSS splash — visible immediately from HTML parse, no JS needed */
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #06070a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        transition: opacity 0.25s ease;
+      }
+      #splash.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #splash-logo {
+        font-family: 'Inter', sans-serif;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        color: #ffffff;
+      }
+      #splash-bar {
+        width: 48px;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(to right, #10b981, #6366f1);
+        animation: splash-grow 0.6s ease-in-out infinite alternate;
+      }
+      @keyframes splash-grow {
+        from { width: 24px; opacity: 0.5; }
+        to   { width: 56px; opacity: 1; }
+      }
+      html, body { margin: 0; background-color: #06070a; }
+    </style>
   </head>
-  <body class="bg-[#06070a] text-slate-100 antialiased overflow-x-hidden" style="background-color: #06070a; color: #f8fafc; margin: 0;">
+  <body class="antialiased overflow-x-hidden" style="background-color: #06070a; color: #f8fafc; margin: 0;">
+    <!-- Instant CSS splash screen (shown from frame 0, hidden when React mounts) -->
+    <div id="splash">
+      <div id="splash-logo">HARZH</div>
+      <div id="splash-bar"></div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Hide splash as soon as React mounts (fires before first paint of app)
+      document.addEventListener('DOMContentLoaded', function() {
+        var splash = document.getElementById('splash');
+        var observer = new MutationObserver(function() {
+          var root = document.getElementById('root');
+          if (root && root.children.length > 0) {
+            splash.classList.add('hidden');
+            setTimeout(function() { splash.remove(); }, 300);
+            observer.disconnect();
+          }
+        });
+        observer.observe(document.getElementById('root'), { childList: true });
+      });
+    </script>
   </body>
 </html>
 
