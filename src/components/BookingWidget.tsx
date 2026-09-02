@@ -315,15 +315,20 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
         </div>
 
         <div className="flex items-center gap-3">
-          {step < 3 && (
+          {step < 3 ? (
             <span className="text-xs font-mono text-white/40">
               <strong className="text-white font-bold">{step === 1 ? "01" : "02"}</strong> / 02
+            </span>
+          ) : (
+            <span className="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>Confirmed</span>
             </span>
           )}
           {isModal && onClose && (
             <button
               onClick={onClose}
-              className="p-1 rounded-full text-white/50 hover:text-white hover:bg-white/[0.08] transition-colors"
+              className="p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer"
               aria-label="Close modal"
             >
               <X className="w-4 h-4" />
