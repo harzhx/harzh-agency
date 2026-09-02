@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   Video,
   CheckCircle2,
@@ -7,6 +7,10 @@ import {
   ExternalLink,
   ShieldCheck,
   Calendar,
+  Globe,
+  ChevronDown,
+  Lock,
+  Zap,
   X,
 } from "lucide-react";
 import confetti from "canvas-confetti";
@@ -40,6 +44,21 @@ const DEFAULT_TIME_SLOTS = [
   "10:30 PM",
 ];
 
+const TIMEZONE_OPTIONS = [
+  { value: "Asia/Kolkata", label: "India (IST)", code: "IST", offset: "+05:30" },
+  { value: "America/New_York", label: "US Eastern (EST/EDT)", code: "EST", offset: "-04:00" },
+  { value: "America/Chicago", label: "US Central (CST/CDT)", code: "CST", offset: "-05:00" },
+  { value: "America/Denver", label: "US Mountain (MST/MDT)", code: "MST", offset: "-06:00" },
+  { value: "America/Los_Angeles", label: "US Pacific (PST/PDT)", code: "PST", offset: "-07:00" },
+  { value: "Europe/London", label: "UK / London (GMT/BST)", code: "GMT", offset: "+01:00" },
+  { value: "Europe/Paris", label: "Central Europe (CET/CEST)", code: "CET", offset: "+02:00" },
+  { value: "Asia/Dubai", label: "Dubai / UAE (GST)", code: "GST", offset: "+04:00" },
+  { value: "Asia/Singapore", label: "Singapore / HK (SGT)", code: "SGT", offset: "+08:00" },
+  { value: "Asia/Tokyo", label: "Japan (JST)", code: "JST", offset: "+09:00" },
+  { value: "Australia/Sydney", label: "Sydney (AEST/AEDT)", code: "AEST", offset: "+10:00" },
+  { value: "Pacific/Auckland", label: "New Zealand (NZST)", code: "NZST", offset: "+12:00" },
+];
+
 function getTimeAngles(slotStr: string): { hourAngle: number; minuteAngle: number } {
   try {
     const [time, period] = (slotStr || "5:00 PM").split(" ");
@@ -58,6 +77,34 @@ function getTimeAngles(slotStr: string): { hourAngle: number; minuteAngle: numbe
   }
 }
 
+// Convert IST slot timestamp to user-selected timezone
+function formatSlotInTimezone(date: Date, slotStr: string, targetTz: string): string {
+  try {
+    const [time, period] = (slotStr || "5:00 PM").split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+
+    const istISO = `${year}-${month}-${day}T${h}:${m}:00+05:30`;
+    const slotDate = new Date(istISO);
+
+    return slotDate.toLocaleTimeString("en-US", {
+      timeZone: targetTz,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  } catch {
+    return slotStr;
+  }
+}
+
 export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, onClose }) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -68,6 +115,18 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [channelLink, setChannelLink] = useState("");
   const [revenueTier, setRevenueTier] = useState<string>("$1K – $5K");
   const [phone, setPhone] = useState("");
+
+  // Timezone State
+  const [timezone, setTimezone] = useState<string>(() => {
+    try {
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const exists = TIMEZONE_OPTIONS.some((t) => t.value === userTz);
+      return exists ? userTz : "Asia/Kolkata";
+    } catch {
+      return "Asia/Kolkata";
+    }
+  });
+  const [isTzDropdownOpen, setIsTzDropdownOpen] = useState(false);
 
   // Calendar State
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
@@ -116,7 +175,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   };
 
   const selectedDateKey = getLocalDateKey(selectedDate);
-  const activeSlots =
+  const rawSlots =
     liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
       ? liveSlotsByDate[selectedDateKey]
       : !isLoadingSlots
@@ -124,10 +183,10 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       : DEFAULT_TIME_SLOTS;
 
   useEffect(() => {
-    if (activeSlots.length > 0 && !activeSlots.includes(selectedSlot)) {
-      setSelectedSlot(activeSlots[0]);
+    if (rawSlots.length > 0 && !rawSlots.includes(selectedSlot)) {
+      setSelectedSlot(rawSlots[0]);
     }
-  }, [activeSlots, selectedSlot]);
+  }, [rawSlots, selectedSlot]);
 
   // Confetti Blast for Step 3
   const triggerCelebrationConfetti = () => {
@@ -233,7 +292,21 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
   }, [name, channelLink, confirmedMeetUrl]);
 
-  const { hourAngle, minuteAngle } = getTimeAngles(selectedSlot);
+  const displayTimeInTz = useMemo(() => {
+    return formatSlotInTimezone(selectedDate, selectedSlot, timezone);
+  }, [selectedDate, selectedSlot, timezone]);
+
+  const currentTzLabel = useMemo(() => {
+    const found = TIMEZONE_OPTIONS.find((t) => t.value === timezone);
+    return found ? found.label : timezone;
+  }, [timezone]);
+
+  const currentTzCode = useMemo(() => {
+    const found = TIMEZONE_OPTIONS.find((t) => t.value === timezone);
+    return found ? found.code : "TZ";
+  }, [timezone]);
+
+  const { hourAngle, minuteAngle } = getTimeAngles(displayTimeInTz);
 
   return (
     <div className="relative w-full rounded-3xl border border-white/[0.08] bg-[#07080c] text-white shadow-2xl overflow-hidden flex flex-col font-sans">
@@ -377,70 +450,134 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           </form>
         )}
 
-        {/* ================= STEP 2: MINIMAL TIME PICKER WITH CLOCK ================= */}
+        {/* ================= STEP 2: MINIMAL TIME PICKER WITH LARGER CLOCK & TIMEZONE ================= */}
         {step === 2 && (
           <div className="space-y-5 animate-in fade-in duration-200">
             {/* Minimalist Clock & Meeting Preview */}
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5">
-                {/* Thin needle minimalist analog clock */}
-                <div className="relative w-11 h-11 shrink-0 flex items-center justify-center rounded-full bg-black/40 border border-white/20 shadow-inner">
-                  <svg className="w-9 h-9" viewBox="0 0 40 40">
-                    <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                    <line x1="20" y1="4" x2="20" y2="7" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-                    <line x1="36" y1="20" x2="33" y2="20" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-                    <line x1="20" y1="36" x2="20" y2="33" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-                    <line x1="4" y1="20" x2="7" y2="20" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
+            <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                {/* Bigger, High-Definition Minimalist Analog Clock */}
+                <div className="relative w-16 h-16 sm:w-18 sm:h-18 shrink-0 flex items-center justify-center rounded-full bg-black/50 border border-white/25 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+                  <svg className="w-14 h-14 sm:w-16 sm:h-16" viewBox="0 0 48 48">
+                    {/* Outer dial ticks */}
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
 
-                    {/* Hour Hand */}
+                    {/* 12, 3, 6, 9 Cardinal Markers */}
+                    <line x1="24" y1="4" x2="24" y2="8" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="44" y1="24" x2="40" y2="24" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="24" y1="44" x2="24" y2="40" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="4" y1="24" x2="8" y2="24" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
+
+                    {/* Secondary hour dots */}
+                    <circle cx="34" cy="6.7" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="41.3" cy="14" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="41.3" cy="34" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="34" cy="41.3" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="14" cy="41.3" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="6.7" cy="34" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="6.7" cy="14" r="1" fill="rgba(255,255,255,0.3)" />
+                    <circle cx="14" cy="6.7" r="1" fill="rgba(255,255,255,0.3)" />
+
+                    {/* Hour Hand (Crisp White) */}
                     <line
-                      x1="20"
-                      y1="20"
-                      x2="20"
-                      y2="10"
+                      x1="24"
+                      y1="24"
+                      x2="24"
+                      y2="12"
                       stroke="#ffffff"
+                      strokeWidth="2.8"
+                      strokeLinecap="round"
+                      style={{
+                        transformOrigin: "24px 24px",
+                        transform: `rotate(${hourAngle}deg)`,
+                        transition: "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                      }}
+                    />
+
+                    {/* Minute Hand (Vibrant Indigo Accent) */}
+                    <line
+                      x1="24"
+                      y1="24"
+                      x2="24"
+                      y2="7"
+                      stroke="#818cf8"
                       strokeWidth="2"
                       strokeLinecap="round"
                       style={{
-                        transformOrigin: "20px 20px",
-                        transform: `rotate(${hourAngle}deg)`,
-                        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        transformOrigin: "24px 24px",
+                        transform: `rotate(${minuteAngle}deg)`,
+                        transition: "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)",
                       }}
                     />
 
-                    {/* Minute Hand */}
-                    <line
-                      x1="20"
-                      y1="20"
-                      x2="20"
-                      y2="6"
-                      stroke="#818cf8"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      style={{
-                        transformOrigin: "20px 20px",
-                        transform: `rotate(${minuteAngle}deg)`,
-                        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                      }}
-                    />
-                    <circle cx="20" cy="20" r="1.5" fill="#ffffff" />
+                    {/* Center Cap */}
+                    <circle cx="24" cy="24" r="2.5" fill="#818cf8" />
+                    <circle cx="24" cy="24" r="1.2" fill="#ffffff" />
                   </svg>
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">{formattedDateString}</span>
-                    <span className="text-sm font-mono font-bold text-indigo-300">@ {selectedSlot}</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-base font-bold text-white">{formattedDateString}</span>
+                    <span className="text-base font-mono font-extrabold text-indigo-300">
+                      @ {displayTimeInTz}
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/[0.08] text-white/70">
+                      {currentTzCode}
+                    </span>
                   </div>
-                  <div className="text-[11px] text-white/50 flex items-center gap-1.5 mt-0.5">
+                  <div className="text-xs text-white/50 flex items-center gap-1.5 mt-1">
                     <Video className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>15-Min Strategy Session • Google Meet</span>
+                    <span>15-Min Strategy Session • Google Meet HD</span>
                   </div>
                 </div>
               </div>
 
-              <div className="text-[11px] font-mono text-white/60 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
-                IST (Asia/Kolkata)
+              {/* Interactive Timezone Dropdown Selector */}
+              <div className="relative w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setIsTzDropdownOpen(!isTzDropdownOpen)}
+                  className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] text-xs font-mono text-white/80 hover:text-white transition-all flex items-center justify-between sm:justify-center gap-2 cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                    <span className="truncate max-w-[170px] sm:max-w-[200px] text-left">{currentTzLabel}</span>
+                  </div>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isTzDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Timezone Options Menu */}
+                {isTzDropdownOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-full sm:w-72 max-h-64 overflow-y-auto rounded-2xl bg-[#0c0e18] border border-white/20 shadow-2xl p-1.5 z-50 backdrop-blur-2xl animate-in fade-in duration-150">
+                    <div className="px-3 py-1.5 text-[10px] uppercase font-mono tracking-wider text-white/40 border-b border-white/[0.06] mb-1">
+                      Choose Your Timezone
+                    </div>
+                    {TIMEZONE_OPTIONS.map((tz) => {
+                      const isSelected = tz.value === timezone;
+                      return (
+                        <button
+                          key={tz.value}
+                          type="button"
+                          onClick={() => {
+                            setTimezone(tz.value);
+                            setIsTzDropdownOpen(false);
+                          }}
+                          className={`w-full px-3 py-2 rounded-xl text-left text-xs font-mono transition-colors flex items-center justify-between cursor-pointer ${
+                            isSelected
+                              ? "bg-white text-black font-bold"
+                              : "text-white/80 hover:bg-white/[0.06] hover:text-white"
+                          }`}
+                        >
+                          <span className="truncate">{tz.label}</span>
+                          <span className={`text-[10px] ${isSelected ? "text-black/60" : "text-white/40"}`}>
+                            {tz.offset}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -477,24 +614,29 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
             {/* Time Slot Chips Grid */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-medium text-white/70">Available Timeslots:</label>
+                <label className="text-xs font-medium text-white/70">
+                  Available Slots ({currentTzCode}):
+                </label>
                 {isLoadingSlots ? (
                   <span className="text-[11px] text-white/40 font-mono animate-pulse">Syncing...</span>
                 ) : (
-                  <span className="text-[11px] text-emerald-400 font-mono">
-                    {activeSlots.length} Open Slots
+                  <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    {rawSlots.length} Open Slots
                   </span>
                 )}
               </div>
 
-              {activeSlots.length === 0 ? (
+              {rawSlots.length === 0 ? (
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center text-xs text-white/40 font-mono">
                   No slots available on this day. Please pick another date.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-                  {activeSlots.map((slot) => {
+                  {rawSlots.map((slot) => {
                     const isSelected = selectedSlot === slot;
+                    const displaySlot = formatSlotInTimezone(selectedDate, slot, timezone);
+
                     return (
                       <button
                         key={slot}
@@ -506,7 +648,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                             : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                         }`}
                       >
-                        {slot}
+                        {displaySlot}
                       </button>
                     );
                   })}
@@ -534,7 +676,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   <span className="animate-pulse">Confirming session...</span>
                 ) : (
                   <>
-                    <span>Confirm Strategy Call ({formattedDateString} @ {selectedSlot})</span>
+                    <span>Confirm Strategy Call ({formattedDateString} @ {displayTimeInTz})</span>
                     <CheckCircle2 className="w-4 h-4" />
                   </>
                 )}
@@ -558,7 +700,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                 You're on the calendar, {name || "Creator"}!
               </h3>
               <p className="text-xs sm:text-sm text-white/60 max-w-sm mx-auto leading-relaxed">
-                We've reserved <strong className="text-white font-semibold">{formattedDateString} @ {selectedSlot}</strong>. A calendar invite has been sent to <strong className="text-white font-semibold">{email}</strong>.
+                We've reserved <strong className="text-white font-semibold">{formattedDateString} @ {displayTimeInTz} ({currentTzCode})</strong>. A calendar invite has been dispatched to <strong className="text-white font-semibold">{email}</strong>.
               </p>
             </div>
 
@@ -605,13 +747,16 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
         )}
       </div>
 
-      {/* MINIMAL FOOTER */}
-      <div className="relative z-10 px-6 py-3 border-t border-white/[0.06] bg-black/20 flex items-center justify-between text-[11px] font-mono text-white/40">
+      {/* MINIMAL FOOTER: TRUST BADGE (REPLACED EMAIL WITH INSTANT MEET & SECURITY BADGE) */}
+      <div className="relative z-10 px-6 py-3 border-t border-white/[0.06] bg-black/20 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-white/40">
         <div className="flex items-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-white/50" />
-          <span>100% Free • Confidential Retention Audit</span>
+          <Lock className="w-3 h-3 text-emerald-400" />
+          <span>100% Free • Zero Spam • Confidential Audit</span>
         </div>
-        <div>hi@harzh.in</div>
+        <div className="flex items-center gap-1.5 text-white/60">
+          <Zap className="w-3 h-3 text-indigo-400" />
+          <span>Instant Google Meet Confirmation</span>
+        </div>
       </div>
     </div>
   );
