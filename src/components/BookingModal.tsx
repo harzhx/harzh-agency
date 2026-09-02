@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import { ThemeMode } from "../types";
 import { X } from "lucide-react";
 import { BookingWidget } from "./BookingWidget";
@@ -31,17 +31,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative w-full max-w-[780px] rounded-3xl overflow-hidden max-h-[92vh] flex flex-col shadow-[0_25px_90px_rgba(0,0,0,0.98)]">
-        {/* Floating Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-5 z-50 p-2 rounded-full bg-white/[0.08] hover:bg-white/20 text-white/70 hover:text-white transition-all cursor-pointer"
-          aria-label="Close modal"
-        >
-          <X className="w-4 h-4" />
-        </button>
-
-        {/* Reusable Booking Widget with Animated Clock */}
+      <div className="relative w-full max-w-[760px] rounded-3xl overflow-hidden max-h-[92vh] flex flex-col shadow-[0_25px_90px_rgba(0,0,0,0.98)]">
+        {/* Reusable Minimalist Booking Widget */}
         <BookingWidget isModal={true} onClose={onClose} />
       </div>
     </div>

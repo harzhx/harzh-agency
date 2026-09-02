@@ -1,32 +1,26 @@
 ﻿import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
-  Calendar,
-  Clock,
   Video,
-  User,
-  Mail,
-  Link as LinkIcon,
-  Phone,
   CheckCircle2,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   ExternalLink,
   ShieldCheck,
+  Calendar,
+  X,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
 interface BookingWidgetProps {
   isModal?: boolean;
-  onSuccess?: () => void;
   onClose?: () => void;
 }
 
 const REVENUE_TIERS = [
-  { id: "tier_1", label: "$0 – $1,000", sub: "Getting Started" },
-  { id: "tier_2", label: "$1,000 – $5,000", sub: "Scaling Fast" },
-  { id: "tier_3", label: "$5,000 – $10,000", sub: "Established Channel" },
-  { id: "tier_4", label: "$10,000+", sub: "High-Growth Studio" },
+  { id: "tier_1", label: "$0 – $1K", sub: "Getting Started" },
+  { id: "tier_2", label: "$1K – $5K", sub: "Scaling Fast" },
+  { id: "tier_3", label: "$5K – $10K", sub: "Established" },
+  { id: "tier_4", label: "$10K+", sub: "High-Growth" },
 ];
 
 const DEFAULT_TIME_SLOTS = [
@@ -46,8 +40,7 @@ const DEFAULT_TIME_SLOTS = [
   "10:30 PM",
 ];
 
-// Helper to compute clock hand angles from time string (e.g. "6:30 PM")
-function getTimeAngles(slotStr: string): { hourAngle: number; minuteAngle: number; hourDisplay: string } {
+function getTimeAngles(slotStr: string): { hourAngle: number; minuteAngle: number } {
   try {
     const [time, period] = (slotStr || "5:00 PM").split(" ");
     const [hStr, mStr] = time.split(":");
@@ -57,11 +50,11 @@ function getTimeAngles(slotStr: string): { hourAngle: number; minuteAngle: numbe
     if (period === "AM" && h === 12) h = 0;
 
     const hourOnClock = (h % 12) + m / 60;
-    const hourAngle = hourOnClock * 30; // 360 / 12 = 30 deg
-    const minuteAngle = m * 6; // 360 / 60 = 6 deg
-    return { hourAngle, minuteAngle, hourDisplay: slotStr };
+    const hourAngle = hourOnClock * 30;
+    const minuteAngle = m * 6;
+    return { hourAngle, minuteAngle };
   } catch {
-    return { hourAngle: 150, minuteAngle: 0, hourDisplay: slotStr || "5:00 PM" };
+    return { hourAngle: 150, minuteAngle: 0 };
   }
 }
 
@@ -73,7 +66,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [channelLink, setChannelLink] = useState("");
-  const [revenueTier, setRevenueTier] = useState<string>("$1,000 – $5,000");
+  const [revenueTier, setRevenueTier] = useState<string>("$1K – $5K");
   const [phone, setPhone] = useState("");
 
   // Calendar State
@@ -101,7 +94,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
     return dates;
   }, []);
 
-  // Fetch Live Real-Time Available Slots from backend API
+  // Fetch Live Available Slots
   useEffect(() => {
     setIsLoadingSlots(true);
     fetch("/api/available-slots")
@@ -115,7 +108,6 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       .finally(() => setIsLoadingSlots(false));
   }, []);
 
-  // Compute local date key YYYY-MM-DD
   const getLocalDateKey = (d: Date): string => {
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -131,7 +123,6 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       ? []
       : DEFAULT_TIME_SLOTS;
 
-  // Auto-select first slot when date or slots change
   useEffect(() => {
     if (activeSlots.length > 0 && !activeSlots.includes(selectedSlot)) {
       setSelectedSlot(activeSlots[0]);
@@ -144,38 +135,23 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
     if (!canvas) return;
 
     try {
-      const myConfetti = confetti.create(canvas, {
-        resize: true,
-        useWorker: true,
-      });
-
-      // Dual side cannons + starburst
+      const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
       myConfetti({
-        particleCount: 80,
+        particleCount: 70,
         angle: 60,
-        spread: 55,
+        spread: 50,
         origin: { x: 0, y: 0.65 },
-        colors: ["#10b981", "#6366f1", "#38bdf8", "#fbbf24", "#ffffff"],
+        colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7"],
       });
-
       myConfetti({
-        particleCount: 80,
+        particleCount: 70,
         angle: 120,
-        spread: 55,
+        spread: 50,
         origin: { x: 1, y: 0.65 },
-        colors: ["#10b981", "#6366f1", "#38bdf8", "#fbbf24", "#ffffff"],
+        colors: ["#ffffff", "#6366f1", "#10b981", "#a855f7"],
       });
-
-      setTimeout(() => {
-        myConfetti({
-          particleCount: 100,
-          spread: 80,
-          origin: { x: 0.5, y: 0.45 },
-          colors: ["#10b981", "#6366f1", "#ffffff", "#a855f7", "#38bdf8"],
-        });
-      }, 180);
     } catch (err) {
-      console.error("Confetti trigger:", err);
+      console.error("Confetti error:", err);
     }
   };
 
@@ -189,7 +165,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const handleNextToCalendar = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !channelLink.trim()) {
-      alert("Please fill in your name, email, and channel link to proceed.");
+      alert("Please enter your name, email, and channel URL to proceed.");
       return;
     }
     setStep(2);
@@ -236,7 +212,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       setIsSubmitting(false);
       setStep(3);
     } catch (err) {
-      console.warn("Booking error notice:", err);
+      console.warn("Booking notice:", err);
       setIsSubmitting(false);
       alert("Booking service notice: Please choose another time slot.");
     }
@@ -251,131 +227,119 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const googleCalendarUrl = useMemo(() => {
     const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
     const details = encodeURIComponent(
-      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet video link sent via email"}\nHost: Harzh`
+      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet link sent via email"}\nHost: Harzh`
     );
     const location = encodeURIComponent(confirmedMeetUrl || "Google Meet (Video Call)");
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
   }, [name, channelLink, confirmedMeetUrl]);
 
-  // Animated Clock Angles
   const { hourAngle, minuteAngle } = getTimeAngles(selectedSlot);
 
   return (
-    <div className="relative w-full rounded-3xl border border-white/15 bg-[#0a0c14]/95 text-white shadow-2xl backdrop-blur-2xl overflow-hidden flex flex-col">
+    <div className="relative w-full rounded-3xl border border-white/[0.08] bg-[#07080c] text-white shadow-2xl overflow-hidden flex flex-col font-sans">
       {/* Confetti canvas */}
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-50 w-full h-full" />
 
-      {/* Top Emerald Brand Highlight Line */}
-      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
-
-      {/* CARD HEADER */}
-      <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-white/[0.02]">
-        <div className="flex items-center gap-2.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.9)]" />
-          <span className="text-xs font-mono font-bold tracking-wider uppercase text-white">
-            15-Min Retention Audit
-          </span>
+      {/* MINIMAL HEADER */}
+      <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-white/[0.01]">
+        <div className="flex items-center gap-2 text-xs font-mono text-white/70">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="tracking-wider uppercase font-semibold">15-Min Strategy Audit</span>
         </div>
 
         <div className="flex items-center gap-3">
           {step < 3 && (
-            <div className="flex items-center gap-1.5 bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full text-xs font-mono text-white/80">
-              <span className={step === 1 ? "text-emerald-400 font-bold" : "text-white/40"}>01</span>
-              <span className="text-white/20">/</span>
-              <span className={step === 2 ? "text-emerald-400 font-bold" : "text-white/40"}>02</span>
-            </div>
+            <span className="text-xs font-mono text-white/40">
+              <strong className="text-white font-bold">{step === 1 ? "01" : "02"}</strong> / 02
+            </span>
+          )}
+          {isModal && onClose && (
+            <button
+              onClick={onClose}
+              className="p-1 rounded-full text-white/50 hover:text-white hover:bg-white/[0.08] transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="w-4 h-4" />
+            </button>
           )}
         </div>
       </div>
 
-      {/* CARD BODY */}
+      {/* FORM BODY */}
       <div className="relative z-10 p-6 sm:p-8 flex-1 overflow-y-auto">
         {/* ================= STEP 1: INTAKE ================= */}
         {step === 1 && (
-          <form onSubmit={handleNextToCalendar} className="space-y-4 animate-in fade-in duration-200">
+          <form onSubmit={handleNextToCalendar} className="space-y-5 animate-in fade-in duration-200">
             <div>
-              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                Book Your Video Retention Audit
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                Book Your Retention Audit
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1 font-normal">
-                We'll audit your video pacing, identify retention dropoff nodes, and map out your dedicated editing roadmap.
+              <p className="text-xs sm:text-sm text-white/60 mt-1 font-normal leading-relaxed">
+                We'll audit your video pacing, identify drop-off nodes, and map out your dedicated editing roadmap.
               </p>
             </div>
 
-            {/* Inputs: Name & Email */}
+            {/* Inputs Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Your Name *</span>
-                </label>
+                <label className="text-xs font-medium text-white/70">Your Name *</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Hormozi"
-                  className="w-full px-4 py-3 rounded-xl bg-[#121522] border border-white/15 text-sm font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Email Address *</span>
-                </label>
+                <label className="text-xs font-medium text-white/70">Email Address *</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@channel.com"
-                  className="w-full px-4 py-3 rounded-xl bg-[#121522] border border-white/15 text-sm font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
             </div>
 
-            {/* Channel Link & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
-                  <LinkIcon className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Channel / Social URL *</span>
-                </label>
+                <label className="text-xs font-medium text-white/70">Channel / Social URL *</label>
                 <input
                   type="text"
                   required
                   value={channelLink}
                   onChange={(e) => setChannelLink(e.target.value)}
-                  placeholder="youtube.com/@channel or @handle"
-                  className="w-full px-4 py-3 rounded-xl bg-[#121522] border border-white/15 text-sm font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
+                  placeholder="youtube.com/@channel"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-200 flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>WhatsApp / Phone</span>
-                  </span>
-                  <span className="text-[11px] text-slate-400">(Optional)</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-medium text-white/70">WhatsApp / Phone</label>
+                  <span className="text-[11px] text-white/30">(Optional)</span>
+                </div>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+1 (555) 000-0000"
-                  className="w-full px-4 py-3 rounded-xl bg-[#121522] border border-white/15 text-sm font-medium text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-white/40 focus:bg-white/[0.05] transition-all"
                 />
               </div>
             </div>
 
             {/* Revenue Tier Selector */}
             <div className="space-y-2 pt-1">
-              <label className="text-xs font-semibold text-slate-200 flex items-center justify-between">
-                <span>Monthly Channel / Business Revenue</span>
-                <span className="text-[11px] text-slate-400 font-mono">Confidential</span>
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-medium text-white/70">Monthly Channel / Business Revenue</label>
+                <span className="text-[11px] font-mono text-white/30">Confidential</span>
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {REVENUE_TIERS.map((tier) => {
                   const isSelected = revenueTier === tier.label;
@@ -384,107 +348,105 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                       key={tier.id}
                       type="button"
                       onClick={() => setRevenueTier(tier.label)}
-                      className={`p-3 rounded-xl text-left border transition-all cursor-pointer ${
+                      className={`py-3 px-3.5 rounded-xl text-left border transition-all cursor-pointer ${
                         isSelected
-                          ? "bg-emerald-500/20 border-emerald-400 text-white ring-1 ring-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.25)]"
-                          : "bg-[#121522] border-white/10 text-slate-300 hover:bg-[#191d2d] hover:border-white/25"
+                          ? "bg-white text-black border-white font-bold shadow-lg"
+                          : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                       }`}
                     >
-                      <div className="text-xs font-bold text-white">{tier.label}</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5">{tier.sub}</div>
+                      <div className="text-xs font-bold">{tier.label}</div>
+                      <div className={`text-[10px] mt-0.5 ${isSelected ? "text-black/60" : "text-white/40"}`}>
+                        {tier.sub}
+                      </div>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Next Button */}
+            {/* Submit Button */}
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_25px_rgba(16,185,129,0.35)] flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full py-3.5 rounded-xl font-bold text-sm bg-white text-black hover:bg-white/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-xl active:scale-[0.99]"
               >
-                <span>Select Date & Time</span>
+                <span>Select Date &amp; Time</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </form>
         )}
 
-        {/* ================= STEP 2: TIME PICKER WITH ANIMATED CLOCK ================= */}
+        {/* ================= STEP 2: MINIMAL TIME PICKER WITH CLOCK ================= */}
         {step === 2 && (
           <div className="space-y-5 animate-in fade-in duration-200">
-            {/* Top Bar with Dynamic Animated Clock & Time Readout */}
-            <div className="p-4 rounded-2xl bg-[#121522] border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-4">
-                {/* Minimalist SVG Animated Clock */}
-                <div className="relative w-12 h-12 shrink-0 flex items-center justify-center rounded-full bg-black/60 border border-emerald-400/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                  <svg className="w-10 h-10" viewBox="0 0 40 40">
-                    {/* Dial ticks */}
-                    <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+            {/* Minimalist Clock & Meeting Preview */}
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                {/* Thin needle minimalist analog clock */}
+                <div className="relative w-11 h-11 shrink-0 flex items-center justify-center rounded-full bg-black/40 border border-white/20 shadow-inner">
+                  <svg className="w-9 h-9" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
                     <line x1="20" y1="4" x2="20" y2="7" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
                     <line x1="36" y1="20" x2="33" y2="20" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
                     <line x1="20" y1="36" x2="20" y2="33" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
                     <line x1="4" y1="20" x2="7" y2="20" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
 
-                    {/* Dynamic Hour Hand */}
+                    {/* Hour Hand */}
                     <line
                       x1="20"
                       y1="20"
                       x2="20"
                       y2="10"
-                      stroke="#10b981"
-                      strokeWidth="2.5"
+                      stroke="#ffffff"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       style={{
                         transformOrigin: "20px 20px",
                         transform: `rotate(${hourAngle}deg)`,
-                        transition: "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
                       }}
                     />
 
-                    {/* Dynamic Minute Hand */}
+                    {/* Minute Hand */}
                     <line
                       x1="20"
                       y1="20"
                       x2="20"
                       y2="6"
-                      stroke="#ffffff"
-                      strokeWidth="1.8"
+                      stroke="#818cf8"
+                      strokeWidth="1.5"
                       strokeLinecap="round"
                       style={{
                         transformOrigin: "20px 20px",
                         transform: `rotate(${minuteAngle}deg)`,
-                        transition: "transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
                       }}
                     />
-
-                    {/* Pivot point */}
-                    <circle cx="20" cy="20" r="2" fill="#10b981" />
+                    <circle cx="20" cy="20" r="1.5" fill="#ffffff" />
                   </svg>
                 </div>
 
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-white">{formattedDateString}</span>
-                    <span className="text-sm font-mono font-extrabold text-emerald-400">@ {selectedSlot}</span>
+                    <span className="text-sm font-mono font-bold text-indigo-300">@ {selectedSlot}</span>
                   </div>
-                  <div className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+                  <div className="text-[11px] text-white/50 flex items-center gap-1.5 mt-0.5">
                     <Video className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>15-Min Strategy Session • Google Meet HD</span>
+                    <span>15-Min Strategy Session • Google Meet</span>
                   </div>
                 </div>
               </div>
 
-              <div className="text-[11px] font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/30 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Timezone: IST (Asia/Kolkata)</span>
+              <div className="text-[11px] font-mono text-white/60 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08]">
+                IST (Asia/Kolkata)
               </div>
             </div>
 
             {/* 6-Day Rolling Date Strip */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-200">Select Date:</label>
+              <label className="text-xs font-medium text-white/70">Select Date:</label>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {availableDates.map((date) => {
                   const isSelected = selectedDate.toDateString() === date.toDateString();
@@ -499,13 +461,13 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                       onClick={() => setSelectedDate(date)}
                       className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
                         isSelected
-                          ? "bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.4)] font-black scale-[1.02]"
-                          : "bg-[#121522] border-white/10 text-slate-300 hover:bg-[#191d2d] hover:border-white/25"
+                          ? "bg-white text-black border-white font-bold shadow-lg scale-[1.02]"
+                          : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                       }`}
                     >
-                      <div className="text-[10px] uppercase font-bold tracking-wider opacity-75">{dayName}</div>
-                      <div className="text-lg font-black my-0.5">{dayNum}</div>
-                      <div className="text-[10px] font-semibold opacity-75">{monthName}</div>
+                      <div className="text-[10px] uppercase font-semibold opacity-70">{dayName}</div>
+                      <div className="text-lg font-bold my-0.5">{dayNum}</div>
+                      <div className="text-[10px] font-medium opacity-60">{monthName}</div>
                     </button>
                   );
                 })}
@@ -515,20 +477,19 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
             {/* Time Slot Chips Grid */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-slate-200">Available Timeslots:</label>
+                <label className="text-xs font-medium text-white/70">Available Timeslots:</label>
                 {isLoadingSlots ? (
-                  <span className="text-[11px] text-emerald-400 font-mono animate-pulse">Syncing availability...</span>
+                  <span className="text-[11px] text-white/40 font-mono animate-pulse">Syncing...</span>
                 ) : (
-                  <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    {activeSlots.length} Open Slots (Live Sync)
+                  <span className="text-[11px] text-emerald-400 font-mono">
+                    {activeSlots.length} Open Slots
                   </span>
                 )}
               </div>
 
               {activeSlots.length === 0 ? (
-                <div className="p-4 rounded-xl bg-[#121522] border border-white/10 text-center text-xs text-slate-400 font-mono">
-                  No available slots on this day. Please select another date.
+                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] text-center text-xs text-white/40 font-mono">
+                  No slots available on this day. Please pick another date.
                 </div>
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
@@ -539,18 +500,13 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                         key={slot}
                         type="button"
                         onClick={() => setSelectedSlot(slot)}
-                        className={`py-2.5 px-1.5 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                        className={`py-2.5 px-2 rounded-xl text-xs font-mono border transition-all cursor-pointer text-center ${
                           isSelected
-                            ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400 font-bold"
-                            : "bg-[#121522] border-white/10 text-slate-300 hover:bg-[#191d2d] hover:border-white/25"
+                            ? "bg-white text-black border-white font-bold shadow-md"
+                            : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                         }`}
                       >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full ${
-                            isSelected ? "bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.9)]" : "bg-emerald-500/60"
-                          }`}
-                        />
-                        <span>{slot}</span>
+                        {slot}
                       </button>
                     );
                   })}
@@ -558,12 +514,12 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
               )}
             </div>
 
-            {/* Bottom Actions */}
+            {/* Actions */}
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="px-4 py-3.5 rounded-xl border border-white/20 bg-white/[0.05] hover:bg-white/10 text-white text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-4 py-3.5 rounded-xl border border-white/[0.1] bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back</span>
@@ -572,10 +528,10 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                 type="button"
                 onClick={handleConfirmBooking}
                 disabled={isSubmitting}
-                className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_30px_rgba(16,185,129,0.35)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-white text-black hover:bg-white/90 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-xl"
               >
                 {isSubmitting ? (
-                  <span className="animate-pulse">Reserving slot &amp; creating Meet session...</span>
+                  <span className="animate-pulse">Confirming session...</span>
                 ) : (
                   <>
                     <span>Confirm Strategy Call ({formattedDateString} @ {selectedSlot})</span>
@@ -587,37 +543,37 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           </div>
         )}
 
-        {/* ================= STEP 3: CONFIRMATION ================= */}
+        {/* ================= STEP 3: MINIMAL VIP CONFIRMATION ================= */}
         {step === 3 && (
-          <div className="py-6 text-center space-y-4 animate-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-400/60 flex items-center justify-center mx-auto shadow-[0_0_35px_rgba(16,185,129,0.45)]">
-              <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+          <div className="py-8 text-center space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="w-14 h-14 rounded-full bg-white/[0.06] border border-white/20 flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-7 h-7 text-emerald-400" />
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">
                 Strategy Call Confirmed
               </span>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white">
                 You're on the calendar, {name || "Creator"}!
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto">
-                We've locked your slot for <strong className="text-white font-bold">{formattedDateString} @ {selectedSlot}</strong>. A calendar invite has been dispatched to <strong className="text-white font-bold">{email}</strong>.
+              <p className="text-xs sm:text-sm text-white/60 max-w-sm mx-auto leading-relaxed">
+                We've reserved <strong className="text-white font-semibold">{formattedDateString} @ {selectedSlot}</strong>. A calendar invite has been sent to <strong className="text-white font-semibold">{email}</strong>.
               </p>
             </div>
 
-            {/* Meet Link */}
+            {/* Meet link card */}
             {confirmedMeetUrl && (
-              <div className="p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 max-w-md mx-auto flex items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 text-emerald-300 font-mono text-left truncate">
+              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] max-w-md mx-auto flex items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2 text-white/80 font-mono truncate">
                   <Video className="w-4 h-4 shrink-0 text-emerald-400" />
-                  <span className="truncate font-semibold">{confirmedMeetUrl}</span>
+                  <span className="truncate">{confirmedMeetUrl}</span>
                 </div>
                 <a
                   href={confirmedMeetUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-emerald-400 text-black font-bold text-xs hover:bg-emerald-300 flex items-center gap-1 shrink-0"
+                  className="px-3 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-white/90 flex items-center gap-1 shrink-0"
                 >
                   <span>Open Meet</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -639,7 +595,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
               {isModal && onClose && (
                 <button
                   onClick={onClose}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/15 text-white text-xs font-mono transition-colors cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] text-white text-xs font-mono transition-colors cursor-pointer"
                 >
                   Done
                 </button>
@@ -649,11 +605,11 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
         )}
       </div>
 
-      {/* FOOTER BADGE */}
-      <div className="relative z-10 px-6 py-3 border-t border-white/[0.08] bg-black/40 flex items-center justify-between text-xs font-mono text-slate-400">
-        <div className="flex items-center gap-1.5 text-slate-300">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>100% Free Video Retention Audit</span>
+      {/* MINIMAL FOOTER */}
+      <div className="relative z-10 px-6 py-3 border-t border-white/[0.06] bg-black/20 flex items-center justify-between text-[11px] font-mono text-white/40">
+        <div className="flex items-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5 text-white/50" />
+          <span>100% Free • Confidential Retention Audit</span>
         </div>
         <div>hi@harzh.in</div>
       </div>
