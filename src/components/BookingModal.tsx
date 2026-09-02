@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { ThemeMode } from "../types";
 import {
   X,
@@ -14,6 +14,7 @@ import {
   ArrowLeft,
   ShieldCheck,
   ExternalLink,
+  Globe,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -30,21 +31,18 @@ const REVENUE_TIERS = [
   { id: "tier_4", label: "$10,000+", sub: "High-Growth Studio" },
 ];
 
-const TIME_SLOTS = [
-  "4:00 PM",
-  "4:30 PM",
-  "5:00 PM",
-  "5:30 PM",
-  "6:00 PM",
-  "6:30 PM",
-  "7:00 PM",
-  "7:30 PM",
-  "8:00 PM",
-  "8:30 PM",
-  "9:00 PM",
-  "9:30 PM",
-  "10:00 PM",
-  "10:30 PM",
+const TIMEZONE_OPTIONS = [
+  { value: "America/New_York", label: "Eastern Time (US & Canada) — EST/EDT" },
+  { value: "America/Chicago", label: "Central Time (US & Canada) — CST/CDT" },
+  { value: "America/Denver", label: "Mountain Time (US & Canada) — MST/MDT" },
+  { value: "America/Los_Angeles", label: "Pacific Time (US & Canada) — PST/PDT" },
+  { value: "Europe/London", label: "London / Dublin — GMT/BST" },
+  { value: "Europe/Paris", label: "Central Europe (Paris, Berlin, Rome) — CET" },
+  { value: "Asia/Dubai", label: "Gulf Standard Time (Dubai) — GST" },
+  { value: "Asia/Calcutta", label: "India Standard Time (IST)" },
+  { value: "Asia/Singapore", label: "Singapore / Hong Kong — SGT/HKT" },
+  { value: "Asia/Tokyo", label: "Japan Standard Time — JST" },
+  { value: "Australia/Sydney", label: "Australian Eastern Time — AEST" },
 ];
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -61,67 +59,93 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [revenueTier, setRevenueTier] = useState<string>("$1,000 – $5,000");
   const [phone, setPhone] = useState("");
 
+  // Timezone State (Auto-detected from browser)
+  const [userTimeZone, setUserTimeZone] = useState<string>(() => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Calcutta";
+    } catch {
+      return "Asia/Calcutta";
+    }
+  });
+
   // Calendar State
+  const [rawIsoSlots, setRawIsoSlots] = useState<string[]>([]);
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow;
   });
-  const [selectedSlot, setSelectedSlot] = useState<string>("5:00 PM");
+  const [selectedSlotObj, setSelectedSlotObj] = useState<{ iso: string; timeStr: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("");
-  const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
-  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
-  // Available Dates (Next 6 rolling days)
-  const availableDates = React.useMemo(() => {
+  // Fetch Live Real-Time Available Slots from Google Calendar via Cal API
+  const fetchLiveSlots = () => {
+    setIsLoadingSlots(true);
+    fetch("/api/available-slots")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.rawIsoSlots && Array.isArray(data.rawIsoSlots)) {
+          setRawIsoSlots(data.rawIsoSlots);
+        }
+      })
+      .catch((err) => console.warn("Live slots fetch notice:", err))
+      .finally(() => setIsLoadingSlots(false));
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchLiveSlots();
+    }
+  }, [isOpen]);
+
+  // Group raw ISO slots by localized YYYY-MM-DD date in visitor's selected timezone
+  const localizedSlotsByDate = useMemo(() => {
+    const map: Record<string, { iso: string; timeStr: string }[]> = {};
+
+    for (const iso of rawIsoSlots) {
+      const d = new Date(iso);
+      const dateKey = d.toLocaleDateString("en-CA", { timeZone: userTimeZone }); // YYYY-MM-DD
+      const timeStr = d.toLocaleTimeString("en-US", {
+        timeZone: userTimeZone,
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      if (!map[dateKey]) map[dateKey] = [];
+      map[dateKey].push({ iso, timeStr });
+    }
+    return map;
+  }, [rawIsoSlots, userTimeZone]);
+
+  // Rolling 7 Days in the visitor's localized timezone
+  const availableDates = useMemo(() => {
     const dates: Date[] = [];
-    let current = new Date();
-    current.setDate(current.getDate() + 1);
-
-    while (dates.length < 6) {
-      dates.push(new Date(current));
-      current.setDate(current.getDate() + 1);
+    const now = new Date();
+    for (let i = 0; i < 7; i++) {
+      const d = new Date();
+      d.setDate(now.getDate() + i);
+      dates.push(d);
     }
     return dates;
   }, []);
 
-  // Fetch Live Real-Time Available Slots from Google Calendar via Cal API
+  // Compute active slots for currently selected date
+  const selectedDateKey = selectedDate.toLocaleDateString("en-CA", { timeZone: userTimeZone });
+  const activeSlotList = localizedSlotsByDate[selectedDateKey] || [];
+
+  // Auto-select first slot when date or timezone changes
   useEffect(() => {
-    if (isOpen) {
-      setIsLoadingSlots(true);
-      fetch("/api/available-slots")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.slots && Object.keys(data.slots).length > 0) {
-            setLiveSlotsByDate(data.slots);
-          }
-        })
-        .catch((err) => console.warn("Live slots fetch notice:", err))
-        .finally(() => setIsLoadingSlots(false));
+    if (activeSlotList.length > 0) {
+      if (!selectedSlotObj || !activeSlotList.some((s) => s.iso === selectedSlotObj.iso)) {
+        setSelectedSlotObj(activeSlotList[0]);
+      }
+    } else {
+      setSelectedSlotObj(null);
     }
-  }, [isOpen]);
-
-  // Helper to compute local YYYY-MM-DD date key
-  const getLocalDateKey = (d: Date): string => {
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  // Compute active slots for currently selected date strictly from live API
-  const selectedDateKey = getLocalDateKey(selectedDate);
-  const activeSlots = liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
-    ? liveSlotsByDate[selectedDateKey]
-    : (!isLoadingSlots ? [] : TIME_SLOTS);
-
-  // Auto-select first slot when date or slots change
-  useEffect(() => {
-    if (activeSlots.length > 0 && !activeSlots.includes(selectedSlot)) {
-      setSelectedSlot(activeSlots[0]);
-    }
-  }, [activeSlots, selectedSlot]);
+  }, [activeSlotList, userTimeZone]);
 
   // Multi-Cannon Guaranteed Confetti Blast
   const triggerCelebrationConfetti = () => {
@@ -205,6 +229,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   };
 
   const handleConfirmBooking = async () => {
+    if (!selectedSlotObj) {
+      alert("Please select an available time slot to proceed.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -217,22 +246,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           channelLink,
           revenueTier,
           phone,
-          selectedDate: selectedDate.toISOString(),
-          selectedSlot,
+          slotTimeISO: selectedSlotObj.iso,
+          selectedSlot: selectedSlotObj.timeStr,
+          timeZone: userTimeZone,
         }),
       });
 
       const data = await resp.json();
 
       if (!resp.ok || !data.success) {
-        alert(data.error || "This time slot is no longer available. Please choose another time.");
+        alert(data.error || "This time slot was just booked by another creator. Please choose another time.");
         setIsSubmitting(false);
-        // Refresh live slots
-        fetch("/api/available-slots")
-          .then((res) => res.json())
-          .then((d) => {
-            if (d?.slots) setLiveSlotsByDate(d.slots);
-          });
+        fetchLiveSlots();
         return;
       }
 
@@ -246,26 +271,27 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       setIsSubmitting(false);
       setStep(3);
     } catch (err) {
-      console.warn("Booking error notice:", err);
+      console.warn("Booking notice:", err);
       setIsSubmitting(false);
       alert("Booking service notice: Please choose another time slot.");
     }
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {
+    timeZone: userTimeZone,
     weekday: "short",
     month: "short",
     day: "numeric",
   });
 
-  const googleCalendarUrl = React.useMemo(() => {
+  const googleCalendarUrl = useMemo(() => {
     const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
     const details = encodeURIComponent(
-      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet video link sent via email"}\nHost: Harzh`
+      `Creator: ${name}\nChannel: ${channelLink}\nMeeting URL: ${confirmedMeetUrl || "Google Meet video link sent via email"}\nTimezone: ${userTimeZone}\nHost: Harzh`
     );
     const location = encodeURIComponent(confirmedMeetUrl || "Google Meet (Video Call)");
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
-  }, [name, channelLink, confirmedMeetUrl]);
+  }, [name, channelLink, confirmedMeetUrl, userTimeZone]);
 
   return (
     <div
@@ -446,43 +472,65 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           {/* ================= STEP 2: TIME PICKER ================= */}
           {step === 2 && (
             <div className="space-y-5 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1 border-b border-white/10">
                 <div>
                   <h2 className="text-xl font-bold text-white">Select a Date & Time</h2>
                   <p className="text-sm text-slate-300 mt-0.5">
                     15-Min Strategy Session • Hosted on Google Meet (HD Video)
                   </p>
                 </div>
-                <div className="text-xs text-emerald-400 font-mono hidden sm:flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>Timezone: IST (Asia/Kolkata)</span>
+
+                {/* Interactive Timezone Switcher */}
+                <div className="flex items-center gap-1.5 bg-[#141722] border border-white/15 px-3 py-1.5 rounded-xl text-xs">
+                  <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <select
+                    value={userTimeZone}
+                    onChange={(e) => setUserTimeZone(e.target.value)}
+                    className="bg-transparent text-emerald-300 font-mono text-xs focus:outline-none cursor-pointer max-w-[200px] truncate"
+                  >
+                    {!TIMEZONE_OPTIONS.some((t) => t.value === userTimeZone) && (
+                      <option value={userTimeZone} className="bg-[#141722] text-white">
+                        {userTimeZone} (Local)
+                      </option>
+                    )}
+                    {TIMEZONE_OPTIONS.map((tz) => (
+                      <option key={tz.value} value={tz.value} className="bg-[#141722] text-white">
+                        {tz.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
               {/* Day Strip */}
               <div className="space-y-2">
                 <label className="text-[13px] font-semibold text-slate-200">Choose Available Day:</label>
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-7 gap-2">
                   {availableDates.map((date) => {
-                    const isSelected = selectedDate.toDateString() === date.toDateString();
-                    const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
-                    const dayNum = date.getDate();
-                    const monthName = date.toLocaleDateString("en-US", { month: "short" });
+                    const dateKey = date.toLocaleDateString("en-CA", { timeZone: userTimeZone });
+                    const isSelected = selectedDateKey === dateKey;
+                    const dayName = date.toLocaleDateString("en-US", { timeZone: userTimeZone, weekday: "short" });
+                    const dayNum = date.toLocaleDateString("en-US", { timeZone: userTimeZone, day: "numeric" });
+                    const monthName = date.toLocaleDateString("en-US", { timeZone: userTimeZone, month: "short" });
+                    const daySlotCount = (localizedSlotsByDate[dateKey] || []).length;
 
                     return (
                       <button
-                        key={date.toISOString()}
+                        key={dateKey}
                         type="button"
                         onClick={() => setSelectedDate(date)}
-                        className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
+                        className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all cursor-pointer relative ${
                           isSelected
                             ? "bg-white text-black border-white shadow-[0_0_25px_rgba(255,255,255,0.4)] font-black scale-[1.03]"
                             : "bg-[#141722] border-white/15 text-slate-200 hover:bg-[#1c2130] hover:border-white/30"
                         }`}
                       >
                         <div className="text-xs uppercase font-bold tracking-wider opacity-80">{dayName}</div>
-                        <div className="text-lg font-black my-0.5">{dayNum}</div>
-                        <div className="text-xs font-semibold opacity-75">{monthName}</div>
+                        <div className="text-base sm:text-lg font-black my-0.5">{dayNum}</div>
+                        <div className="text-[11px] font-semibold opacity-75">{monthName}</div>
+                        {daySlotCount > 0 && !isSelected && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mx-auto mt-1" />
+                        )}
                       </button>
                     );
                   })}
@@ -502,32 +550,33 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   ) : (
                     <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      {activeSlots.length} Open Slots (Live Sync)
+                      {activeSlotList.length} Open Slots (Live Sync)
                     </span>
                   )}
                 </div>
 
-                {activeSlots.length === 0 ? (
-                  <div className="p-4 rounded-xl bg-[#141722] border border-white/10 text-center text-xs text-slate-400 font-mono">
-                    No available slots on this day. Please select another date.
+                {activeSlotList.length === 0 ? (
+                  <div className="p-6 rounded-2xl bg-[#141722] border border-white/10 text-center space-y-1">
+                    <p className="text-sm text-slate-300 font-medium">No open slots on this date.</p>
+                    <p className="text-xs text-slate-400 font-mono">Please select another day above to see available times.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-                    {activeSlots.map((slot) => {
-                      const isSelected = selectedSlot === slot;
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                    {activeSlotList.map((slot) => {
+                      const isSelected = selectedSlotObj?.iso === slot.iso;
                       return (
                         <button
-                          key={slot}
+                          key={slot.iso}
                           type="button"
-                          onClick={() => setSelectedSlot(slot)}
-                          className={`py-2.5 px-1.5 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                          onClick={() => setSelectedSlotObj(slot)}
+                          className={`py-2.5 px-2 rounded-xl text-xs font-mono border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                             isSelected
                               ? "bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400 font-bold"
                               : "bg-[#141722] border-white/15 text-slate-200 hover:bg-[#1c2130] hover:border-white/30"
                           }`}
                         >
                           <span className={`w-2 h-2 rounded-full ${isSelected ? "bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.9)]" : "bg-emerald-500/70"}`} />
-                          <span>{slot}</span>
+                          <span>{slot.timeStr}</span>
                         </button>
                       );
                     })}
@@ -536,16 +585,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
 
               {/* Selected Meeting Summary Bar */}
-              <div className="p-3.5 rounded-2xl bg-[#141722] border border-white/15 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 font-mono text-white font-semibold">
-                  <Clock className="w-4 h-4 text-emerald-400" />
-                  <span>{formattedDateString} @ {selectedSlot}</span>
+              {selectedSlotObj && (
+                <div className="p-3.5 rounded-2xl bg-[#141722] border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 font-mono text-white font-semibold">
+                    <Clock className="w-4 h-4 text-emerald-400" />
+                    <span>{formattedDateString} @ {selectedSlotObj.timeStr} ({userTimeZone.split("/")[1] || userTimeZone})</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-emerald-400 font-mono font-medium">
+                    <Video className="w-4 h-4" />
+                    <span>Google Meet Video Call</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-emerald-400 font-mono font-medium">
-                  <Video className="w-4 h-4" />
-                  <span>Google Meet Video Link</span>
-                </div>
-              </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-1">
@@ -560,14 +611,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <button
                   type="button"
                   onClick={handleConfirmBooking}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !selectedSlotObj}
                   className="flex-1 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 text-black hover:opacity-95 transition-all shadow-[0_0_30px_rgba(16,185,129,0.35)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <span className="animate-pulse">Creating Google Meet session...</span>
                   ) : (
                     <>
-                      <span>Confirm Strategy Call ({formattedDateString} @ {selectedSlot})</span>
+                      <span>Confirm Strategy Call {selectedSlotObj ? `(${formattedDateString} @ ${selectedSlotObj.timeStr})` : ""}</span>
                       <CheckCircle2 className="w-4 h-4" />
                     </>
                   )}
@@ -591,7 +642,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   You're on the calendar, {name || "Creator"}!
                 </h2>
                 <p className="text-sm text-slate-300 max-w-sm mx-auto">
-                  We've reserved your slot for <strong className="text-white font-bold">{formattedDateString} @ {selectedSlot}</strong>. A calendar invite has been emailed to <strong className="text-white font-bold">{email}</strong>.
+                  We've reserved your slot for <strong className="text-white font-bold">{formattedDateString} @ {selectedSlotObj?.timeStr}</strong>. A calendar invite has been emailed to <strong className="text-white font-bold">{email}</strong>.
                 </p>
               </div>
 
