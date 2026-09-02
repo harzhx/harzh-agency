@@ -11,7 +11,6 @@ import { PackagesSection } from "./components/PackagesSection";
 import { FaqSection } from "./components/FaqSection";
 import { BookingModal } from "./components/BookingModal";
 import { Footer } from "./components/Footer";
-import { getCalApi } from "@calcom/embed-react";
 
 export default function App() {
   const [theme, setTheme] = useState<ThemeMode>("dark");
@@ -20,21 +19,6 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
-
-    // Initialize Cal.com styling immediately
-    (async function () {
-      try {
-        const cal = await getCalApi();
-        cal("ui", {
-          theme: "dark",
-          styles: { branding: { brandColor: "#6366f1" } },
-          hideEventTypeDetails: false,
-          layout: "month_view",
-        });
-      } catch (e) {
-        console.error("Cal.com init:", e);
-      }
-    })();
   }, []);
 
   // Track mouse position smoothly for cursor-proximity spotlight & ambient parallax
