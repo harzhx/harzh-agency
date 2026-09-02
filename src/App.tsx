@@ -20,6 +20,11 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
+    
+    // Trigger smooth fade-in after React has mounted and painted the DOM
+    requestAnimationFrame(() => {
+      document.getElementById("root")?.classList.add("loaded");
+    });
 
     // Initialize Cal.com styling immediately
     (async function () {
