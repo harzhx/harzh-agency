@@ -63,16 +63,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Area */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Scarcity / Accepting Creators Status Badge */}
-            <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-white/70 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.08]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-              <span>Accepting 2 Creators for Q3</span>
-            </div>
-
             {/* Primary CTA */}
             <button
               onClick={onOpenBooking}
-              className="px-5 py-2.5 rounded-full text-xs font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all flex items-center gap-2 active:scale-95 shadow-xl"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_25px_rgba(255,255,255,0.4)] transition-all flex items-center gap-2 active:scale-95 shadow-xl cursor-pointer"
             >
               <span>Book Strategy Call</span>
               <ArrowRight className="w-3.5 h-3.5" />
