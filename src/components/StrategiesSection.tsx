@@ -69,7 +69,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
+          className="text-center max-w-3xl mx-auto mb-24 sm:mb-20 lg:mb-14"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
@@ -86,9 +86,9 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
         {/* 2-COLUMN BALANCED PROCESS LAYOUT WITH PIXEL MASCOT */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-6xl mx-auto">
           {/* Left Column: Agency Overview Card & CTA (Waist-Up Pixel Mascot — Pure Sticky) */}
-          <div className="lg:col-span-5 relative pt-14 sm:pt-12 lg:sticky lg:top-28">
+          <div className="lg:col-span-5 relative pt-12 sm:pt-12 lg:sticky lg:top-28">
             {/* Waist-Up Japanese Schoolgirl Mascot Popping Up (z-10) */}
-            <div className="absolute -top-16 sm:-top-18 right-3 sm:right-6 z-10">
+            <div className="absolute -top-16 sm:-top-18 right-4 sm:right-6 z-10">
               <PixelMascot />
             </div>
 

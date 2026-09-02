@@ -8,7 +8,7 @@ export const PixelMascot: React.FC = () => {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center sm:items-end select-none pointer-events-auto group cursor-pointer"
+      className="flex flex-col items-end select-none pointer-events-auto group cursor-pointer"
     >
       {/* Speech Bubble — Smooth & Sweet Pop-In */}
       <motion.div
@@ -38,7 +38,7 @@ export const PixelMascot: React.FC = () => {
         </motion.div>
 
         {/* Downward Pointer Tail */}
-        <div className="absolute -bottom-2 right-8 sm:right-7 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-indigo-400" />
+        <div className="absolute -bottom-2 right-7 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-indigo-400" />
       </motion.div>
 
       {/* Mascot Character — Desktop: Cheerful Spring Pop / Mobile: Gentle Sweet Rise */}
