@@ -129,12 +129,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-center justify-between z-10 pointer-events-none">
                     <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-white text-[10px] sm:text-xs font-mono">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>RETENTION BREAKDOWN</span>
+                      <span>THE 1% BLUEPRINT</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-semibold">
                       <TrendingUp className="w-3 h-3" />
-                      <span>78.4% Retention</span>
+                      <span>240M+ Organic Views</span>
                     </div>
                   </div>
                 </div>
