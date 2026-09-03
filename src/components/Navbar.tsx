@@ -14,12 +14,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenBooking,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isDark = theme === "dark";
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+      setIsScrolledPastHero(window.scrollY > 350);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -73,17 +75,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button & Scroll-Triggered Sticky CTA */}
           <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={onOpenBooking}
-              className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black"
-            >
-              Book Call
-            </button>
+            {isScrolledPastHero && (
+              <button
+                onClick={onOpenBooking}
+                className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black animate-in fade-in zoom-in-95 duration-200 shadow-md cursor-pointer"
+              >
+                Book Call
+              </button>
+            )}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-white/80 hover:text-white"
+              className="p-2 rounded-lg text-white/80 hover:text-white cursor-pointer"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>

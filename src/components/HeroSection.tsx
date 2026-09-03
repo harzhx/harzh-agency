@@ -60,23 +60,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
           </div>
 
-          {/* Hero CTAs (Compact & Responsive on Mobile) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full max-w-md sm:max-w-none mx-auto">
+          {/* Hero CTAs (Side-by-side on mobile, spacious on desktop) */}
+          <div className="flex flex-row items-center justify-center gap-2.5 sm:gap-4 mb-6 sm:mb-10 w-full max-w-sm sm:max-w-none mx-auto px-1">
             {/* Primary CTA */}
             <button
               onClick={onOpenBooking}
-              className="w-full sm:w-auto px-7 py-3.5 sm:px-8 sm:py-4 rounded-full text-sm sm:text-base font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_35px_rgba(255,255,255,0.45)] transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+              className="flex-1 sm:flex-initial px-4 py-3 sm:px-8 sm:py-4 rounded-full text-xs sm:text-base font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_35px_rgba(255,255,255,0.45)] transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer"
             >
               <span>Book Strategy Call</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
             {/* Secondary CTA */}
             <button
               onClick={onExploreWork}
-              className="w-full sm:w-auto px-7 py-3.5 sm:px-8 sm:py-4 rounded-full text-sm sm:text-base font-medium bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-white transition-all duration-200 flex items-center justify-center gap-2 backdrop-blur-md active:scale-95 cursor-pointer"
+              className="flex-1 sm:flex-initial px-4 py-3 sm:px-8 sm:py-4 rounded-full text-xs sm:text-base font-medium bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-white transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 backdrop-blur-md active:scale-95 whitespace-nowrap cursor-pointer"
             >
-              <Play className="w-4 h-4 text-emerald-400 fill-emerald-400" />
+              <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400 fill-emerald-400" />
               <span>See Our Work</span>
             </button>
           </div>
