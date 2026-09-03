@@ -613,7 +613,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                           : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                       }`}
                     >
-                      <div className="text-[10.5px] sm:text-xs font-bold font-mono leading-none tracking-tight whitespace-nowrap">
+                      <div className="text-[11px] sm:text-xs font-bold tracking-tight whitespace-nowrap">
                         {tier.label}
                       </div>
                       <div className={`hidden sm:block text-[10px] truncate max-w-full mt-1 ${isSelected ? "text-black/70" : "text-white/40"}`}>
