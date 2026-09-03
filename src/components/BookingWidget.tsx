@@ -829,7 +829,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   No slots available on this day. Please pick another date.
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-2">
                   {rawSlots.map((slot) => {
                     const isSelected = selectedSlot === slot;
                     const displaySlot = formatSlotInTimezone(selectedDate, slot, timezone);
@@ -839,7 +839,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                         key={slot}
                         type="button"
                         onClick={() => setSelectedSlot(slot)}
-                        className={`py-2.5 px-2 rounded-xl text-xs font-mono border transition-all cursor-pointer text-center ${
+                        className={`py-2.5 px-1.5 sm:py-2.5 sm:px-2 rounded-xl text-xs font-mono border transition-all cursor-pointer text-center whitespace-nowrap ${
                           isSelected
                             ? "bg-white text-black border-white font-bold shadow-md"
                             : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
