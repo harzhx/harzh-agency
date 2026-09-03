@@ -97,38 +97,34 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-indigo-400 block mb-2">
-                DONE-FOR-YOU MEDIA SYSTEMS
+                DONE-FOR-YOU EDITING
               </span>
 
-              <h3 className="text-2xl font-extrabold text-white mb-4 leading-snug">
-                From Raw Footage to Viral Retention Engine.
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight">
+                You Film. We Handle The Rest.
               </h3>
 
-              <p className="text-sm text-white/70 leading-relaxed mb-6">
-                You record the ideas. We handle the psychological hooks, cinematic pacing, 12-layer foley audio, and high-CTR packaging—delivering YouTube-ready master edits in 48 hours.
-              </p>
-
               {/* Core Deliverable Badges */}
-              <div className="space-y-3 mb-8 pt-4 border-t border-white/[0.08]">
-                <div className="flex items-center gap-3 text-xs text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+              <div className="space-y-3.5 mb-8 pt-4 border-t border-white/[0.08]">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Guaranteed 48-Hour Turnarounds</span>
+                  <span>Test us on 1 video (Risk-Free)</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Unlimited Frame.io Revisions</span>
+                  <span>Never miss an upload</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Engineered for 75%+ Average Watch Time</span>
+                  <span>Unlimited revisions</span>
                 </div>
               </div>
 
@@ -137,8 +133,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
                 onClick={onOpenBooking}
                 className="w-full py-4 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
               >
-                <Flame className="w-4 h-4 text-amber-500" />
-                <span>Book 15-Min Strategy Call</span>
+                <span>Book Strategy Call</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
