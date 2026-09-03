@@ -69,18 +69,15 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-3xl mx-auto mb-24 sm:mb-24 lg:mb-28"
+          className="text-center max-w-3xl mx-auto mb-20 sm:mb-20 lg:mb-24"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>OUR PROVEN PROCESS</span>
+            <span>OUR PRODUCTION PROCESS</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
             The Science of Holding <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">Attention</span>.
           </h2>
-          <p className="text-base sm:text-lg text-white/60 leading-relaxed">
-            We don't just "cut clips." We apply a 5-stage retention pipeline engineered to eliminate viewer dropoffs and scale Average View Duration (AVD).
-          </p>
         </motion.div>
 
         {/* 2-COLUMN BALANCED PROCESS LAYOUT WITH PIXEL MASCOT */}
