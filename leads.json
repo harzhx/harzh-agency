@@ -1,5 +1,29 @@
 [
   {
+    "id": "lead_1788426644960",
+    "name": "Kumar Harsh",
+    "email": "harzhx@gmail.com",
+    "channelLink": "harzhx",
+    "revenueTier": "$1K – $5K",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T09:10:03.133Z",
+    "meetingSlot": "5:00 PM",
+    "bookedAt": "2026-09-03T09:10:44.960Z",
+    "status": "CONFIRMED"
+  },
+  {
+    "id": "lead_1788426514684",
+    "name": "Fullstack Audit Lead",
+    "email": "lead_1788426513044@creatorbrand.com",
+    "channelLink": "youtube.com/@fullstackaudit",
+    "revenueTier": "$10K+",
+    "phone": "Not provided",
+    "meetingDate": "2026-09-03T09:08:32.533Z",
+    "meetingSlot": "7:00 PM",
+    "bookedAt": "2026-09-03T09:08:34.684Z",
+    "status": "CONFIRMED"
+  },
+  {
     "id": "lead_1788372201678",
     "name": "Alex Hormozi",
     "email": "alex@acquisition.com",

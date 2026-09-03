@@ -498,9 +498,9 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <div className="flex items-center justify-center gap-2 pt-2.5 text-[11px] font-mono text-white/40">
+              <div className="flex items-center justify-center gap-2 pt-2.5 text-[11px] font-mono text-white/40 whitespace-nowrap">
                 <Lock className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span>100% Free • No Pitch • Instant Google Meet Link</span>
+                <span>100% Free • Instant Google Meet Invite</span>
               </div>
             </div>
           </form>
@@ -744,9 +744,9 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-2 pt-1 text-[11px] font-mono text-white/40">
+              <div className="flex items-center justify-center gap-2 pt-1 text-[11px] font-mono text-white/40 whitespace-nowrap">
                 <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span>15-Min Focused Audit • Zero Pitch Slap • Instant Invite</span>
+                <span>15-Min Focused Audit • Instant Calendar Link</span>
               </div>
             </div>
           </div>
