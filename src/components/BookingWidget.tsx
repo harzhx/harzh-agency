@@ -607,14 +607,16 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                       key={tier.id}
                       type="button"
                       onClick={() => setRevenueTier(tier.label)}
-                      className={`py-2 px-1.5 sm:py-2.5 sm:px-3 rounded-xl text-center border transition-all cursor-pointer flex flex-col items-center justify-center ${
+                      className={`py-2.5 px-1 sm:py-2.5 sm:px-3 rounded-xl text-center border transition-all cursor-pointer flex flex-col items-center justify-center ${
                         isSelected
                           ? "bg-white text-black border-white font-bold shadow-lg"
                           : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                       }`}
                     >
-                      <div className="text-xs font-bold leading-tight tracking-tight">{tier.label}</div>
-                      <div className={`hidden sm:block text-[10px] truncate max-w-full mt-0.5 ${isSelected ? "text-black/70" : "text-white/40"}`}>
+                      <div className="text-[10.5px] sm:text-xs font-bold font-mono leading-none tracking-tight whitespace-nowrap">
+                        {tier.label}
+                      </div>
+                      <div className={`hidden sm:block text-[10px] truncate max-w-full mt-1 ${isSelected ? "text-black/70" : "text-white/40"}`}>
                         {tier.sub}
                       </div>
                     </button>
@@ -877,11 +879,6 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                     </>
                   )}
                 </button>
-              </div>
-
-              <div className="flex items-center justify-center gap-2 pt-1 text-[11px] font-mono text-white/40 whitespace-nowrap">
-                <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
-                <span>15-Min Focused Audit • Instant Calendar Link</span>
               </div>
             </div>
           </div>
