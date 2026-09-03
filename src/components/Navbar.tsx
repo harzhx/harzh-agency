@@ -77,14 +77,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile Menu Button & Scroll-Triggered Sticky CTA */}
           <div className="flex md:hidden items-center gap-2">
-            {isScrolledPastHero && (
-              <button
-                onClick={onOpenBooking}
-                className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black animate-in fade-in zoom-in-95 duration-200 shadow-md cursor-pointer"
-              >
-                Book Call
-              </button>
-            )}
+            <button
+              onClick={onOpenBooking}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold bg-white text-black shadow-md cursor-pointer transition-all duration-300 ease-out transform ${
+                isScrolledPastHero
+                  ? "opacity-100 translate-y-0 scale-100 pointer-events-auto"
+                  : "opacity-0 -translate-y-2 scale-90 pointer-events-none"
+              }`}
+            >
+              Book Call
+            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-white/80 hover:text-white cursor-pointer"
@@ -98,11 +100,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#080a14] border-b border-white/10 px-6 py-6 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-mono text-white/70 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] w-fit">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Accepting 2 Creators</span>
-          </div>
-
           {navLinks.map((link, idx) => (
             <a
               key={idx}
@@ -121,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               className="w-full py-3.5 rounded-full text-sm font-bold bg-white text-black flex items-center justify-center gap-2 shadow-xl"
             >
-              <span>Book 15-Min Strategy Call</span>
+              <span>Book Strategy Call</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
