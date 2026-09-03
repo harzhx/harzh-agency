@@ -96,42 +96,52 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
             <div className="p-8 sm:p-9 rounded-3xl border border-white/[0.1] bg-[#090b16] backdrop-blur-2xl shadow-2xl relative z-20 overflow-hidden ring-1 ring-white/10">
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-indigo-400 block mb-2">
-                DONE-FOR-YOU EDITING
-              </span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 mb-4 sm:mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                <span>DONE-FOR-YOU STRATEGY</span>
+              </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight">
-                You Film. We Handle The Rest.
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight tracking-tight">
+                You Film.<br />We Handle The Rest.
               </h3>
 
               {/* Core Deliverable Badges */}
-              <div className="space-y-3.5 mb-8 pt-4 border-t border-white/[0.08]">
-                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
+              <div className="space-y-3.5 mb-8 pt-5 border-t border-white/[0.08]">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/95 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Test us on 1 video (Risk-Free)</span>
+                  <div>
+                    <strong className="font-bold text-white">Test us on 1 video</strong>{" "}
+                    <span className="text-white/60">— 100% Risk-Free</span>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/95 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Never miss an upload</span>
+                  <div>
+                    <strong className="font-bold text-white">Never miss an upload</strong>{" "}
+                    <span className="text-white/60">— Reliable turnaround</span>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/90 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold shrink-0">
+                <div className="flex items-center gap-3 text-xs sm:text-sm text-white/95 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">
                     ✓
                   </div>
-                  <span>Unlimited revisions</span>
+                  <div>
+                    <strong className="font-bold text-white">Unlimited revisions</strong>{" "}
+                    <span className="text-white/60">— Until you love it</span>
+                  </div>
                 </div>
               </div>
 
               {/* Call to Action */}
               <button
                 onClick={onOpenBooking}
-                className="w-full py-4 rounded-full font-bold text-xs uppercase tracking-wider bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.4)] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
+                className="w-full py-4 rounded-2xl font-bold text-xs uppercase tracking-wider bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.35)] transition-all duration-300 shadow-xl flex items-center justify-center gap-2 active:scale-95 group cursor-pointer"
               >
                 <span>Book Strategy Call</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
