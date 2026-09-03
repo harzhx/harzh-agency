@@ -5,7 +5,6 @@ import { Navbar } from "./components/Navbar";
 import { HeroSection } from "./components/HeroSection";
 import { StrategiesSection } from "./components/StrategiesSection";
 import { WorkSection } from "./components/WorkSection";
-import { ResultsSection } from "./components/ResultsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { PackagesSection } from "./components/PackagesSection";
 import { FaqSection } from "./components/FaqSection";
@@ -75,13 +74,7 @@ export default function App() {
           onOpenBooking={() => setIsBookingOpen(true)}
         />
 
-        {/* 4. RETENTION DIAGNOSTICS & CASE STUDIES PROOF */}
-        <ResultsSection
-          theme={theme}
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
-
-        {/* 5. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}
+        {/* 4. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}
         <TestimonialsSection
           onOpenBooking={() => setIsBookingOpen(true)}
         />

@@ -27,9 +27,6 @@ export const Footer: React.FC<FooterProps> = () => {
             <a href="#work" className="hover:text-white transition-colors">
               Work Vault
             </a>
-            <a href="#proof" className="hover:text-white transition-colors">
-              Retention Proof
-            </a>
             <a href="#packages" className="hover:text-white transition-colors">
               Packages
             </a>
