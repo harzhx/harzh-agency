@@ -46,17 +46,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           {/* Main Hero Hook Title (High-Contrast & Radiant) */}
-          <div className="text-center max-w-4xl mx-auto mb-5 sm:mb-6">
+          <div className="text-center max-w-5xl mx-auto mb-5 sm:mb-6">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4 text-white glow-text">
-              Make Your YouTube Channel Look Like <br className="hidden sm:inline" />
+              Turn Your YouTube Channel Into <br className="hidden sm:inline" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white to-purple-300">
                 A Top 1% Media Brand.
               </span>
             </h1>
 
             {/* Promise of Value Subtitle */}
-            <p className="text-sm sm:text-lg md:text-xl font-normal max-w-2xl mx-auto leading-relaxed text-white/80">
-              Test us on 1 video — if it’s not the best-produced video your channel has ever published, you don’t pay a single dollar.
+            <p className="text-sm sm:text-lg md:text-xl font-normal max-w-xl mx-auto leading-relaxed text-white/80">
+              Test us on 1 video. If it's not the best edit on your channel, you don't pay a dollar.
             </p>
           </div>
 
