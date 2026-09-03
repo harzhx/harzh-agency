@@ -107,6 +107,38 @@ function formatSlotInTimezone(date: Date, slotStr: string, targetTz: string): st
   }
 }
 
+function isToday(d: Date): boolean {
+  const now = new Date();
+  return (
+    d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear()
+  );
+}
+
+// Check if an IST slot time on a given date is at least 30 minutes in the future
+function isSlotInFuture(date: Date, slotStr: string): boolean {
+  try {
+    if (!isToday(date)) return true;
+    const [time, period] = (slotStr || "5:00 PM").split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+
+    const slotTime = new Date(`${year}-${month}-${day}T${h}:${m}:00+05:30`).getTime();
+    // Allow slots starting at least 30 minutes from now
+    return slotTime > Date.now() + 30 * 60 * 1000;
+  } catch {
+    return true;
+  }
+}
+
 export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, onClose }) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -130,8 +162,29 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   });
   const [isTzDropdownOpen, setIsTzDropdownOpen] = useState(false);
 
-  // Calendar State
+  // Available Dates (Includes TODAY if slots are still open)
+  const availableDates = useMemo(() => {
+    const dates: Date[] = [];
+    const today = new Date();
+    const hasRemainingToday = DEFAULT_TIME_SLOTS.some((s) => isSlotInFuture(today, s));
+
+    const current = new Date();
+    if (!hasRemainingToday) {
+      current.setDate(current.getDate() + 1);
+    }
+
+    while (dates.length < 6) {
+      dates.push(new Date(current));
+      current.setDate(current.getDate() + 1);
+    }
+    return dates;
+  }, []);
+
+  // Calendar State (Defaults to Today if available, otherwise Tomorrow)
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const today = new Date();
+    const hasRemainingToday = DEFAULT_TIME_SLOTS.some((s) => isSlotInFuture(today, s));
+    if (hasRemainingToday) return today;
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow;
@@ -141,19 +194,6 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("https://meet.google.com/hzh-cal-strategy");
   const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
-
-  // Available Dates (Next 6 rolling days)
-  const availableDates = useMemo(() => {
-    const dates: Date[] = [];
-    const current = new Date();
-    current.setDate(current.getDate() + 1);
-
-    while (dates.length < 6) {
-      dates.push(new Date(current));
-      current.setDate(current.getDate() + 1);
-    }
-    return dates;
-  }, []);
 
   // Fetch Live Available Slots
   useEffect(() => {
@@ -177,10 +217,16 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   };
 
   const selectedDateKey = getLocalDateKey(selectedDate);
-  const rawSlots =
+  const baseSlots =
     liveSlotsByDate[selectedDateKey] && liveSlotsByDate[selectedDateKey].length > 0
       ? liveSlotsByDate[selectedDateKey]
       : DEFAULT_TIME_SLOTS;
+
+  // Filter slots for today so expired hours are hidden
+  const rawSlots = useMemo(() => {
+    const validSlots = baseSlots.filter((slot) => isSlotInFuture(selectedDate, slot));
+    return validSlots.length > 0 ? validSlots : baseSlots;
+  }, [baseSlots, selectedDate]);
 
   useEffect(() => {
     if (rawSlots.length > 0 && !rawSlots.includes(selectedSlot)) {
@@ -594,6 +640,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {availableDates.map((date) => {
                   const isSelected = selectedDate.toDateString() === date.toDateString();
+                  const isCurrentDay = isToday(date);
                   const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
                   const dayNum = date.getDate();
                   const monthName = date.toLocaleDateString("en-US", { month: "short" });
@@ -609,7 +656,13 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                           : "bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/20 hover:text-white"
                       }`}
                     >
-                      <div className="text-[10px] uppercase font-semibold opacity-70">{dayName}</div>
+                      <div
+                        className={`text-[10px] uppercase font-semibold ${
+                          isCurrentDay && !isSelected ? "text-emerald-400 font-bold" : "opacity-70"
+                        }`}
+                      >
+                        {isCurrentDay ? "TODAY" : dayName}
+                      </div>
                       <div className="text-lg font-bold my-0.5">{dayNum}</div>
                       <div className="text-[10px] font-medium opacity-60">{monthName}</div>
                     </button>

@@ -272,8 +272,8 @@ app.get("/api/available-slots", async (req: Request, res: Response) => {
     console.warn("Live Cal.com slot fetch notice (using guaranteed slot pool):", err?.message || err);
   }
 
-  // Guaranteed fallback: ensure next 10 days always have open available slots up to 11:30 PM
-  for (let i = 1; i <= 10; i++) {
+  // Guaranteed fallback: ensure today and next 10 days always have open available slots up to 11:30 PM
+  for (let i = 0; i <= 10; i++) {
     const d = new Date(Date.now() + i * 24 * 60 * 60 * 1000);
     const dateKey = d.toLocaleDateString("en-CA", { timeZone: "Asia/Calcutta" });
     if (!formattedSlots[dateKey] || formattedSlots[dateKey].length === 0) {
