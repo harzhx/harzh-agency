@@ -39,7 +39,7 @@ export const Footer: React.FC<FooterProps> = () => {
           </div>
 
           <div className="font-mono text-[11px]">
-            © {new Date().getFullYear()} Harzh Studio. All rights reserved.
+            © {new Date().getFullYear()} Harzh Agency. All rights reserved.
           </div>
         </div>
       </div>

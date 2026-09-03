@@ -81,7 +81,7 @@ export interface CreatorCaseStudy {
   retentionCurveData: {
     timeMarker: string;
     industryAverage: number;
-    kromaEdited: number;
+    harzhRetention: number;
   }[];
 }
 

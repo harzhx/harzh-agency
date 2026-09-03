@@ -59,7 +59,7 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
                 YOUTUBE STUDIO RETENTION ANALYSIS
               </span>
               <h3 className="text-2xl font-bold text-white">
-                18-Minute Tech Documentary Retardown
+                18-Minute Tech Documentary Breakdown
               </h3>
             </div>
 
@@ -100,11 +100,17 @@ export const ResultsSection: React.FC<ResultsSectionProps> = ({
                     color: "#fff",
                     fontSize: "12px",
                   }}
+                  formatter={(value: any, name: any) => [
+                    `${value}%`,
+                    name === "harzhRetention" || name === "Harzh Retention"
+                      ? "Harzh High-Retention Edit"
+                      : "Industry Average",
+                  ]}
                 />
                 <Area
                   type="monotone"
-                  dataKey="kromaEdited"
-                  name="Harzh Retention"
+                  dataKey="harzhRetention"
+                  name="Harzh High-Retention Edit"
                   stroke="#10b981"
                   strokeWidth={3}
                   fillOpacity={1}
