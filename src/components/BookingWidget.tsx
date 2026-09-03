@@ -193,6 +193,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("https://meet.google.com/hzh-cal-strategy");
   const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
+  const [slotIsoMap, setSlotIsoMap] = useState<Record<string, string>>({});
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
   // Fetch Live Available Slots
@@ -203,6 +204,9 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       .then((data) => {
         if (data?.slots && Object.keys(data.slots).length > 0) {
           setLiveSlotsByDate(data.slots);
+        }
+        if (data?.slotIsoMap) {
+          setSlotIsoMap(data.slotIsoMap);
         }
       })
       .catch((err) => console.warn("Slots fetch notice:", err))
@@ -284,8 +288,22 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const handleConfirmBooking = () => {
     setIsSubmitting(true);
 
-    // Asynchronously dispatch lead capture to backend
+    let transitioned = false;
+    const finishStep = () => {
+      if (!transitioned) {
+        transitioned = true;
+        setIsSubmitting(false);
+        setStep(3);
+      }
+    };
+
+    // Safety timeout: transition after at most 3500ms so user is never blocked
+    const safetyTimer = setTimeout(finishStep, 3500);
+
     try {
+      const dateKey = getLocalDateKey(selectedDate);
+      const exactSlotIso = slotIsoMap[`${dateKey}_${selectedSlot}`] || "";
+
       fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -297,6 +315,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           phone: phone || "",
           selectedDate: selectedDate.toISOString(),
           selectedSlot: selectedSlot || "5:00 PM",
+          slotIso: exactSlotIso,
         }),
       })
         .then((r) => r.json())
@@ -305,16 +324,16 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
             setConfirmedMeetUrl(data.booking.data.meetingUrl);
           }
         })
-        .catch((e) => console.warn("Background lead notice:", e));
+        .catch((e) => console.warn("Background lead notice:", e))
+        .finally(() => {
+          clearTimeout(safetyTimer);
+          finishStep();
+        });
     } catch (err) {
       console.warn("Booking submit notice:", err);
+      clearTimeout(safetyTimer);
+      finishStep();
     }
-
-    // Instantly transition to Step 3 celebration screen
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setStep(3);
-    }, 200);
   };
 
   const formattedDateString = selectedDate.toLocaleDateString("en-US", {

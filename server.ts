@@ -89,7 +89,7 @@ function normalizeRevenueTier(tier: string): string {
 
 // Bookings & Leads API Endpoint
 app.post("/api/bookings", async (req: Request, res: Response) => {
-  const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot } = req.body;
+  const { name, email, channelLink, revenueTier, phone, selectedDate, selectedSlot, slotIso } = req.body;
 
   if (!name || !email || !channelLink) {
     return res.status(400).json({ error: "Missing required fields" });
@@ -124,7 +124,7 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
   let calResponse: any = null;
 
   try {
-    const startISO = parseSlotToISO(selectedDate, selectedSlot);
+    const startISO = slotIso || parseSlotToISO(selectedDate, selectedSlot);
     const normalizedRevenue = normalizeRevenueTier(revenueTier || "");
 
     const payload: any = {
@@ -153,7 +153,7 @@ app.post("/api/bookings", async (req: Request, res: Response) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-      signal: AbortSignal.timeout(3500),
+      signal: AbortSignal.timeout(12000),
     });
 
     calResponse = await response.json();
