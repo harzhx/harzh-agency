@@ -98,7 +98,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
 
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-wider bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 mb-4 sm:mb-5">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                <span>DONE-FOR-YOU STRATEGY</span>
+                <span>DONE-FOR-YOU SYSTEM</span>
               </div>
 
               <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 leading-tight tracking-tight">
