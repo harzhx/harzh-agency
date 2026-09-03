@@ -139,6 +139,35 @@ function isSlotInFuture(date: Date, slotStr: string): boolean {
   }
 }
 
+function parseSlotToISO(d: Date, slotStr: string): string {
+  try {
+    const [time, period] = (slotStr || "5:00 PM").split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours < 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const h = String(hours).padStart(2, "0");
+    const m = String(minutes).padStart(2, "0");
+
+    const istISO = `${year}-${month}-${day}T${h}:${m}:00+05:30`;
+    return new Date(istISO).toISOString();
+  } catch {
+    return new Date(Date.now() + 86400000).toISOString();
+  }
+}
+
+function normalizeRevenueTier(tier: string): string {
+  const t = (tier || "").toLowerCase();
+  if (t.includes("10k") || t.includes("10,000") || t.includes("above")) return "Above $10,000";
+  if (t.includes("0 – 1k") || t.includes("0 - 1k") || t.includes("0 – $1k") || t.includes("0 – 1,000") || t.includes("0 - 1,000")) return "$0 – $1,000";
+  if (t.includes("1k – 5k") || t.includes("1k - 5k") || t.includes("1k – $5k") || t.includes("1,000 – 5,000") || t.includes("1,000 - 5,000")) return "$1,000 – $5,000";
+  if (t.includes("5k – 10k") || t.includes("5k - 10k") || t.includes("5k – $10k") || t.includes("5,000 – 10,000") || t.includes("5,000 - 10,000")) return "$5,000 – $10,000";
+  return "$1,000 – $5,000";
+}
+
 export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, onClose }) => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -196,11 +225,62 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [slotIsoMap, setSlotIsoMap] = useState<Record<string, string>>({});
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
-  // Fetch Live Available Slots
+  // Fetch Live Available Slots (API with Direct Cal.com CORS Fallback)
   useEffect(() => {
     setIsLoadingSlots(true);
+
+    const fetchDirectFromCalCom = async () => {
+      try {
+        const now = new Date();
+        const startTime = now.toISOString();
+        const nextWeek = new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString();
+        const calUrl = `https://api.cal.com/v2/slots/available?eventTypeId=6897453&startTime=${startTime}&endTime=${nextWeek}`;
+        const res = await fetch(calUrl, {
+          headers: {
+            Authorization: "Bearer cal_live_62c45680b48210759140635b31b51666",
+            "cal-api-version": "2024-08-13",
+          },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const rawSlots = data?.data?.slots || {};
+          const formattedSlots: Record<string, string[]> = {};
+          const isoMap: Record<string, string> = {};
+
+          for (const slotList of Object.values(rawSlots)) {
+            if (Array.isArray(slotList)) {
+              for (const slotObj of slotList) {
+                if (slotObj?.time) {
+                  const slotDate = new Date(slotObj.time);
+                  const localDateKey = slotDate.toLocaleDateString("en-CA", { timeZone: "Asia/Calcutta" });
+                  const localTimeStr = slotDate.toLocaleTimeString("en-US", {
+                    timeZone: "Asia/Calcutta",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  });
+                  if (!formattedSlots[localDateKey]) formattedSlots[localDateKey] = [];
+                  if (!formattedSlots[localDateKey].includes(localTimeStr)) formattedSlots[localDateKey].push(localTimeStr);
+                  isoMap[`${localDateKey}_${localTimeStr}`] = slotObj.time;
+                }
+              }
+            }
+          }
+          if (Object.keys(formattedSlots).length > 0) {
+            setLiveSlotsByDate(formattedSlots);
+            setSlotIsoMap(isoMap);
+          }
+        }
+      } catch (err) {
+        console.warn("Direct Cal.com slots notice:", err);
+      }
+    };
+
     fetch("/api/available-slots")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Backend slots not available");
+        return res.json();
+      })
       .then((data) => {
         if (data?.slots && Object.keys(data.slots).length > 0) {
           setLiveSlotsByDate(data.slots);
@@ -209,7 +289,9 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           setSlotIsoMap(data.slotIsoMap);
         }
       })
-      .catch((err) => console.warn("Slots fetch notice:", err))
+      .catch(async () => {
+        await fetchDirectFromCalCom();
+      })
       .finally(() => setIsLoadingSlots(false));
   }, []);
 
@@ -297,13 +379,52 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       }
     };
 
-    // Safety timeout: transition after at most 3500ms so user is never blocked
-    const safetyTimer = setTimeout(finishStep, 3500);
+    // Safety timeout: transition after at most 4500ms so user is never blocked
+    const safetyTimer = setTimeout(finishStep, 4500);
+
+    const dateKey = getLocalDateKey(selectedDate);
+    const exactSlotIso = slotIsoMap[`${dateKey}_${selectedSlot}`] || "";
+
+    const directCalComSync = async () => {
+      try {
+        const startISO = exactSlotIso || parseSlotToISO(selectedDate, selectedSlot);
+        const normalizedRevenue = normalizeRevenueTier(revenueTier || "");
+
+        const calRes = await fetch("https://api.cal.com/v2/bookings", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer cal_live_62c45680b48210759140635b31b51666",
+            "cal-api-version": "2024-08-13",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            start: startISO,
+            eventTypeId: 6897453,
+            attendee: {
+              name: name || "Creator",
+              email: email || "creator@channel.com",
+              timeZone: "Asia/Calcutta",
+            },
+            bookingFieldsResponses: {
+              "Link-to-your-social-media-accounts-or": channelLink || "youtube.com",
+              "What-s-your-total-monthly-business-revenue-in": normalizedRevenue,
+            },
+          }),
+        });
+
+        if (calRes.ok) {
+          const calData = await calRes.json();
+          const meet = calData?.data?.meetingUrl || calData?.data?.location;
+          if (meet) setConfirmedMeetUrl(meet);
+          return true;
+        }
+      } catch (err) {
+        console.warn("Direct Cal.com fallback sync notice:", err);
+      }
+      return false;
+    };
 
     try {
-      const dateKey = getLocalDateKey(selectedDate);
-      const exactSlotIso = slotIsoMap[`${dateKey}_${selectedSlot}`] || "";
-
       fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -318,21 +439,32 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           slotIso: exactSlotIso,
         }),
       })
-        .then((r) => r.json())
+        .then(async (r) => {
+          if (!r.ok) {
+            await directCalComSync();
+            return null;
+          }
+          return r.json();
+        })
         .then((data) => {
           if (data?.booking?.data?.meetingUrl) {
             setConfirmedMeetUrl(data.booking.data.meetingUrl);
           }
         })
-        .catch((e) => console.warn("Background lead notice:", e))
+        .catch(async (e) => {
+          console.warn("API booking failed, syncing directly with Cal.com:", e);
+          await directCalComSync();
+        })
         .finally(() => {
           clearTimeout(safetyTimer);
           finishStep();
         });
     } catch (err) {
       console.warn("Booking submit notice:", err);
-      clearTimeout(safetyTimer);
-      finishStep();
+      directCalComSync().finally(() => {
+        clearTimeout(safetyTimer);
+        finishStep();
+      });
     }
   };
 
