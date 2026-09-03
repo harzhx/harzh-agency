@@ -42,22 +42,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-white/[0.04] border border-white/[0.1] text-white/90 shadow-xl backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="font-mono text-[10.5px] sm:text-[11px]">Accepting 2 High-Growth Creators For Q3</span>
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             </div>
           </div>
 
           {/* Main Hero Hook Title (High-Contrast & Radiant) */}
           <div className="text-center max-w-4xl mx-auto mb-5 sm:mb-6">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-4 text-white glow-text">
-              We Engineer High-Retention <br className="hidden sm:inline" />
+              Make Your YouTube Channel Look Like <br className="hidden sm:inline" />
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white to-purple-300">
-                YouTube Edits & Systems.
+                A Top 1% Media Brand.
               </span>
             </h1>
 
             {/* Promise of Value Subtitle */}
-            <p className="text-sm sm:text-lg md:text-xl font-normal max-w-3xl mx-auto leading-relaxed text-white/80">
-              We turn raw founder insights and creator footage into <span className="font-bold text-white">75%+ retention masterclasses</span>, viral short-form funnels, and high-CTR packaging.
+            <p className="text-sm sm:text-lg md:text-xl font-normal max-w-2xl mx-auto leading-relaxed text-white/80">
+              Test us on 1 video — if it’s not the best-produced video your channel has ever published, you don’t pay a single dollar.
             </p>
           </div>
 
@@ -68,8 +67,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               onClick={onOpenBooking}
               className="w-full sm:w-auto px-7 py-3.5 sm:px-8 sm:py-4 rounded-full text-sm sm:text-base font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_35px_rgba(255,255,255,0.45)] transition-all duration-300 shadow-xl active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Flame className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500" />
-              <span>Book 15-Min Strategy Call</span>
+              <span>Book Strategy Call</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -79,7 +77,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="w-full sm:w-auto px-7 py-3.5 sm:px-8 sm:py-4 rounded-full text-sm sm:text-base font-medium bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-white transition-all duration-200 flex items-center justify-center gap-2 backdrop-blur-md active:scale-95 cursor-pointer"
             >
               <Play className="w-4 h-4 text-emerald-400 fill-emerald-400" />
-              <span>Explore Work Vault</span>
+              <span>See Our Work</span>
             </button>
           </div>
         </motion.div>
