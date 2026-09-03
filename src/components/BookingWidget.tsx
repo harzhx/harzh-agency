@@ -221,6 +221,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
   const [selectedSlot, setSelectedSlot] = useState<string>("5:00 PM");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [confirmedMeetUrl, setConfirmedMeetUrl] = useState<string>("https://meet.google.com/hzh-cal-strategy");
+  const [isSyncingMeet, setIsSyncingMeet] = useState(false);
   const [liveSlotsByDate, setLiveSlotsByDate] = useState<Record<string, string[]>>({});
   const [slotIsoMap, setSlotIsoMap] = useState<Record<string, string>>({});
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
@@ -369,22 +370,12 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
 
   const handleConfirmBooking = () => {
     setIsSubmitting(true);
-
-    let transitioned = false;
-    const finishStep = () => {
-      if (!transitioned) {
-        transitioned = true;
-        setIsSubmitting(false);
-        setStep(3);
-      }
-    };
-
-    // Safety timeout: transition after at most 4500ms so user is never blocked
-    const safetyTimer = setTimeout(finishStep, 4500);
+    setIsSyncingMeet(true);
 
     const dateKey = getLocalDateKey(selectedDate);
     const exactSlotIso = slotIsoMap[`${dateKey}_${selectedSlot}`] || "";
 
+    // Direct Cal.com sync
     const directCalComSync = async () => {
       try {
         const startISO = exactSlotIso || parseSlotToISO(selectedDate, selectedSlot);
@@ -420,11 +411,20 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
         }
       } catch (err) {
         console.warn("Direct Cal.com fallback sync notice:", err);
+      } finally {
+        setIsSyncingMeet(false);
       }
       return false;
     };
 
-    try {
+    // Instant optimistic UI transition in 350ms with confetti
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setStep(3);
+    }, 350);
+
+    // Call Cal.com in parallel
+    if (typeof window !== "undefined" && window.location.hostname === "localhost") {
       fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -439,32 +439,16 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           slotIso: exactSlotIso,
         }),
       })
-        .then(async (r) => {
-          if (!r.ok) {
-            await directCalComSync();
-            return null;
-          }
-          return r.json();
-        })
+        .then((r) => r.json())
         .then((data) => {
           if (data?.booking?.data?.meetingUrl) {
             setConfirmedMeetUrl(data.booking.data.meetingUrl);
+            setIsSyncingMeet(false);
           }
         })
-        .catch(async (e) => {
-          console.warn("API booking failed, syncing directly with Cal.com:", e);
-          await directCalComSync();
-        })
-        .finally(() => {
-          clearTimeout(safetyTimer);
-          finishStep();
-        });
-    } catch (err) {
-      console.warn("Booking submit notice:", err);
-      directCalComSync().finally(() => {
-        clearTimeout(safetyTimer);
-        finishStep();
-      });
+        .catch(() => directCalComSync());
+    } else {
+      directCalComSync();
     }
   };
 
@@ -923,8 +907,18 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
             </div>
 
             {/* Meet link card */}
-            {confirmedMeetUrl && (
+            {isSyncingMeet ? (
               <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] max-w-md mx-auto flex items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2.5 text-white/80 font-mono">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="text-white/70">Generating secure Google Meet room...</span>
+                </div>
+                <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[10px] font-bold">
+                  SYNCING
+                </span>
+              </div>
+            ) : confirmedMeetUrl ? (
+              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] max-w-md mx-auto flex items-center justify-between gap-3 text-xs animate-in fade-in duration-300">
                 <div className="flex items-center gap-2 text-white/80 font-mono truncate">
                   <Video className="w-4 h-4 shrink-0 text-emerald-400" />
                   <span className="truncate">{confirmedMeetUrl}</span>
@@ -939,7 +933,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
-            )}
+            ) : null}
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 max-w-sm mx-auto">
