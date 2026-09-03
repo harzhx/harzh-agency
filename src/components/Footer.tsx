@@ -25,13 +25,13 @@ export const Footer: React.FC<FooterProps> = () => {
               Strategies
             </a>
             <a href="#work" className="hover:text-white transition-colors">
-              Work Vault
+              Work
             </a>
             <a href="#testimonials" className="hover:text-white transition-colors">
               Testimonials
             </a>
             <a href="#packages" className="hover:text-white transition-colors">
-              Packages
+              Pricing
             </a>
             <a href="#faq" className="hover:text-white transition-colors">
               FAQ
