@@ -171,19 +171,19 @@ html:not(.dark) .beam-line {
 /* Rock-Solid Single-Track Infinite Marquees (Zero Overlap / Zero Glitch) */
 @keyframes marquee-forward {
   from {
-    transform: translateX(0%);
+    transform: translate3d(0%, 0, 0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 @keyframes marquee-backward {
   from {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
   to {
-    transform: translateX(0%);
+    transform: translate3d(0%, 0, 0);
   }
 }
 
@@ -192,6 +192,7 @@ html:not(.dark) .beam-line {
   width: max-content;
   flex-shrink: 0;
   animation: marquee-forward 28s linear infinite;
+  will-change: transform;
 }
 
 .animate-marquee-right {
@@ -199,9 +200,12 @@ html:not(.dark) .beam-line {
   width: max-content;
   flex-shrink: 0;
   animation: marquee-backward 28s linear infinite;
+  will-change: transform;
 }
 
-.animate-marquee-left:hover,
-.animate-marquee-right:hover {
-  animation-play-state: paused;
+@media (hover: hover) {
+  .animate-marquee-left:hover,
+  .animate-marquee-right:hover {
+    animation-play-state: paused;
+  }
 }

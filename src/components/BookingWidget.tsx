@@ -477,7 +477,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       const formatGCalDate = (d: Date) => d.toISOString().replace(/-|:|\.\d\d\d/g, "");
       const datesParam = `${formatGCalDate(istStart)}/${formatGCalDate(istEnd)}`;
 
-      const title = encodeURIComponent("15-Min Video Retention Audit — Harzh Agency");
+      const title = encodeURIComponent("15-Min Strategy Call — Harzh Agency");
       const details = encodeURIComponent(
         `Creator: ${name || "Creator"}\nEmail: ${email || ""}\nChannel: ${channelLink || ""}\nMeeting Link: ${confirmedMeetUrl || "https://meet.google.com/hzh-cal-strategy"}\nHost: Harzh Studio`
       );
@@ -514,7 +514,7 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
       <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/[0.06] bg-white/[0.01]">
         <div className="flex items-center gap-2 text-xs font-mono text-white/70">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="tracking-wider uppercase font-semibold">15-Min Strategy Audit</span>
+          <span className="tracking-wider uppercase font-semibold">15-Min Strategy Call</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -547,10 +547,10 @@ export const BookingWidget: React.FC<BookingWidgetProps> = ({ isModal = false, o
           <form onSubmit={handleNextToCalendar} className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
             <div>
               <h3 className="text-xl sm:text-3xl font-bold tracking-tight text-white">
-                Book Your Retention Audit
+                Book Your Strategy Call
               </h3>
               <p className="text-xs sm:text-sm text-white/60 mt-1 font-normal leading-relaxed">
-                We'll audit your video pacing, identify drop-off nodes, and map out your dedicated editing roadmap.
+                We'll audit your recent uploads, diagnose viewer drop-off points, and map out your dedicated editing roadmap.
               </p>
             </div>
 

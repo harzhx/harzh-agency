@@ -28,13 +28,12 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
             <span>BOOK YOUR CALL</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
-            Let’s Scale Your Channel.
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-5 sm:mb-6">
+            Let’s Scale{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">
+              Your Channel
+            </span>.
           </h2>
-
-          <p className="text-sm sm:text-base text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Schedule a focused 15-minute strategy session with our team. We’ll audit your recent uploads, diagnose viewer drop-off points, and map out your dedicated editing roadmap.
-          </p>
 
           {/* Quick value badges */}
           <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 mt-4 sm:mt-6 text-xs text-white/60 font-mono">

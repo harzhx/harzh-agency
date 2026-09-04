@@ -173,20 +173,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="animate-marquee-left py-0.5 gap-2.5">
               {[
                 { symbol: "✦", text: "240M+ VIEWS GENERATED" },
-                { symbol: "📈", text: "4.2X RETENTION" },
-                { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                { symbol: "↗", text: "4.2X RETENTION" },
+                { symbol: "◈", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
                 { symbol: "✦", text: "240M+ VIEWS GENERATED" },
-                { symbol: "📈", text: "4.2X RETENTION" },
-                { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                { symbol: "↗", text: "4.2X RETENTION" },
+                { symbol: "◈", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
                 { symbol: "✦", text: "240M+ VIEWS GENERATED" },
-                { symbol: "📈", text: "4.2X RETENTION" },
-                { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                { symbol: "↗", text: "4.2X RETENTION" },
+                { symbol: "◈", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
                 { symbol: "✦", text: "240M+ VIEWS GENERATED" },
-                { symbol: "📈", text: "4.2X RETENTION" },
-                { symbol: "⏱️", text: "30H+ SAVED / WK" },
+                { symbol: "↗", text: "4.2X RETENTION" },
+                { symbol: "◈", text: "30H+ SAVED / WK" },
                 { symbol: "⚡", text: "48–72H DELIVERY" },
               ].map((stat, index) => (
                 <div

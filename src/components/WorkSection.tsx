@@ -177,7 +177,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 transform-gpu min-h-[420px]"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-16 transform-gpu min-h-[420px]"
           >
             {shortsItems.map((item) => {
               const isPlaying = playingShortId === item.id;
@@ -210,13 +210,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
 
                       {/* Glowing Center Play Button */}
                       <div className="absolute inset-0 flex items-center justify-center z-10">
-                        <div className="w-14 h-14 rounded-full bg-white/95 text-black flex items-center justify-center shadow-[0_0_35px_rgba(255,255,255,0.7)] group-hover:scale-110 active:scale-95 group-hover:bg-white transition-all duration-300">
-                          <Play className="w-6 h-6 fill-black translate-x-0.5" />
+                        <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-white/95 text-black flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.7)] group-hover:scale-110 active:scale-95 group-hover:bg-white transition-all duration-300">
+                          <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-black translate-x-0.5" />
                         </div>
                       </div>
 
                       {/* Overlay Title on Thumbnail (HOVER ONLY) */}
-                      <div className="absolute bottom-3 left-3 right-3 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 pointer-events-none">
                         <div className="flex flex-wrap items-center gap-1.5 mb-1">
                           <span className="text-xs font-semibold text-white font-mono">{item.creator}</span>
                           {item.proofBadge && (

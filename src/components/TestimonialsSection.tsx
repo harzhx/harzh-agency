@@ -12,7 +12,6 @@ export interface TestimonialCreator {
   avatar: string;
   quote: string;
   keyMetric: string;
-  accentColor: string;
 }
 
 export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
@@ -26,7 +25,6 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=240&auto=format&fit=crop&q=80",
     quote: "Harsh transformed our production velocity. The hook retention and pacing eliminated dropoffs across our long-form tutorials and shorts.",
     keyMetric: "+42% Avg View Duration",
-    accentColor: "from-pink-500/20 via-rose-500/10 to-transparent",
   },
   {
     id: "champagne-mike",
@@ -38,7 +36,6 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=240&auto=format&fit=crop&q=80",
     quote: "The 3D motion telemetry and sound design elevated our storytelling to documentary level. Turnaround is consistently sharp and dependable.",
     keyMetric: "78.4% Watch Time Peak",
-    accentColor: "from-amber-500/20 via-indigo-500/10 to-transparent",
   },
   {
     id: "jack-vegan",
@@ -50,7 +47,6 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=240&auto=format&fit=crop&q=80",
     quote: "From raw Zoom calls and lifestyle footage, they crafted cohesive narrative masterclasses that our audience watches until the final second.",
     keyMetric: "3.2x Subscriber Growth",
-    accentColor: "from-emerald-500/20 via-teal-500/10 to-transparent",
   },
 ];
 
@@ -75,10 +71,10 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
             <span>TESTIMONIALS</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Trusted by Channels Scaling to{" "}
+          <h2 className="text-[22px] sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-snug sm:leading-tight">
+            Trusted by Channels<br className="block sm:inline" />{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white to-purple-300">
-              Millions of Views.
+              Scaling to Millions of Views.
             </span>
           </h2>
         </motion.div>
@@ -88,18 +84,13 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
           {TESTIMONIAL_CREATORS.map((creator, index) => (
             <motion.div
               key={creator.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.45, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.55, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
-              className="relative rounded-3xl border border-white/[0.1] bg-[#0c0f20]/90 backdrop-blur-2xl p-7 sm:p-8 overflow-hidden group hover:border-indigo-500/40 transition-colors duration-300 shadow-2xl flex flex-col justify-between"
+              className="relative rounded-3xl border border-white/[0.08] bg-[#0c0e18]/95 backdrop-blur-xl p-6 sm:p-8 overflow-hidden group hover:border-indigo-500/40 transition-colors duration-300 shadow-2xl flex flex-col justify-between"
             >
-              {/* Subtle Gradient Backlight */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-b ${creator.accentColor} opacity-25 group-hover:opacity-60 transition-opacity duration-500 pointer-events-none`}
-              />
-
               <div className="relative z-10">
                 {/* Result Proof Pill Top */}
                 <div className="flex items-center justify-between gap-2 mb-6">

@@ -122,12 +122,12 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
             <span>PRICING & PACKAGES</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
-            Transparent Retainer Tiers.
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6 sm:mb-8">
+            Transparent{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">
+              Retainer Tiers
+            </span>.
           </h2>
-          <p className="text-sm sm:text-base text-white/60 leading-relaxed max-w-2xl mx-auto">
-            Zero hidden fees. Dedicated senior editor, unlimited Frame.io revisions, and guaranteed 48-hour turnarounds on every master cut.
-          </p>
         </motion.div>
 
         {/* MOBILE VIEW: SLEEK TAB SWITCHER (< lg) */}
