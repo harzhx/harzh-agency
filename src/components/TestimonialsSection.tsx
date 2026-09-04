@@ -60,7 +60,7 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
   const [isPlayingTestimonial, setIsPlayingTestimonial] = useState(false);
 
   return (
-    <section id="testimonials" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06] overflow-hidden">
+    <section id="testimonials" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06] overflow-hidden">
       {/* Background Ambient Lights */}
       <div className="absolute top-1/3 left-1/4 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
       <div className="absolute bottom-1/3 right-1/4 translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none transform-gpu" />
@@ -74,9 +74,9 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-purple-400 mb-3 sm:mb-4 backdrop-blur-md shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-            <span>04 // CREATOR ENDORSEMENTS & CASE STUDIES</span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span>TESTIMONIALS</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
@@ -202,10 +202,9 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = ({
 
           <button
             onClick={onOpenBooking}
-            className="w-full sm:w-auto px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.45)] transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 shadow-xl"
+            className="w-full sm:w-auto px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-white text-black hover:bg-white/90 hover:shadow-[0_0_30px_rgba(255,255,255,0.45)] transition-all flex items-center justify-center gap-2 shrink-0 active:scale-95 shadow-xl cursor-pointer"
           >
-            <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
-            <span>Apply For Retainer Slot</span>
+            <span>Book Strategy Call →</span>
           </button>
         </div>
       </div>

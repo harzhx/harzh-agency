@@ -108,7 +108,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
   const activeMobilePkg = PRICING_PACKAGES.find((p) => p.id === activeMobileTier) || PRICING_PACKAGES[1];
 
   return (
-    <section id="packages" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
+    <section id="packages" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -118,9 +118,9 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 sm:mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>05 // PREDICTABLE INVESTMENT</span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 sm:mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span>PRICING & PACKAGES</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
             Transparent Retainer Tiers.
@@ -133,21 +133,29 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
         {/* MOBILE VIEW: SLEEK TAB SWITCHER (< lg) */}
         <div className="block lg:hidden max-w-md mx-auto mb-8">
           {/* Segmented Tier Switcher Tabs */}
-          <div className="flex items-center justify-between p-1.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] mb-6">
+          <div className="relative flex items-center justify-between p-1.5 rounded-2xl bg-black/70 border border-white/[0.1] backdrop-blur-xl shadow-2xl mb-6">
             {PRICING_PACKAGES.map((pkg) => {
               const isSelected = pkg.id === activeMobileTier;
               return (
                 <button
                   key={pkg.id}
+                  type="button"
                   onClick={() => setActiveMobileTier(pkg.id)}
-                  className={`flex-1 py-2.5 px-2 rounded-xl text-[11px] font-mono font-bold transition-all text-center flex items-center justify-center gap-1 cursor-pointer ${
+                  className={`relative flex-1 py-2.5 px-2 rounded-xl text-[11px] font-mono font-bold transition-colors text-center flex items-center justify-center gap-1 cursor-pointer ${
                     isSelected
-                      ? "bg-white text-black shadow-lg"
+                      ? "text-black"
                       : "text-white/60 hover:text-white"
                   }`}
                 >
-                  {pkg.popular && <Flame className="w-3 h-3 text-amber-500 shrink-0" />}
-                  <span className="truncate">
+                  {isSelected && (
+                    <motion.div
+                      layoutId="activePackageTab"
+                      className="absolute inset-0 bg-white rounded-xl shadow-lg"
+                      transition={{ type: "spring", stiffness: 450, damping: 30 }}
+                    />
+                  )}
+                  {pkg.popular && <Flame className="w-3 h-3 text-amber-500 shrink-0 relative z-10" />}
+                  <span className="truncate relative z-10">
                     {pkg.id === "pkg-shorts" ? "Shorts" : pkg.id === "pkg-flagship" ? "Flagship" : "Partner"}
                   </span>
                 </button>

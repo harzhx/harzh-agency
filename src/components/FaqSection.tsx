@@ -20,7 +20,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
   };
 
   return (
-    <section id="faq" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
+    <section id="faq" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -30,8 +30,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-8 sm:mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-indigo-400 mb-3 sm:mb-4">
-            <span>06 // COMMON QUESTIONS</span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-3 sm:mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span>FAQ</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
             Frequently Asked Questions.

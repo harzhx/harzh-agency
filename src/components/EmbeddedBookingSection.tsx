@@ -10,7 +10,7 @@ interface EmbeddedBookingSectionProps {
 
 export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ theme }) => {
   return (
-    <section id="book" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.08] overflow-hidden">
+    <section id="book" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.08] overflow-hidden">
       {/* Ambient background glow */}
       <div className="hidden sm:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-indigo-500/10 rounded-full blur-[140px] pointer-events-none transform-gpu" />
 
@@ -23,10 +23,9 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto mb-8 sm:mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-emerald-400 mb-3 sm:mb-4 shadow-lg backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>07 // DIRECT STRATEGY SESSION</span>
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-3 sm:mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>DIRECT STRATEGY SESSION</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
