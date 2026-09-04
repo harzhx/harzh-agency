@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ThemeMode } from "../types";
 import { FAQS_DATA } from "../data/agencyData";
-import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface FaqSectionProps {
@@ -34,16 +34,13 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
             <span>FAQ</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
             Frequently Asked Questions.
           </h2>
-          <p className="text-sm sm:text-base text-white/60">
-            Everything you need to know about our workflow, communication, and turnaround standards.
-          </p>
         </motion.div>
 
         {/* Accordion List */}
-        <div className="space-y-3.5 mb-8 sm:mb-10">
+        <div className="space-y-3.5">
           {FAQS_DATA.map((faq, idx) => {
             const isOpen = openIdx === idx;
             return (
@@ -86,27 +83,6 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             );
           })}
         </div>
-
-        {/* Still Have Questions CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center p-8 rounded-3xl bg-white/[0.02] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl"
-        >
-          <div className="text-left">
-            <h4 className="text-base font-bold text-white">Have a specific question about your channel?</h4>
-            <p className="text-xs text-white/50">Book a quick 15-minute consultation with our lead strategist.</p>
-          </div>
-          <button
-            onClick={onOpenBooking}
-            className="px-6 py-3 rounded-full text-xs font-bold bg-white text-black hover:bg-white/90 transition-all shrink-0 flex items-center gap-2 cursor-pointer shadow-lg active:scale-95"
-          >
-            <span>Talk With Us Directly</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </motion.div>
       </div>
     </section>
   );

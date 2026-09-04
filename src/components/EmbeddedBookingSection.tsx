@@ -25,15 +25,15 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
         >
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-3 sm:mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>DIRECT STRATEGY SESSION</span>
+            <span>BOOK YOUR CALL</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 sm:mb-4">
-            Lock In Your Video Retention Audit.
+            Let’s Scale Your Channel.
           </h2>
 
           <p className="text-sm sm:text-base text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Pick a time below for a 15-minute 1-on-1 strategy call with our lead director. We will audit your current timeline, diagnose drop-off nodes, and craft a tailored retention roadmap.
+            Schedule a focused 15-minute strategy session with our team. We’ll audit your recent uploads, diagnose viewer drop-off points, and map out your dedicated editing roadmap.
           </p>
 
           {/* Quick value badges */}
@@ -48,7 +48,7 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
             </div>
             <div className="flex items-center gap-1.5 bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>100% Free • No Pitch Slap</span>
+              <span>1-on-1 Strategy Session</span>
             </div>
           </div>
         </motion.div>
