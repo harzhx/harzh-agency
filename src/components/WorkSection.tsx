@@ -44,31 +44,30 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-8 sm:mb-10"
+          className="text-center max-w-2xl mx-auto mb-10 sm:mb-14"
         >
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-emerald-400 mb-3">
-              <span>PORTFOLIO</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-              Featured Works.
-            </h2>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+            <span>PORTFOLIO</span>
           </div>
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-6 sm:mb-8">
+            Featured Work.
+          </h2>
 
-          {/* TWO PRIMARY TABS (Long-Form vs. Shorts) */}
-          <div className="flex items-center p-1.5 rounded-2xl bg-black/60 border border-white/[0.1] backdrop-blur-xl shrink-0">
+          {/* TWO PRIMARY TABS (Long-Form vs. Shorts) - Balanced 50/50 Toggle */}
+          <div className="grid grid-cols-2 p-1.5 rounded-2xl bg-black/70 border border-white/[0.1] backdrop-blur-xl shadow-2xl w-full max-w-xs sm:max-w-sm mx-auto">
             <button
               onClick={() => {
                 setActiveCategory("longform");
                 setPlayingLongId(null);
               }}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+              className={`py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center cursor-pointer ${
                 activeCategory === "longform"
                   ? "bg-white text-black shadow-xl"
                   : "text-white/60 hover:text-white"
               }`}
             >
-              <span>🎬 Long-Form (16:9)</span>
+              <span>Long-Form (16:9)</span>
             </button>
 
             <button
@@ -76,13 +75,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 setActiveCategory("shorts");
                 setPlayingShortId(null);
               }}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+              className={`py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center justify-center cursor-pointer ${
                 activeCategory === "shorts"
                   ? "bg-white text-black shadow-xl"
                   : "text-white/60 hover:text-white"
               }`}
             >
-              <span>📱 Shorts (9:16)</span>
+              <span>Shorts (9:16)</span>
             </button>
           </div>
         </motion.div>
