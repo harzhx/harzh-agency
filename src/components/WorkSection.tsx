@@ -48,14 +48,11 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
         >
           <div>
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-white/[0.04] border border-white/[0.08] text-emerald-400 mb-3">
-              <span>02 // THE WORK VAULT</span>
+              <span>PORTFOLIO</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-2">
-              Featured Edits &amp; Case Studies.
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+              Featured Works.
             </h2>
-            <p className="text-sm sm:text-base text-white/60 max-w-xl">
-              Every cut is engineered for maximum retention. Scroll through our 16:9 YouTube master edits and 9:16 viral short-form assets directly below.
-            </p>
           </div>
 
           {/* TWO PRIMARY TABS (Long-Form vs. Shorts) */}
@@ -65,13 +62,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 setActiveCategory("longform");
                 setPlayingLongId(null);
               }}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
                 activeCategory === "longform"
                   ? "bg-white text-black shadow-xl"
                   : "text-white/60 hover:text-white"
               }`}
             >
-              <span>🎬 Long-Form YouTube (16:9)</span>
+              <span>🎬 Long-Form (16:9)</span>
             </button>
 
             <button
@@ -79,13 +76,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                 setActiveCategory("shorts");
                 setPlayingShortId(null);
               }}
-              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
+              className={`px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 cursor-pointer ${
                 activeCategory === "shorts"
                   ? "bg-white text-black shadow-xl"
                   : "text-white/60 hover:text-white"
               }`}
             >
-              <span>📱 Viral Shorts &amp; Reels (9:16)</span>
+              <span>📱 Shorts (9:16)</span>
             </button>
           </div>
         </motion.div>
