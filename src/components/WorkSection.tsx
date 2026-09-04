@@ -38,14 +38,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
   return (
     <section id="work" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Area */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-2xl mx-auto mb-10 sm:mb-14"
-        >
+        {/* Header Area - Instant Load, Zero Fade-in Delay */}
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
             <span>PORTFOLIO</span>
@@ -84,29 +78,18 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               <span>Shorts (9:16)</span>
             </button>
           </div>
-        </motion.div>
+        </div>
 
-        {/* 🎬 1. LONG-FORM: ONE-BY-ONE VERTICAL CINEMA FEED */}
+        {/* 🎬 1. LONG-FORM: ONE-BY-ONE VERTICAL CINEMA FEED (Instant Load) */}
         {activeCategory === "longform" && (
-          <motion.div
-            key="longform-feed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16"
-          >
-            {longFormItems.map((item, index) => {
+          <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16">
+            {longFormItems.map((item) => {
               const isPlaying = playingLongId === item.id;
 
               return (
-                <motion.div
+                <div
                   key={item.id}
-                  initial={{ opacity: 0, y: 24, scale: 0.99 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
-                  className="relative rounded-3xl md:rounded-[32px] border border-white/[0.12] overflow-hidden p-2 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black ring-1 ring-white/10 transition-colors duration-300 hover:border-indigo-500/40"
+                  className="relative rounded-3xl md:rounded-[32px] border border-white/[0.12] overflow-hidden p-2 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black ring-1 ring-white/10 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-1"
                 >
                   <div className="relative aspect-video rounded-2xl md:rounded-[26px] overflow-hidden bg-black group">
                     {isPlaying ? (
@@ -153,33 +136,22 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         )}
 
-        {/* 📱 2. VIRAL SHORTS: 9:16 PURE CINEMA SHOWROOM */}
+        {/* 📱 2. VIRAL SHORTS: 9:16 PURE CINEMA SHOWROOM (Instant Load) */}
         {activeCategory === "shorts" && (
-          <motion.div
-            key="shorts-feed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16"
-          >
-            {shortsItems.map((item, index) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {shortsItems.map((item) => {
               const isPlaying = playingShortId === item.id;
 
               return (
-                <motion.div
+                <div
                   key={item.id}
-                  initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{ duration: 0.45, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                  whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
-                  className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-colors duration-300 group ring-1 ring-white/5"
+                  className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-all duration-300 group ring-1 ring-white/5 hover:-translate-y-1"
                 >
                   {isPlaying ? (
                     <video
@@ -226,10 +198,10 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     </div>
                   )}
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         )}
 
         {/* CTA Strip */}
