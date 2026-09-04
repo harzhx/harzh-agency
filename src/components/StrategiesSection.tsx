@@ -1,16 +1,7 @@
 import React from "react";
 import { ThemeMode } from "../types";
 import { PixelMascot } from "./PixelMascot";
-import {
-  Flame,
-  ArrowRight,
-  Sparkles,
-  Zap,
-  Activity,
-  Volume2,
-  Image as ImageIcon,
-  TrendingUp,
-} from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 
 interface StrategiesSectionProps {
@@ -28,35 +19,30 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
       title: "The Foundation",
       tag: "IDEATION & HOOKS",
       desc: "We research your niche to pinpoint winning video topics and craft an unskippable opening hook—before you even hit record.",
-      icon: <Zap className="w-4 h-4 text-amber-400" />,
     },
     {
       step: 2,
       title: "The Storytelling",
       tag: "DYNAMIC PACING",
       desc: "Remove all the awkward pauses, repetitive sections, and dead air. Transform raw footage into a compelling story that keeps viewers glued until the very end.",
-      icon: <Activity className="w-4 h-4 text-indigo-400" />,
     },
     {
       step: 3,
       title: "The 1% Craft",
       tag: "VISUALS & SOUND",
       desc: "Elevate your footage with custom motion graphics, relevant B-roll, and tactile sound design—posting polished content on your channel every time.",
-      icon: <Volume2 className="w-4 h-4 text-purple-400" />,
     },
     {
       step: 4,
       title: "High-CTR Packaging",
       tag: "THUMBNAILS",
       desc: "Design click-tested A/B thumbnail variations and SEO-optimized title hooks to maximize your CTR across both YouTube feed and search results.",
-      icon: <ImageIcon className="w-4 h-4 text-pink-400" />,
     },
     {
       step: 5,
       title: "The Feedback Loop",
       tag: "STUDIO ANALYTICS",
       desc: "Analyze your YouTube Studio retention graphs second-by-second. Pinpoint drop-off timestamps, study audience spikes, and feed real data directly into your next edit.",
-      icon: <TrendingUp className="w-4 h-4 text-emerald-400" />,
     },
   ];
 
@@ -155,26 +141,21 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.5, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl hover:border-indigo-500/30 hover:bg-white/[0.04] transition-all duration-300 group shadow-lg flex items-start gap-5"
+                className="p-4 sm:p-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl hover:border-indigo-500/30 hover:bg-white/[0.04] transition-all duration-300 group shadow-lg flex items-start gap-3.5 sm:gap-5"
               >
                 {/* Big Clean Step Number Badge */}
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/[0.1] text-white flex items-center justify-center font-mono text-base font-extrabold shrink-0 group-hover:border-indigo-500/40 group-hover:text-indigo-400 transition-colors shadow-inner">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-white/[0.1] text-white flex items-center justify-center font-mono text-sm sm:text-base font-extrabold shrink-0 group-hover:border-indigo-500/40 group-hover:text-indigo-400 transition-colors shadow-inner">
                   {step.step}
                 </div>
 
                 {/* Card Content */}
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="p-1 rounded-md bg-white/[0.05]">
-                        {step.icon}
-                      </span>
-                      <h4 className="text-base sm:text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
-                        {step.title}
-                      </h4>
-                    </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <h4 className="text-sm sm:text-lg font-bold text-white group-hover:text-indigo-300 transition-colors tracking-tight">
+                      {step.title}
+                    </h4>
 
-                    <span className="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                    <span className="text-[10px] sm:text-[11px] font-mono font-semibold px-2 sm:px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 shrink-0 whitespace-nowrap">
                       {step.tag}
                     </span>
                   </div>
