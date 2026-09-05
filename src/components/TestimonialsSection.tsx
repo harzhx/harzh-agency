@@ -18,7 +18,7 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
   {
     id: "simran-kaur",
     name: "Simran Kaur Makeovers",
-    subscribers: "900K+ Reach",
+    subscribers: "2M+ Reach",
     views: "50M+ Views",
     niche: "Beauty & Business",
     badge: "INSTAGRAM & YOUTUBE",

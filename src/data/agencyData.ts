@@ -37,7 +37,7 @@ export const AGENCY_STATS = [
 export const CLIENT_PROOF_ITEMS = [
   {
     name: "Simran Kaur Makeovers",
-    badge: "900K+ Community",
+    badge: "2M+ Reach",
     metric: "50M+ Views",
     avatar: "/images/testimonials/simran_kaur.jpg",
     verified: true,
@@ -58,7 +58,7 @@ export const CLIENT_PROOF_ITEMS = [
   },
   {
     name: "Combined Audience",
-    badge: "8,000,000+ Reach",
+    badge: "9,000,000+ Reach",
     metric: "240M+ Views",
     avatar: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80",
     verified: true,
