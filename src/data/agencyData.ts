@@ -468,7 +468,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
   },
   {
     id: "pkg-partner",
-    name: "Full Channel Retainer",
+    name: "Custom",
     badge: "DEDICATED TEAM",
     priceAnchor: "Starts at $3,500",
     billingPeriod: "/ month",
@@ -484,7 +484,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
       "Dedicated Team (Lead Editor, Shorts Editor & Designer)",
       "Dedicated private communication channel",
     ],
-    ctaText: "Apply for Channel Retainer",
+    ctaText: "Apply for Custom",
   },
 ];
 

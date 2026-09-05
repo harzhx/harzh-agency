@@ -154,7 +154,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
                   )}
                   {pkg.popular && <Flame className="w-3 h-3 text-amber-500 shrink-0 relative z-10" />}
                   <span className="truncate relative z-10">
-                    {pkg.id === "pkg-shorts" ? "Shorts" : pkg.id === "pkg-flagship" ? "Long-Form" : "Retainer"}
+                    {pkg.id === "pkg-shorts" ? "Shorts" : pkg.id === "pkg-flagship" ? "Long-Form" : "Custom"}
                   </span>
                 </button>
               );
