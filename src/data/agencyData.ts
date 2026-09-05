@@ -453,7 +453,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     popular: true,
     priceAnchor: "Starts at $2,200",
     billingPeriod: "/ month",
-    description: "Complete end-to-end editing for creators focused on YouTube channel growth and maximum watch time.",
+    description: "Complete end-to-end management for creators focused on YouTube channel growth and maximum watch time.",
     deliverables: [
       "4 Long-form YouTube master edits (up to 20 mins)",
       "High-retention narrative pacing & dead-air cuts",
