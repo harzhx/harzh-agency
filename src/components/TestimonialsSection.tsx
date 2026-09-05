@@ -39,7 +39,7 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
   },
   {
     id: "the-jacked-vegan",
-    name: "The Jacked Vegan (Jake)",
+    name: "The Jacked Vegan",
     subscribers: "56K+ YouTube",
     views: "8M+ Views",
     niche: "Fitness & Calisthenics",
