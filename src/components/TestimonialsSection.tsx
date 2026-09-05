@@ -62,7 +62,7 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto mb-10 sm:mb-14"
         >
@@ -84,11 +84,11 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
           {TESTIMONIAL_CREATORS.map((creator, index) => (
             <motion.div
               key={creator.id}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.1 }}
+              initial={{ opacity: 0, y: 36, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.15 }}
               transition={{ duration: 0.55, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
+              whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
               className="relative rounded-3xl border border-white/[0.08] bg-[#0c0e18]/95 backdrop-blur-xl p-6 sm:p-8 overflow-hidden group hover:border-indigo-500/40 transition-colors duration-300 shadow-2xl flex flex-col justify-between"
             >
               <div className="relative z-10">
@@ -98,7 +98,7 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
                     {creator.badge}
                   </span>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                    <TrendingUp className="w-3.5 h-3.5" />
+                    <TrendingUp className="w-3.5 h-3.5 animate-pulse" />
                     <span>{creator.keyMetric}</span>
                   </div>
                 </div>

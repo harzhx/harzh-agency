@@ -106,17 +106,32 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
         {activeCategory === "longform" && (
           <motion.div
             key="longform-feed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
             className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16 transform-gpu min-h-[420px]"
           >
             {longFormItems.map((item) => {
               const isPlaying = playingLongId === item.id;
 
               return (
-                <div
+                <motion.div
                   key={item.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20, scale: 0.98 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  }}
                   className="relative rounded-3xl md:rounded-[32px] border border-white/[0.12] overflow-hidden p-2 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black ring-1 ring-white/10 transition-all duration-300 hover:border-indigo-500/40 hover:-translate-y-1"
                 >
                   <div className="relative aspect-video rounded-2xl md:rounded-[26px] overflow-hidden bg-black group">
@@ -164,7 +179,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
@@ -174,17 +189,32 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
         {activeCategory === "shorts" && (
           <motion.div
             key="shorts-feed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.05 }
+              }
+            }}
             className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-16 transform-gpu min-h-[420px]"
           >
             {shortsItems.map((item) => {
               const isPlaying = playingShortId === item.id;
 
               return (
-                <div
+                <motion.div
                   key={item.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 16, scale: 0.97 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  }}
                   className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-all duration-300 group ring-1 ring-white/5 hover:-translate-y-1"
                 >
                   {isPlaying ? (
@@ -232,7 +262,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
