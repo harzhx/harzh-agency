@@ -192,7 +192,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Mobile & Desktop Marquees Section */}
         <div className="space-y-2.5 mb-4 sm:mb-12 overflow-hidden relative select-none">
           {/* 1. Stats Marquee (MOBILE ONLY: Moving Right → Left) */}
-          <div className="block sm:hidden relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="block sm:hidden relative w-full overflow-hidden marquee-mask">
             <div className="animate-marquee-left py-0.5 gap-2.5">
               {[
                 { symbol: "✦", text: "240M+ VIEWS GENERATED" },
@@ -229,7 +229,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </p>
 
           {/* 2. Niches Marquee (Glitchless Single-Track: Moving Left → Right) */}
-          <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="relative w-full overflow-hidden marquee-mask">
             <div className="animate-marquee-right py-0.5 gap-2.5">
               {[
                 ...CREATOR_LOGOS,

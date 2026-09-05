@@ -209,3 +209,9 @@ html:not(.dark) .beam-line {
     animation-play-state: paused;
   }
 }
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
