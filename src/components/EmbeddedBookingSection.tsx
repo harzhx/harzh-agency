@@ -25,7 +25,7 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
         >
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 mb-3 sm:mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>BOOK YOUR CALL</span>
+            <span>WORK WITH US</span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-5 sm:mb-6">
@@ -35,8 +35,8 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
             </span>.
           </h2>
 
-          {/* Quick value badges */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 mt-4 sm:mt-6 text-xs text-white/60 font-mono">
+          {/* Quick value badges (Hidden on mobile to prevent clumsy line-wraps and bring form above fold; desktop only) */}
+          <div className="hidden sm:flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 mt-4 sm:mt-6 text-xs text-white/60 font-mono">
             <div className="flex items-center gap-1.5 bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full">
               <Video className="w-3.5 h-3.5 text-emerald-400" />
               <span>Google Meet HD</span>

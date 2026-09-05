@@ -189,12 +189,6 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
             </motion.div>
           ))}
         </div>
-
-        {/* Crisp Guarantee Ribbon */}
-        <div className="max-w-2xl mx-auto p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-center justify-center gap-2.5 text-xs text-white/60 font-mono text-center shadow-lg">
-          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>All retainers include unlimited revisions • No long-term lock-in • 48-hour turnarounds</span>
-        </div>
       </div>
     </section>
   );
