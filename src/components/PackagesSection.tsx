@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeMode } from "../types";
 import { PRICING_PACKAGES } from "../data/agencyData";
-import { CheckCircle2, Flame, ArrowRight, ShieldCheck, Clock, Sparkles } from "lucide-react";
+import { CheckCircle2, Flame, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 
 interface PackagesSectionProps {
@@ -53,18 +53,13 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-indigo-400 block mb-1">
             STARTING INVESTMENT
           </span>
-          <div className="flex items-baseline gap-2 mb-2.5 sm:mb-3">
+          <div className="flex items-baseline gap-2">
             <span className="text-3xl sm:text-5xl font-black text-white tracking-tight">
               {pkg.priceAnchor.replace("Starts at ", "")}
             </span>
             <span className="text-xs font-mono text-white/50">
               {pkg.billingPeriod}
             </span>
-          </div>
-
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-semibold">
-            <Clock className="w-3.5 h-3.5" />
-            <span>{pkg.turnaround}</span>
           </div>
         </div>
 
@@ -122,12 +117,15 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
             <span>PRICING & PACKAGES</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 sm:mb-6">
             Transparent{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">
               Retainer Tiers
             </span>.
           </h2>
+          <p className="text-sm sm:text-base text-white/60 max-w-xl mx-auto font-sans leading-relaxed">
+            Predictable monthly retainers for serious creators. Simple, high-retention video production without hidden fees.
+          </p>
         </motion.div>
 
         {/* MOBILE & TABLET VIEW: SLEEK TAB SWITCHER (< lg) */}
@@ -156,7 +154,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
                   )}
                   {pkg.popular && <Flame className="w-3 h-3 text-amber-500 shrink-0 relative z-10" />}
                   <span className="truncate relative z-10">
-                    {pkg.id === "pkg-shorts" ? "Shorts" : pkg.id === "pkg-flagship" ? "Flagship" : "Partner"}
+                    {pkg.id === "pkg-shorts" ? "Shorts" : pkg.id === "pkg-flagship" ? "Long-Form" : "Retainer"}
                   </span>
                 </button>
               );

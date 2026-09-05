@@ -17,7 +17,7 @@ export interface PricingTier {
   priceAnchor: string;
   billingPeriod: string;
   description: string;
-  turnaround: string;
+  turnaround?: string;
   deliverables: string[];
   ctaText: string;
 }
@@ -429,65 +429,69 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
 export const PRICING_PACKAGES: PricingTier[] = [
   {
     id: "pkg-shorts",
-    name: "Short-Form Velocity",
+    name: "Short-Form Engine",
+    badge: "SHORTS & REELS",
     priceAnchor: "Starts at $1,200",
     billingPeriod: "/ month",
-    description: "Designed for creators and founders who want rapid, multi-platform viral audience growth across Reels, TikTok & Shorts.",
-    turnaround: "48-Hour Turnaround",
+    description: "For short-form creators, and creators looking to repurpose their long-form videos into viral shorts.",
     deliverables: [
-      "12 to 16 High-Retention Shorts / Reels per month",
-      "Dynamic kinetic typography & custom sound foley",
-      "9:16 Smart framing, color-grading & sound cleanup",
-      "Hook restructuring for 100%+ completion rates",
-      "Unlimited revisions & dedicated Slack communication",
+      "12 to 16 Shorts / Reels per month",
+      "Long-to-short content repurposing",
+      "Viral hook & clip selection",
+      "Modern animated captions with brand styling",
+      "High-retention pacing, zooms & sound effects",
+      "Multi-platform ready for Shorts, Reels & TikTok",
+      "Unlimited revisions via timestamped links",
+      "Dedicated Editor + direct communication channel",
     ],
     ctaText: "Book Short-Form Sprint",
   },
   {
     id: "pkg-flagship",
-    name: "YouTube Flagship Authority",
+    name: "YouTube Long-Form",
     badge: "MOST POPULAR",
     popular: true,
     priceAnchor: "Starts at $2,200",
     billingPeriod: "/ month",
-    description: "Complete end-to-end long-form YouTube editing and short-form repurposing engine for serious 6-figure creators.",
-    turnaround: "48-Hour Turnaround",
+    description: "Complete end-to-end editing for creators focused on YouTube channel growth and maximum watch time.",
     deliverables: [
-      "4 Long-form Master Edits (up to 20 mins raw footage)",
-      "8 Viral Short-form Cutdowns extracted from long-form",
-      "2 High-CTR A/B Test Thumbnails per video",
-      "3-Second HookLock™ intro pacing re-engineering",
-      "Full 12-layer foley audio mastering & color grading",
-      "YouTube Studio second-by-second retention diagnostics",
-      "Unlimited revisions & dedicated senior editor",
+      "4 Long-form YouTube master edits (up to 20 mins)",
+      "High-retention narrative pacing & dead-air cuts",
+      "High-CTR Packaging: 3 titles & 2 custom thumbnails",
+      "Custom animations, clean lower-thirds & b-roll",
+      "Studio audio cleanup, music ducking & color grading",
+      "Bi-weekly strategy call to review retention & topics",
+      "Unlimited revisions via Frame.io",
+      "Dedicated Senior Editor",
     ],
-    ctaText: "Lock in Flagship Retainer",
+    ctaText: "Lock in Long-Form Retainer",
   },
   {
     id: "pkg-partner",
-    name: "Full Growth Partner",
-    badge: "CUSTOM SCALE",
+    name: "Full Channel Retainer",
+    badge: "DEDICATED TEAM",
     priceAnchor: "Starts at $3,500",
     billingPeriod: "/ month",
-    description: "For high-volume creators, podcasts, and venture-backed founders needing a complete outsourced media department.",
-    turnaround: "24 to 48-Hour Priority",
+    description: "Your dedicated outsourced media department. Full YouTube master videos plus weekly repurposed shorts.",
     deliverables: [
-      "Up to 8 Long-form Master Edits per month",
-      "16 to 20 Viral Short-form Repurposed Assets",
-      "Weekly Topic & Packaging Strategy Consultation Calls",
-      "Custom 3D Blender / After Effects motion graphics",
-      "Multi-cam podcast synchronization & studio mixing",
-      "Dedicated Lead Editor + Senior Art Director",
-      "Priority 24/7 Slack channel with direct founder access",
+      "Up to 8 Long-form master edits per month",
+      "16 to 20 Shorts repurposed from long-form",
+      "Multi-cam editing for podcasts, interviews & vlogs",
+      "Complete High-CTR packaging: Weekly titles & thumbnails",
+      "Custom 2D/3D motion graphics & intro animations",
+      "Weekly 1-on-1 strategy call to review retention",
+      "Unlimited revisions with priority production queue",
+      "Dedicated Team (Lead Editor, Shorts Editor & Designer)",
+      "Dedicated private communication channel",
     ],
-    ctaText: "Apply For Partnership",
+    ctaText: "Apply for Channel Retainer",
   },
 ];
 
 export const FAQS_DATA: FaqItem[] = [
   {
     question: "What is your typical turnaround time per video?",
-    answer: "Our standard turnaround time is 48 hours for long-form master edits and 24 to 48 hours for short-form reels. For urgent launches or timely news topics, priority 24-hour delivery is available.",
+    answer: "Our standard delivery is 48 to 72 hours for short-form content and 3 to 4 business days for long-form master edits. For Full Channel retainers, you receive dedicated bandwidth with a priority editing queue.",
   },
   {
     question: "How do we send you raw footage and assets?",
