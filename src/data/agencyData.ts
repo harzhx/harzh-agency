@@ -433,7 +433,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     badge: "SHORTS & REELS",
     priceAnchor: "Starts at $1,200",
     billingPeriod: "/ month",
-    description: "For short-form creators, and creators looking to repurpose their long-form videos into viral shorts.",
+    description: "For creators scaling short-form or repurposing long-form content.",
     deliverables: [
       "12 to 16 Shorts / Reels per month",
       "Long-to-short content repurposing",
@@ -453,7 +453,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     popular: true,
     priceAnchor: "Starts at $2,200",
     billingPeriod: "/ month",
-    description: "Complete end-to-end management for creators focused on YouTube channel growth and maximum watch time.",
+    description: "End-to-end management for serious creators scaling on YouTube.",
     deliverables: [
       "4 Long-form YouTube master edits (up to 20 mins)",
       "High-retention narrative pacing & dead-air cuts",
@@ -472,7 +472,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     badge: "DEDICATED TEAM",
     priceAnchor: "Starts at $3,500",
     billingPeriod: "/ month",
-    description: "Your dedicated outsourced media department. Custom production for high-volume YouTube channels, podcasts & shorts.",
+    description: "Dedicated media team for high-volume YouTube channels and podcasts.",
     deliverables: [
       "Up to 8 Long-form master edits per month",
       "16 to 20 Shorts repurposed from long-form",

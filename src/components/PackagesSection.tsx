@@ -19,7 +19,7 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
     <div
       className={`rounded-3xl p-6 sm:p-9 flex flex-col justify-between relative transition-all duration-300 ${
         pkg.popular
-          ? "bg-gradient-to-b from-[#13172e] via-[#0d1022] to-[#080a14] border-2 border-indigo-500/40 shadow-2xl shadow-indigo-950/60 ring-1 ring-white/20 lg:-translate-y-3"
+          ? "bg-gradient-to-b from-[#13172e] via-[#0d1022] to-[#080a14] border border-indigo-500/50 shadow-2xl shadow-indigo-950/60 ring-1 ring-indigo-400/30 hover:-translate-y-1"
           : "bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.1] hover:border-white/25 backdrop-blur-xl shadow-xl hover:-translate-y-1"
       }`}
     >
@@ -38,11 +38,14 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
       )}
 
       <div>
-        {/* Package Title */}
+        {/* Package Title & Description */}
         <div className="mb-5 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
             {pkg.name}
           </h3>
+          <p className="text-xs sm:text-sm text-white/60 leading-relaxed min-h-[44px] sm:min-h-[48px]">
+            {pkg.description}
+          </p>
         </div>
 
         {/* Price Display Card */}
@@ -114,15 +117,12 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
             <span>PRICING & PACKAGES</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6 sm:mb-8">
             Transparent{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">
               Retainer Tiers
             </span>.
           </h2>
-          <p className="text-sm sm:text-base text-white/60 max-w-xl mx-auto font-sans leading-relaxed">
-            Predictable monthly retainers for serious creators. Simple, high-retention video production without hidden fees.
-          </p>
         </motion.div>
 
         {/* MOBILE & TABLET VIEW: SLEEK TAB SWITCHER (< lg) */}
