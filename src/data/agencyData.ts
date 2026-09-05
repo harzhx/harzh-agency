@@ -468,11 +468,11 @@ export const PRICING_PACKAGES: PricingTier[] = [
   },
   {
     id: "pkg-partner",
-    name: "Custom",
+    name: "Custom Scale",
     badge: "DEDICATED TEAM",
     priceAnchor: "Starts at $3,500",
     billingPeriod: "/ month",
-    description: "Your dedicated outsourced media department. Full YouTube master videos plus weekly repurposed shorts.",
+    description: "Your dedicated outsourced media department. Custom production for high-volume YouTube channels, podcasts & shorts.",
     deliverables: [
       "Up to 8 Long-form master edits per month",
       "16 to 20 Shorts repurposed from long-form",
@@ -484,7 +484,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
       "Dedicated Team (Lead Editor, Shorts Editor & Designer)",
       "Dedicated private communication channel",
     ],
-    ctaText: "Apply for Custom",
+    ctaText: "Apply for Custom Scope",
   },
 ];
 
