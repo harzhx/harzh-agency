@@ -208,7 +208,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-16 transform-gpu min-h-[420px]"
+              className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 mb-16 transform-gpu min-h-[420px]"
             >
               {shortsItems.map((item, index) => {
                 const isPlaying = currentActiveId === item.id;

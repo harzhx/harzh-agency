@@ -79,8 +79,8 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
           </h2>
         </motion.div>
 
-        {/* 3 Testimonial Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* 3 Testimonial Cards Grid (Tablet: 2x1 balanced, Desktop: 3-column) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {TESTIMONIAL_CREATORS.map((creator, index) => (
             <motion.div
               key={creator.id}
@@ -89,7 +89,9 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.55, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
-              className="relative rounded-3xl border border-white/[0.08] bg-[#0c0e18]/95 backdrop-blur-xl p-6 sm:p-8 overflow-hidden group hover:border-indigo-500/40 transition-colors duration-300 shadow-2xl flex flex-col justify-between"
+              className={`relative rounded-3xl border border-white/[0.08] bg-[#0c0e18]/95 backdrop-blur-xl p-6 sm:p-8 overflow-hidden group hover:border-indigo-500/40 transition-colors duration-300 shadow-2xl flex flex-col justify-between ${
+                index === 2 ? "md:col-span-2 md:max-w-xl md:mx-auto lg:col-span-1 lg:max-w-none w-full" : ""
+              }`}
             >
               <div className="relative z-10">
                 {/* Result Proof Pill Top */}

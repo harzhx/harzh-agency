@@ -130,8 +130,8 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
           </h2>
         </motion.div>
 
-        {/* MOBILE VIEW: SLEEK TAB SWITCHER (< lg) */}
-        <div className="block lg:hidden max-w-md mx-auto mb-8">
+        {/* MOBILE & TABLET VIEW: SLEEK TAB SWITCHER (< lg) */}
+        <div className="block lg:hidden max-w-md md:max-w-xl mx-auto mb-8">
           {/* Segmented Tier Switcher Tabs */}
           <div className="relative flex items-center justify-between p-1.5 rounded-2xl bg-black/70 border border-white/[0.1] backdrop-blur-xl shadow-2xl mb-6">
             {PRICING_PACKAGES.map((pkg) => {
