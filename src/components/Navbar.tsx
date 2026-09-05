@@ -45,7 +45,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Brand Logo with Original Harzh Geometric Mark & Typography */}
-          <a href="#" className="flex items-center group">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              if (window.location.hash) {
+                window.history.replaceState(null, "", window.location.pathname);
+              }
+            }}
+            className="flex items-center group cursor-pointer"
+            aria-label="Harzh Agency Home"
+          >
             <HarzhLogo isDark={isDark} size="md" showText={true} />
           </a>
 

@@ -14,9 +14,20 @@ export const Footer: React.FC<FooterProps> = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Footer Links & Info */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 text-xs text-white/50">
-          <div className="flex items-center">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              if (window.location.hash) {
+                window.history.replaceState(null, "", window.location.pathname);
+              }
+            }}
+            className="flex items-center cursor-pointer group"
+            aria-label="Harzh Agency Home"
+          >
             <HarzhLogo isDark={true} size="sm" showText={true} />
-          </div>
+          </a>
 
           <div className="flex items-center gap-6">
             <a href="#strategies" className="hover:text-white transition-colors">
