@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { CheckCircle2, TrendingUp, Quote } from "lucide-react";
+import { CheckCircle2, Quote } from "lucide-react";
 
 export interface TestimonialCreator {
   id: string;
@@ -94,20 +94,9 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
               }`}
             >
               <div className="relative z-10">
-                {/* Result Proof Pill Top */}
-                <div className="flex items-center justify-between gap-2 mb-6">
-                  <span className="text-[11px] font-mono font-semibold tracking-wider uppercase text-white/50">
-                    {creator.badge}
-                  </span>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-                    <TrendingUp className="w-3.5 h-3.5 animate-pulse" />
-                    <span>{creator.keyMetric}</span>
-                  </div>
-                </div>
-
-                {/* Quote with Quotation Glyph */}
-                <div className="mb-8">
-                  <Quote className="w-6 h-6 text-indigo-400/40 mb-3" />
+                {/* Quote with Elegant Quotation Glyph */}
+                <div className="mb-6 sm:mb-8">
+                  <Quote className="w-7 h-7 text-indigo-400/40 mb-4 group-hover:text-indigo-400/70 transition-colors" />
                   <p className="text-sm sm:text-[15px] text-white/90 leading-relaxed font-normal">
                     "{creator.quote}"
                   </p>
