@@ -34,6 +34,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: "Pricing", href: "#packages" },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const id = href.replace(/^#/, "");
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -66,7 +78,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <a
                 key={idx}
                 href={link.href}
-                className="px-4 py-2 text-xs font-semibold text-white/70 hover:text-white rounded-full hover:bg-white/[0.08] transition-all duration-200"
+                onClick={(e) => handleNavClick(e, link.href)}
+                className="px-4 py-2 text-xs font-semibold text-white/70 hover:text-white rounded-full hover:bg-white/[0.08] transition-all duration-200 cursor-pointer"
               >
                 {link.label}
               </a>
@@ -114,8 +127,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             <a
               key={idx}
               href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-semibold text-white/80 hover:text-white"
+              onClick={(e) => {
+                setMobileMenuOpen(false);
+                handleNavClick(e, link.href);
+              }}
+              className="block text-base font-semibold text-white/80 hover:text-white cursor-pointer"
             >
               {link.label}
             </a>

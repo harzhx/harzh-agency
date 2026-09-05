@@ -47,7 +47,7 @@ export const StrategiesSection: React.FC<StrategiesSectionProps> = ({
   ];
 
   return (
-    <section id="strategies" className="py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
+    <section id="strategies" className="scroll-mt-24 sm:scroll-mt-28 py-12 sm:py-16 md:py-20 relative z-10 border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div

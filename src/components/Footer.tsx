@@ -30,21 +30,32 @@ export const Footer: React.FC<FooterProps> = () => {
           </a>
 
           <div className="flex items-center gap-6">
-            <a href="#strategies" className="hover:text-white transition-colors">
-              Strategies
-            </a>
-            <a href="#work" className="hover:text-white transition-colors">
-              Work
-            </a>
-            <a href="#testimonials" className="hover:text-white transition-colors">
-              Testimonials
-            </a>
-            <a href="#packages" className="hover:text-white transition-colors">
-              Pricing
-            </a>
-            <a href="#faq" className="hover:text-white transition-colors">
-              FAQ
-            </a>
+            {[
+              { label: "Strategies", href: "#strategies" },
+              { label: "Work", href: "#work" },
+              { label: "Testimonials", href: "#testimonials" },
+              { label: "Pricing", href: "#packages" },
+              { label: "FAQ", href: "#faq" },
+            ].map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const id = link.href.replace(/^#/, "");
+                  const element = document.getElementById(id);
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                  if (window.location.hash) {
+                    window.history.replaceState(null, "", window.location.pathname);
+                  }
+                }}
+                className="hover:text-white transition-colors cursor-pointer"
+              >
+                {link.label}
+              </a>
+            ))}
           </div>
 
           <div className="font-mono text-[11px]">

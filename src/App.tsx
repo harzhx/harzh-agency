@@ -31,10 +31,48 @@ export default function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  // Handle section anchor clicks and clean hashes from URL
+  useEffect(() => {
+    // If opened or reloaded with a hash, scroll to target and clear hash from URL bar
+    if (window.location.hash) {
+      const targetId = window.location.hash.replace(/^#/, "");
+      window.history.replaceState(null, "", window.location.pathname);
+      if (targetId) {
+        setTimeout(() => {
+          const el = document.getElementById(targetId);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("a");
+      if (!target) return;
+      const href = target.getAttribute("href");
+      if (href && href.startsWith("#") && href.length > 1) {
+        e.preventDefault();
+        const id = href.slice(1);
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+        if (window.location.hash) {
+          window.history.replaceState(null, "", window.location.pathname);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+    return () => document.removeEventListener("click", handleAnchorClick);
+  }, []);
+
   const scrollToWork = () => {
     const el = document.getElementById("work");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
+    }
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname);
     }
   };
 
