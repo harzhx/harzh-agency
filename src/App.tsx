@@ -16,9 +16,35 @@ export default function App() {
   const [theme, setTheme] = useState<ThemeMode>("dark");
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     document.documentElement.classList.add("dark");
+  }, []);
+
+  // Stop active video when booking modal opens
+  useEffect(() => {
+    if (isBookingOpen) {
+      setActiveVideoId(null);
+    }
+  }, [isBookingOpen]);
+
+  // Global video mutual-exclusion: pause any native <video> if another starts playing
+  useEffect(() => {
+    const handleVideoPlay = (e: Event) => {
+      const currentVideo = e.target as HTMLVideoElement;
+      if (!currentVideo || currentVideo.tagName !== "VIDEO") return;
+
+      const allVideos = document.querySelectorAll("video");
+      allVideos.forEach((video) => {
+        if (video !== currentVideo && !video.paused) {
+          video.pause();
+        }
+      });
+    };
+
+    document.addEventListener("play", handleVideoPlay, true);
+    return () => document.removeEventListener("play", handleVideoPlay, true);
   }, []);
 
   // Track mouse position smoothly for cursor-proximity spotlight & ambient parallax
@@ -98,6 +124,9 @@ export default function App() {
           theme={theme}
           onOpenBooking={() => setIsBookingOpen(true)}
           onExploreWork={scrollToWork}
+          activeVideoId={activeVideoId}
+          onPlayVideo={setActiveVideoId}
+          onStopVideo={() => setActiveVideoId(null)}
         />
 
         {/* 2. THE 4 RETENTION STRATEGY PILLARS & PIXEL MASCOT */}
@@ -110,6 +139,9 @@ export default function App() {
         <WorkSection
           theme={theme}
           onOpenBooking={() => setIsBookingOpen(true)}
+          activeVideoId={activeVideoId}
+          onPlayVideo={setActiveVideoId}
+          onStopVideo={() => setActiveVideoId(null)}
         />
 
         {/* 4. CREATOR ENDORSEMENTS & VERIFIED TESTIMONIALS */}

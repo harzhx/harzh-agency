@@ -16,14 +16,35 @@ interface HeroSectionProps {
   theme: ThemeMode;
   onOpenBooking: () => void;
   onExploreWork: () => void;
+  activeVideoId?: string | null;
+  onPlayVideo?: (id: string) => void;
+  onStopVideo?: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   theme,
   onOpenBooking,
   onExploreWork,
+  activeVideoId,
+  onPlayVideo,
+  onStopVideo,
 }) => {
-  const [isPlayingShowreel, setIsPlayingShowreel] = useState(false);
+  const [internalPlaying, setInternalPlaying] = useState(false);
+  const isPlayingShowreel = activeVideoId !== undefined ? activeVideoId === "vsl" : internalPlaying;
+  const handlePlayShowreel = () => {
+    if (onPlayVideo) {
+      onPlayVideo("vsl");
+    } else {
+      setInternalPlaying(true);
+    }
+  };
+  const handleStopShowreel = () => {
+    if (onStopVideo) {
+      onStopVideo();
+    } else {
+      setInternalPlaying(false);
+    }
+  };
   const isDark = theme === "dark";
 
   return (
@@ -100,13 +121,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   controls
                   autoPlay
                   playsInline
+                  onEnded={handleStopShowreel}
                   className="w-full h-full object-cover rounded-xl"
                 />
               ) : (
                 /* Poster State with Glowing Play Trigger */
                 <div
+                  data-testid="vsl-play-trigger"
                   className="w-full h-full relative cursor-pointer"
-                  onClick={() => setIsPlayingShowreel(true)}
+                  onClick={handlePlayShowreel}
                 >
                   {/* Cinematic Video Poster */}
                   <div

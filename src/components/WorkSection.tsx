@@ -17,18 +17,40 @@ import { motion, AnimatePresence } from "motion/react";
 interface WorkSectionProps {
   theme: ThemeMode;
   onOpenBooking: () => void;
+  activeVideoId?: string | null;
+  onPlayVideo?: (id: string) => void;
+  onStopVideo?: () => void;
 }
 
 export const WorkSection: React.FC<WorkSectionProps> = ({
   theme,
   onOpenBooking,
+  activeVideoId,
+  onPlayVideo,
+  onStopVideo,
 }) => {
   // 2 Primary Tabs: Long-Form (16:9) vs. Viral Shorts (9:16)
   const [activeCategory, setActiveCategory] = useState<"longform" | "shorts">("longform");
   
-  // Independent Inline Playing States
-  const [playingLongId, setPlayingLongId] = useState<string | null>(null);
-  const [playingShortId, setPlayingShortId] = useState<string | null>(null);
+  // Fallback state if props not passed
+  const [internalPlayingId, setInternalPlayingId] = useState<string | null>(null);
+  const currentActiveId = activeVideoId !== undefined ? activeVideoId : internalPlayingId;
+
+  const handlePlay = (id: string) => {
+    if (onPlayVideo) {
+      onPlayVideo(id);
+    } else {
+      setInternalPlayingId(id);
+    }
+  };
+
+  const handleStop = () => {
+    if (onStopVideo) {
+      onStopVideo();
+    } else {
+      setInternalPlayingId(null);
+    }
+  };
 
   const longFormItems = PORTFOLIO_ITEMS.filter(
     (item) => item.category === "longform" || item.category === "documentary" || item.category === "podcast"
@@ -60,7 +82,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               type="button"
               onClick={() => {
                 setActiveCategory("longform");
-                setPlayingLongId(null);
+                handleStop();
               }}
               className={`relative py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-200 flex items-center justify-center cursor-pointer ${
                 activeCategory === "longform"
@@ -82,7 +104,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               type="button"
               onClick={() => {
                 setActiveCategory("shorts");
-                setPlayingShortId(null);
+                handleStop();
               }}
               className={`relative py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-200 flex items-center justify-center cursor-pointer ${
                 activeCategory === "shorts"
@@ -115,7 +137,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               className="max-w-4xl mx-auto space-y-8 sm:space-y-12 mb-16 transform-gpu min-h-[420px]"
             >
               {longFormItems.map((item, index) => {
-                const isPlaying = playingLongId === item.id;
+                const isPlaying = currentActiveId === item.id;
 
                 return (
                   <motion.div
@@ -135,11 +157,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                           controls
                           autoPlay
                           playsInline
+                          onEnded={handleStop}
                           className="w-full h-full object-cover rounded-2xl md:rounded-[26px]"
                         />
                       ) : (
                         <div
-                          onClick={() => setPlayingLongId(item.id)}
+                          data-testid="work-play-trigger"
+                          onClick={() => handlePlay(item.id)}
                           className="w-full h-full relative cursor-pointer"
                         >
                           <img
@@ -187,7 +211,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
               className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 mb-16 transform-gpu min-h-[420px]"
             >
               {shortsItems.map((item, index) => {
-                const isPlaying = playingShortId === item.id;
+                const isPlaying = currentActiveId === item.id;
 
                 return (
                   <motion.div
@@ -206,11 +230,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         controls
                         autoPlay
                         playsInline
+                        onEnded={handleStop}
                         className="w-full h-full object-cover rounded-2xl md:rounded-3xl"
                       />
                     ) : (
                       <div
-                        onClick={() => setPlayingShortId(item.id)}
+                        data-testid="work-play-trigger"
+                        onClick={() => handlePlay(item.id)}
                         className="w-full h-full relative cursor-pointer"
                       >
                         <img
