@@ -37,16 +37,16 @@ export const AGENCY_STATS = [
 export const CLIENT_PROOF_ITEMS = [
   {
     name: "Simran Kaur Makeovers",
-    badge: "912K+ Subs",
+    badge: "900K+ Community",
     metric: "50M+ Views",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+    avatar: "/images/testimonials/simran_kaur.jpg",
     verified: true,
   },
   {
     name: "The Jacked Vegan",
-    badge: "150K+ Subs",
+    badge: "56K+ Subs",
     metric: "12M+ Views",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
+    avatar: "/images/testimonials/the_jacked_vegan.jpg",
     verified: true,
   },
   {
