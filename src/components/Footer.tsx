@@ -14,10 +14,8 @@ export const Footer: React.FC<FooterProps> = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Footer Links & Info */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 text-xs text-white/50">
-          <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 text-center sm:text-left">
+          <div className="flex items-center">
             <HarzhLogo isDark={true} size="sm" showText={true} />
-            <span className="hidden sm:inline text-white/20">|</span>
-            <span className="text-white/50 text-[11px] sm:text-xs">High-Retention Video Production</span>
           </div>
 
           <div className="flex items-center gap-6">

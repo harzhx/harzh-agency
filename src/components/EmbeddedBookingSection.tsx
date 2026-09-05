@@ -1,7 +1,6 @@
 import React from "react";
 import { ThemeMode } from "../types";
 import { BookingWidget } from "./BookingWidget";
-import { Sparkles, Flame, ShieldCheck, Video, Clock } from "lucide-react";
 import { motion } from "motion/react";
 
 interface EmbeddedBookingSectionProps {
@@ -28,28 +27,12 @@ export const EmbeddedBookingSection: React.FC<EmbeddedBookingSectionProps> = ({ 
             <span>WORK WITH US</span>
           </div>
 
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-5 sm:mb-6">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white">
             Let’s Scale{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-white to-purple-300">
               Your Channel
             </span>.
           </h2>
-
-          {/* Quick value badges (Hidden on mobile to prevent clumsy line-wraps and bring form above fold; desktop only) */}
-          <div className="hidden sm:flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 mt-4 sm:mt-6 text-xs text-white/60 font-mono">
-            <div className="flex items-center gap-1.5 bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full">
-              <Video className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Google Meet HD</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full">
-              <Clock className="w-3.5 h-3.5 text-indigo-400" />
-              <span>15 Minutes Focused</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-white/[0.03] border border-white/10 px-3 py-1.5 rounded-full">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>1-on-1 Strategy Session</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Embedded Booking Widget Container */}
