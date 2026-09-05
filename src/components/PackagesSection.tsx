@@ -38,14 +38,11 @@ export const PackagesSection: React.FC<PackagesSectionProps> = ({
       )}
 
       <div>
-        {/* Package Title & Description */}
+        {/* Package Title */}
         <div className="mb-5 sm:mb-6">
-          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight mb-2">
+          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
             {pkg.name}
           </h3>
-          <p className="text-xs sm:text-sm text-white/60 leading-relaxed sm:min-h-[44px]">
-            {pkg.description}
-          </p>
         </div>
 
         {/* Price Display Card */}
