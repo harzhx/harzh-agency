@@ -18,7 +18,7 @@ export const TESTIMONIAL_CREATORS: TestimonialCreator[] = [
   {
     id: "simran-kaur",
     name: "Simran Kaur Makeovers",
-    subscribers: "900K+ Community",
+    subscribers: "900K+ Reach",
     views: "50M+ Views",
     niche: "Beauty & Business",
     badge: "INSTAGRAM & YOUTUBE",
@@ -116,13 +116,15 @@ export const TestimonialsSection: React.FC<{ onOpenBooking: () => void }> = () =
                   </div>
                 </div>
 
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-indigo-200 transition-colors truncate">
                     {creator.name}
                   </h3>
-                  <span className="text-xs font-mono text-white/50 block truncate font-medium">
-                    {creator.niche} • <span className="text-indigo-400 font-semibold">{creator.subscribers}</span>
-                  </span>
+                  <div className="text-xs text-white/60 flex items-center gap-1.5 flex-wrap font-sans mt-0.5">
+                    <span>{creator.niche}</span>
+                    <span className="text-white/30">•</span>
+                    <span className="text-indigo-400 font-semibold">{creator.subscribers}</span>
+                  </div>
                 </div>
               </div>
             </motion.div>
