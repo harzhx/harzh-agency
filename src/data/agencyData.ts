@@ -58,7 +58,7 @@ export const CLIENT_PROOF_ITEMS = [
   },
   {
     name: "Combined Audience",
-    badge: "1,500,000+ Reach",
+    badge: "8,000,000+ Reach",
     metric: "240M+ Views",
     avatar: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&auto=format&fit=crop&q=80",
     verified: true,
