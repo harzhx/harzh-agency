@@ -433,7 +433,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     badge: "SHORTS & REELS",
     priceAnchor: "Starts at $1,200",
     billingPeriod: "/ month",
-    description: "For creators scaling short-form or repurposing long-form content.",
+    description: "For creators scaling short-form or repurposing long-form to shorts.",
     deliverables: [
       "12 to 16 Shorts / Reels per month",
       "Long-to-short content repurposing",
@@ -453,7 +453,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
     popular: true,
     priceAnchor: "Starts at $2,200",
     billingPeriod: "/ month",
-    description: "End-to-end management for serious creators scaling on YouTube.",
+    description: "End-to-end management for creators scaling their YouTube channel.",
     deliverables: [
       "4 Long-form YouTube master edits (up to 20 mins)",
       "High-retention narrative pacing & dead-air cuts",
