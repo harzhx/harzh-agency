@@ -491,23 +491,23 @@ export const PRICING_PACKAGES: PricingTier[] = [
 export const FAQS_DATA: FaqItem[] = [
   {
     question: "What is your typical turnaround time per video?",
-    answer: "Our standard turnaround is 48 to 72 hours for shorts and reels, and 3 to 4 business days for long-form YouTube master edits. For Custom Scale clients, you receive dedicated team bandwidth with a priority production queue.",
+    answer: "Turnaround depends on the length and specific requirements of the video, but our usual timing is 24 hours for shorts and reels, and 3 business days for long-form YouTube edits. For Custom Scale clients, you receive dedicated bandwidth with a priority production queue.",
   },
   {
     question: "How do we send you raw footage and assets?",
-    answer: "Just drop your raw footage, audio files, and brand assets into a shared Google Drive or Dropbox folder. We take it from there—organizing footage, syncing audio, sound design, color grading, and delivering the finished export ready to publish.",
+    answer: "Just drop your raw footage, audio files, and brand assets into a shared Google Drive, Dropbox, or Frame.io folder. We handle everything from there: organizing footage, syncing audio, sound design, color grading, custom thumbnails, and packaging, delivering the finished video ready to publish.",
   },
   {
     question: "What if I need changes or revisions on an edit?",
-    answer: "Every package includes unlimited revisions. You can leave timestamped comments directly on your private video review link, and your dedicated editor typically turns around revisions within 24 hours.",
+    answer: "Every package comes with unlimited revisions. Whether it's minor timestamped adjustments or scrapping the whole cut to rebuild it from scratch, we don't stop until it meets the standards.",
   },
   {
     question: "Do you design thumbnails and title concepts as well?",
-    answer: "Yes! Both our YouTube Long-Form and Custom Scale packages include complete High-CTR packaging. For every video, you get 3 high-CTR title options and 2 custom, high-contrast thumbnail concepts designed to win the click.",
+    answer: "Yes! Titles and thumbnails determine 50% of the video's outcome. It is our priority to publish every video with high-converting titles and custom thumbnails designed to win the click.",
   },
   {
     question: "How do I get started?",
-    answer: "Click 'Book Strategy Call' to schedule a quick 15-minute onboarding conversation. We will review your recent videos, discuss your channel goals and upload frequency, and get your dedicated editor or team producing your first video immediately.",
+    answer: "Click 'Book Strategy Call' to schedule a quick 15-minute onboarding conversation. We will review your recent videos, discuss your channel goals and upload frequency, and start producing your first video immediately.",
   },
 ];
 
