@@ -491,23 +491,23 @@ export const PRICING_PACKAGES: PricingTier[] = [
 export const FAQS_DATA: FaqItem[] = [
   {
     question: "What is your typical turnaround time per video?",
-    answer: "Our standard delivery is 48 to 72 hours for short-form content and 3 to 4 business days for long-form master edits. For Full Channel retainers, you receive dedicated bandwidth with a priority editing queue.",
+    answer: "Our standard turnaround is 48 to 72 hours for shorts and reels, and 3 to 4 business days for long-form YouTube master edits. For Custom Scale clients, you receive dedicated team bandwidth with a priority production queue.",
   },
   {
     question: "How do we send you raw footage and assets?",
-    answer: "You simply drop your raw A-roll and assets into a shared Google Drive, Dropbox, or cloud folder. We organize, synchronize, clean audio, and deliver the final YouTube-ready export directly back to your folder.",
+    answer: "Just drop your raw footage, audio files, and brand assets into a shared Google Drive or Dropbox folder. We take it from there—organizing footage, syncing audio, sound design, color grading, and delivering the finished export ready to publish.",
   },
   {
     question: "What if I need changes or revisions on an edit?",
-    answer: "All partnerships include unlimited revisions. You can leave timestamped feedback directly on the video timeline, and your editor resolves it in under 24 hours.",
+    answer: "Every package includes unlimited revisions. You can leave timestamped comments directly on your private video review link, and your dedicated editor typically turns around revisions within 24 hours.",
   },
   {
     question: "Do you design thumbnails and title concepts as well?",
-    answer: "Yes! In our YouTube Flagship and Growth Partner tiers, we provide 2 high-contrast, A/B-tested thumbnail concepts and 3 high-CTR title variations per video to maximize impression-to-click conversion.",
+    answer: "Yes! Both our YouTube Long-Form and Custom Scale packages include complete High-CTR packaging. For every video, you get 3 high-CTR title options and 2 custom, high-contrast thumbnail concepts designed to win the click.",
   },
   {
     question: "How do I get started?",
-    answer: "Click 'Book a 15-Min Strategy Call' to schedule a quick conversation with our lead strategist. We will audit your recent videos, discuss your channel goals, and start your first pilot project within 24 hours.",
+    answer: "Click 'Book Strategy Call' to schedule a quick 15-minute onboarding conversation. We will review your recent videos, discuss your channel goals and upload frequency, and get your dedicated editor or team producing your first video immediately.",
   },
 ];
 
