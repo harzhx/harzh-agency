@@ -491,7 +491,7 @@ export const PRICING_PACKAGES: PricingTier[] = [
 export const FAQS_DATA: FaqItem[] = [
   {
     question: "What is your typical turnaround time per video?",
-    answer: "Turnaround depends on the length and specific requirements of the video, but our usual timing is 24 hours for shorts and reels, and 3 business days for long-form YouTube edits. For Custom Scale clients, you receive dedicated bandwidth with a priority production queue.",
+    answer: "Turnaround depends on the length and specific requirements of the video, but our usual timing is 24 hours for shorts and reels, and 3 business days for long-form YouTube edits.",
   },
   {
     question: "How do we send you raw footage and assets?",
