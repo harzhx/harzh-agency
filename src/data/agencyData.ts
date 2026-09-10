@@ -9,6 +9,8 @@ import thumbShort4 from "../assets/portfolio/thumb_short_4.jpg";
 import thumbShort5 from "../assets/portfolio/thumb_short_5.jpg";
 import thumbShort6 from "../assets/portfolio/thumb_short_6.jpg";
 
+export const CLOUDFLARE_CDN_BASE = "https://pub-432d713c01394e7d99e336fe701b25ea.r2.dev";
+
 export interface PricingTier {
   id: string;
   name: string;
@@ -189,7 +191,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "12.8%",
     duration: "0:22",
     proofBadge: "Pro Esports Coach",
-    videoPlaceholderUrl: "/videos/portfolio/long_1.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/long_1.mp4`,
     thumbnailUrl: thumbLong1,
     tags: ["Esports Coach", "Velocity Pacing", "Hand-Cam Sync", "Motion Tracking"],
     keyEdits: [
@@ -217,7 +219,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "14.2%",
     duration: "0:20",
     proofBadge: "912K+ Creator",
-    videoPlaceholderUrl: "/videos/portfolio/long_2.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/long_2.mp4`,
     thumbnailUrl: thumbLong2,
     tags: ["912K Creator", "UI Step Badges", "Cost Callouts", "Color Grading"],
     keyEdits: [
@@ -245,7 +247,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "13.6%",
     duration: "0:20",
     proofBadge: "Fitness & Calisthenics",
-    videoPlaceholderUrl: "/videos/portfolio/long_3.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/long_3.mp4`,
     thumbnailUrl: thumbLong3,
     tags: ["Fitness Coach", "Kinetic Subtitles", "Gym Storytelling", "Sound Foley"],
     keyEdits: [
@@ -273,7 +275,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "16.8%",
     duration: "0:24",
     proofBadge: "Celeb Face Tracking",
-    videoPlaceholderUrl: "/videos/portfolio/short_1.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_1.mp4`,
     thumbnailUrl: thumbShort1,
     tags: ["Face Tracking", "Rotoscoping", "Sound Foley", "Humor"],
     keyEdits: [
@@ -300,7 +302,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "15.3%",
     duration: "1:00",
     proofBadge: "10K Street Challenge",
-    videoPlaceholderUrl: "/videos/portfolio/short_2.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_2.mp4`,
     thumbnailUrl: thumbShort2,
     tags: ["Cash Giveaway", "Flying Money Graphic", "Kinetic Subtitles", "Street Pacing"],
     keyEdits: [
@@ -328,7 +330,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "14.8%",
     duration: "0:21",
     proofBadge: "Culinary ASMR & Color",
-    videoPlaceholderUrl: "/videos/portfolio/short_3.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_3.mp4`,
     thumbnailUrl: thumbShort3,
     tags: ["ASMR Sound", "Color Grading", "Macro Food", "Fast Pacing"],
     keyEdits: [
@@ -355,7 +357,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "13.9%",
     duration: "0:20",
     proofBadge: "3D Cubes Listicle",
-    videoPlaceholderUrl: "/videos/portfolio/short_4.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_4.mp4`,
     thumbnailUrl: thumbShort4,
     tags: ["3D Motion Graphics", "Listicle Hook", "Coaching Tips", "Gym B-Roll"],
     keyEdits: [
@@ -382,7 +384,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "14.2%",
     duration: "0:15",
     proofBadge: "Stream Repurposing",
-    videoPlaceholderUrl: "/videos/portfolio/short_5.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_5.mp4`,
     thumbnailUrl: thumbShort5,
     tags: ["Esports", "Aim Coaching", "Stream Repurposing", "Kinetic Subtitles"],
     keyEdits: [
@@ -409,7 +411,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     ctr: "12.7%",
     duration: "0:23",
     proofBadge: "Business Advice & Hooks",
-    videoPlaceholderUrl: "/videos/portfolio/short_6.mp4",
+    videoPlaceholderUrl: `${CLOUDFLARE_CDN_BASE}/portfolio/short_6.mp4`,
     thumbnailUrl: thumbShort6,
     tags: ["Business Hook", "Light Leaks", "Thought Leadership", "Jump-Cuts"],
     keyEdits: [

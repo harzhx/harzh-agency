@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ThemeMode } from "../types";
-import { CREATOR_LOGOS, AGENCY_STATS } from "../data/agencyData";
+import { CREATOR_LOGOS, AGENCY_STATS, CLOUDFLARE_CDN_BASE } from "../data/agencyData";
 import {
   Play,
   Sparkles,
@@ -116,7 +116,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {isPlayingShowreel ? (
                 /* Native Inline HTML5 Video Player (Zero Watermarks / 100% Clean) */
                 <video
-                  src="/videos/vsl.mp4"
+                  src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
                   poster={vslThumbnail}
                   controls
                   autoPlay
