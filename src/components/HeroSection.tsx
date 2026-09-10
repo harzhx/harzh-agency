@@ -135,7 +135,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ref={videoRef}
                 src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
                 poster={vslThumbnail}
-                preload="auto"
+                preload="metadata"
                 controls={isPlayingShowreel}
                 playsInline
                 onEnded={handleStopShowreel}
@@ -153,11 +153,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   className="w-full h-full relative cursor-pointer z-10"
                   onClick={handlePlayShowreel}
                   onMouseEnter={() => {
-                    if (videoRef.current && videoRef.current.preload !== "auto") {
-                      videoRef.current.preload = "auto";
-                    }
-                  }}
-                  onTouchStart={() => {
                     if (videoRef.current && videoRef.current.preload !== "auto") {
                       videoRef.current.preload = "auto";
                     }
