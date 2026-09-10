@@ -38,6 +38,22 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
   const [internalPlayingId, setInternalPlayingId] = useState<string | null>(null);
   const currentActiveId = activeVideoId !== undefined ? activeVideoId : internalPlayingId;
 
+  // Track videos preloaded via hover or viewport entry for 0ms instant playback
+  const [preloadedIds, setPreloadedIds] = useState<Set<string>>(new Set());
+
+  const handlePreload = (id: string) => {
+    setPreloadedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+    const videoEl = document.getElementById(`video-${id}`) as HTMLVideoElement | null;
+    if (videoEl && videoEl.preload !== "auto") {
+      videoEl.preload = "auto";
+    }
+  };
+
   const handlePlay = (id: string) => {
     if (onPlayVideo) {
       onPlayVideo(id);
@@ -167,6 +183,9 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                     initial={{ opacity: 0, y: 32, scale: 0.98 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, amount: 0.15 }}
+                    onViewportEnter={() => handlePreload(item.id)}
+                    onMouseEnter={() => handlePreload(item.id)}
+                    onTouchStart={() => handlePreload(item.id)}
                     transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
                     whileHover={{ y: -4, transition: { duration: 0.25, ease: "easeOut" } }}
                     className="relative rounded-3xl md:rounded-[32px] border border-white/[0.12] overflow-hidden p-2 sm:p-3 bg-[#0a0a0e]/90 shadow-2xl shadow-black ring-1 ring-white/10 transition-colors duration-300 hover:border-indigo-500/40"
@@ -176,11 +195,11 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         id={`video-${item.id}`}
                         src={item.videoPlaceholderUrl}
                         poster={item.thumbnailUrl}
-                        preload="metadata"
+                        preload={preloadedIds.has(item.id) || isPlaying ? "auto" : "metadata"}
                         controls={isPlaying}
                         playsInline
                         onEnded={handleStop}
-                        className={`w-full h-full object-cover rounded-2xl md:rounded-[26px] transition-opacity duration-300 ${
+                        className={`w-full h-full object-cover rounded-2xl md:rounded-[26px] transition-opacity duration-150 ${
                           isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                         }`}
                       />
@@ -189,6 +208,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         <div
                           data-testid="work-play-trigger"
                           onClick={() => handlePlay(item.id)}
+                          onMouseEnter={() => handlePreload(item.id)}
+                          onTouchStart={() => handlePreload(item.id)}
                           className="w-full h-full relative cursor-pointer z-10"
                         >
                           <img
@@ -244,6 +265,9 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                     initial={{ opacity: 0, y: 26, scale: 0.97 }}
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, amount: 0.12 }}
+                    onViewportEnter={() => handlePreload(item.id)}
+                    onMouseEnter={() => handlePreload(item.id)}
+                    onTouchStart={() => handlePreload(item.id)}
                     transition={{ duration: 0.45, delay: (index % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
                     whileHover={{ y: -6, transition: { duration: 0.25, ease: "easeOut" } }}
                     className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-colors duration-300 group ring-1 ring-white/5"
@@ -252,11 +276,11 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       id={`video-${item.id}`}
                       src={item.videoPlaceholderUrl}
                       poster={item.thumbnailUrl}
-                      preload="metadata"
+                      preload={preloadedIds.has(item.id) || isPlaying ? "auto" : "metadata"}
                       controls={isPlaying}
                       playsInline
                       onEnded={handleStop}
-                      className={`w-full h-full object-cover rounded-2xl md:rounded-3xl transition-opacity duration-300 ${
+                      className={`w-full h-full object-cover rounded-2xl md:rounded-3xl transition-opacity duration-150 ${
                         isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                       }`}
                     />
@@ -265,6 +289,8 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       <div
                         data-testid="work-play-trigger"
                         onClick={() => handlePlay(item.id)}
+                        onMouseEnter={() => handlePreload(item.id)}
+                        onTouchStart={() => handlePreload(item.id)}
                         className="w-full h-full relative cursor-pointer z-10"
                       >
                         <img

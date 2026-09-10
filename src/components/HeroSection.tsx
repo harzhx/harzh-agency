@@ -135,11 +135,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ref={videoRef}
                 src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
                 poster={vslThumbnail}
-                preload="metadata"
+                preload="auto"
                 controls={isPlayingShowreel}
                 playsInline
                 onEnded={handleStopShowreel}
-                className={`w-full h-full object-cover rounded-xl transition-opacity duration-300 ${
+                className={`w-full h-full object-cover rounded-xl transition-opacity duration-150 ${
                   isPlayingShowreel
                     ? "opacity-100 relative z-20"
                     : "opacity-0 absolute inset-0 pointer-events-none"
@@ -152,6 +152,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   data-testid="vsl-play-trigger"
                   className="w-full h-full relative cursor-pointer z-10"
                   onClick={handlePlayShowreel}
+                  onMouseEnter={() => {
+                    if (videoRef.current && videoRef.current.preload !== "auto") {
+                      videoRef.current.preload = "auto";
+                    }
+                  }}
+                  onTouchStart={() => {
+                    if (videoRef.current && videoRef.current.preload !== "auto") {
+                      videoRef.current.preload = "auto";
+                    }
+                  }}
                 >
                   {/* Cinematic Video Poster */}
                   <div
