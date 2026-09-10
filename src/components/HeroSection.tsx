@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ThemeMode } from "../types";
 import { CREATOR_LOGOS, AGENCY_STATS, CLOUDFLARE_CDN_BASE } from "../data/agencyData";
 import {
@@ -30,21 +30,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onStopVideo,
 }) => {
   const [internalPlaying, setInternalPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const isPlayingShowreel = activeVideoId !== undefined ? activeVideoId === "vsl" : internalPlaying;
+
   const handlePlayShowreel = () => {
     if (onPlayVideo) {
       onPlayVideo("vsl");
     } else {
       setInternalPlaying(true);
     }
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
   };
+
   const handleStopShowreel = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
     if (onStopVideo) {
       onStopVideo();
     } else {
       setInternalPlaying(false);
     }
   };
+
+  useEffect(() => {
+    if (!isPlayingShowreel && videoRef.current && !videoRef.current.paused) {
+      videoRef.current.pause();
+    }
+  }, [isPlayingShowreel]);
+
   const isDark = theme === "dark";
 
   return (
@@ -113,22 +129,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative rounded-2xl md:rounded-3xl border border-white/[0.12] overflow-hidden p-2 sm:p-2.5 bg-[#0a0a0e]/90 shadow-2xl shadow-black">
             {/* 16:9 Aspect Video Container */}
             <div className="relative aspect-video rounded-xl overflow-hidden bg-black group">
-              {isPlayingShowreel ? (
-                /* Native Inline HTML5 Video Player (Zero Watermarks / 100% Clean) */
-                <video
-                  src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
-                  poster={vslThumbnail}
-                  controls
-                  autoPlay
-                  playsInline
-                  onEnded={handleStopShowreel}
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              ) : (
+              {/* Native Inline HTML5 Video Player with Preload */}
+              <video
+                ref={videoRef}
+                src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
+                poster={vslThumbnail}
+                preload="metadata"
+                controls={isPlayingShowreel}
+                playsInline
+                onEnded={handleStopShowreel}
+                className={`w-full h-full object-cover rounded-xl transition-opacity duration-300 ${
+                  isPlayingShowreel
+                    ? "opacity-100 relative z-20"
+                    : "opacity-0 absolute inset-0 pointer-events-none"
+                }`}
+              />
+
+              {!isPlayingShowreel && (
                 /* Poster State with Glowing Play Trigger */
                 <div
                   data-testid="vsl-play-trigger"
-                  className="w-full h-full relative cursor-pointer"
+                  className="w-full h-full relative cursor-pointer z-10"
                   onClick={handlePlayShowreel}
                 >
                   {/* Cinematic Video Poster */}
