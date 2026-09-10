@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeMode, PortfolioItem } from "../types";
 import { PORTFOLIO_ITEMS } from "../data/agencyData";
 import {
@@ -8,9 +8,11 @@ import {
   Clock,
   Sparkles,
   ArrowUpRight,
-  X,
-  Volume2,
+  Flame,
+  ChevronRight,
   CheckCircle2,
+  ExternalLink,
+  SplitSquareVertical,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -42,6 +44,15 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
     } else {
       setInternalPlayingId(id);
     }
+    const videoEl = document.getElementById(`video-${id}`) as HTMLVideoElement | null;
+    if (videoEl) {
+      videoEl.play().catch(() => {});
+    } else {
+      setTimeout(() => {
+        const el = document.getElementById(`video-${id}`) as HTMLVideoElement | null;
+        if (el) el.play().catch(() => {});
+      }, 50);
+    }
   };
 
   const handleStop = () => {
@@ -51,6 +62,17 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
       setInternalPlayingId(null);
     }
   };
+
+  useEffect(() => {
+    const allVideos = document.querySelectorAll<HTMLVideoElement>("video");
+    allVideos.forEach((v) => {
+      if (currentActiveId && v.id === `video-${currentActiveId}`) {
+        // Active video - allowed to play
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, [currentActiveId]);
 
   const longFormItems = PORTFOLIO_ITEMS.filter(
     (item) => item.category === "longform" || item.category === "documentary" || item.category === "podcast"
@@ -151,18 +173,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                   >
                     <div className="relative aspect-video rounded-2xl md:rounded-[26px] overflow-hidden bg-black group">
                       <video
+                        id={`video-${item.id}`}
                         src={item.videoPlaceholderUrl}
                         poster={item.thumbnailUrl}
                         preload="metadata"
                         controls={isPlaying}
                         playsInline
                         onEnded={handleStop}
-                        ref={(el) => {
-                          if (el) {
-                            if (isPlaying && el.paused) el.play().catch(() => {});
-                            else if (!isPlaying && !el.paused) el.pause();
-                          }
-                        }}
                         className={`w-full h-full object-cover rounded-2xl md:rounded-[26px] transition-opacity duration-300 ${
                           isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                         }`}
@@ -232,18 +249,13 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                     className="relative aspect-[9/16] rounded-2xl md:rounded-3xl overflow-hidden bg-black border border-white/[0.1] hover:border-indigo-500/50 shadow-2xl transition-colors duration-300 group ring-1 ring-white/5"
                   >
                     <video
+                      id={`video-${item.id}`}
                       src={item.videoPlaceholderUrl}
                       poster={item.thumbnailUrl}
                       preload="metadata"
                       controls={isPlaying}
                       playsInline
                       onEnded={handleStop}
-                      ref={(el) => {
-                        if (el) {
-                          if (isPlaying && el.paused) el.play().catch(() => {});
-                          else if (!isPlaying && !el.paused) el.pause();
-                        }
-                      }}
                       className={`w-full h-full object-cover rounded-2xl md:rounded-3xl transition-opacity duration-300 ${
                         isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                       }`}

@@ -131,6 +131,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="relative aspect-video rounded-xl overflow-hidden bg-black group">
               {/* Native Inline HTML5 Video Player with Preload */}
               <video
+                id="video-vsl"
                 ref={videoRef}
                 src={`${CLOUDFLARE_CDN_BASE}/vsl.mp4`}
                 poster={vslThumbnail}
