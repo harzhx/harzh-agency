@@ -9,7 +9,7 @@ import thumbShort4 from "../assets/portfolio/thumb_short_4.jpg";
 import thumbShort5 from "../assets/portfolio/thumb_short_5.jpg";
 import thumbShort6 from "../assets/portfolio/thumb_short_6.jpg";
 
-export const CLOUDFLARE_CDN_BASE = "https://pub-432d713c01394e7d99e336fe701b25ea.r2.dev";
+export const CLOUDFLARE_CDN_BASE = "https://media.harzh.net";
 
 export interface PricingTier {
   id: string;
