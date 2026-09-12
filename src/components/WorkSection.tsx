@@ -197,7 +197,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                         controls={isPlaying}
                         playsInline
                         onEnded={handleStop}
-                        className={`w-full h-full object-cover rounded-2xl md:rounded-[26px] transition-opacity duration-150 ${
+                        className={`w-full h-full object-cover fullscreen:object-contain rounded-2xl md:rounded-[26px] transition-opacity duration-150 ${
                           isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                         }`}
                       />
@@ -275,7 +275,7 @@ export const WorkSection: React.FC<WorkSectionProps> = ({
                       controls={isPlaying}
                       playsInline
                       onEnded={handleStop}
-                      className={`w-full h-full object-cover rounded-2xl md:rounded-3xl transition-opacity duration-150 ${
+                      className={`w-full h-full object-cover fullscreen:object-contain rounded-2xl md:rounded-3xl transition-opacity duration-150 ${
                         isPlaying ? "opacity-100 relative z-20" : "opacity-0 absolute inset-0 pointer-events-none"
                       }`}
                     />

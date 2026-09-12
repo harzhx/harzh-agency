@@ -139,7 +139,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 controls={isPlayingShowreel}
                 playsInline
                 onEnded={handleStopShowreel}
-                className={`w-full h-full object-cover rounded-xl transition-opacity duration-150 ${
+                className={`w-full h-full object-cover fullscreen:object-contain rounded-xl transition-opacity duration-150 ${
                   isPlayingShowreel
                     ? "opacity-100 relative z-20"
                     : "opacity-0 absolute inset-0 pointer-events-none"

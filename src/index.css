@@ -215,3 +215,12 @@ html:not(.dark) .beam-line {
   mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
 }
 
+/* Ensure videos are never cropped at the edges when entering fullscreen on tall phones */
+video:fullscreen,
+video:-webkit-full-screen,
+video:-moz-full-screen,
+video:-ms-fullscreen {
+  object-fit: contain !important;
+  background-color: #000000 !important;
+}
+
