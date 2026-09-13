@@ -1,13 +1,13 @@
 import { StrategyItem, PortfolioItem, TestimonialBadge, CreatorCaseStudy } from "../types";
-import thumbLong1 from "../assets/portfolio/thumb_long_1.jpg";
-import thumbLong2 from "../assets/portfolio/thumb_long_2.jpg";
-import thumbLong3 from "../assets/portfolio/thumb_long_3.jpg";
-import thumbShort1 from "../assets/portfolio/thumb_short_1.jpg";
-import thumbShort2 from "../assets/portfolio/thumb_short_2.jpg";
-import thumbShort3 from "../assets/portfolio/thumb_short_3.jpg";
-import thumbShort4 from "../assets/portfolio/thumb_short_4.jpg";
-import thumbShort5 from "../assets/portfolio/thumb_short_5.jpg";
-import thumbShort6 from "../assets/portfolio/thumb_short_6.jpg";
+import thumbLong1 from "../assets/portfolio/thumb_long_1.webp";
+import thumbLong2 from "../assets/portfolio/thumb_long_2.webp";
+import thumbLong3 from "../assets/portfolio/thumb_long_3.webp";
+import thumbShort1 from "../assets/portfolio/thumb_short_1.webp";
+import thumbShort2 from "../assets/portfolio/thumb_short_2.webp";
+import thumbShort3 from "../assets/portfolio/thumb_short_3.webp";
+import thumbShort4 from "../assets/portfolio/thumb_short_4.webp";
+import thumbShort5 from "../assets/portfolio/thumb_short_5.webp";
+import thumbShort6 from "../assets/portfolio/thumb_short_6.webp";
 
 export const CLOUDFLARE_CDN_BASE = "https://media.harzh.net";
 

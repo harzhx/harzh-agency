@@ -10,7 +10,7 @@ import {
   Volume2,
 } from "lucide-react";
 import { motion } from "motion/react";
-import vslThumbnail from "../assets/vsl_thumbnail.jpg";
+import vslThumbnail from "../assets/vsl_thumbnail.webp";
 
 interface HeroSectionProps {
   theme: ThemeMode;
